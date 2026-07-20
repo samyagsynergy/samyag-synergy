@@ -4,7 +4,7 @@ backend:
   branch: main
 
 # All uploaded images/files (logo, photo, downloads, videos) live in one media library
-media_folder: "uploads"
+media_folder: "website/uploads"
 public_folder: "/uploads"
 
 publish_mode: simple
@@ -16,7 +16,7 @@ collections:
     editor:
       preview: false
     files:
-      - file: "content/settings.json"
+      - file: "website/content/settings.json"
         label: "Hero, About & Contact"
         name: "settings"
         fields:
@@ -52,7 +52,7 @@ collections:
     editor:
       preview: false
     files:
-      - file: "content/services.json"
+      - file: "website/content/services.json"
         label: "Services List"
         name: "services"
         fields:
@@ -69,7 +69,7 @@ collections:
     editor:
       preview: false
     files:
-      - file: "content/tools.json"
+      - file: "website/content/tools.json"
         label: "Tools List"
         name: "tools"
         fields:
@@ -95,7 +95,7 @@ collections:
     editor:
       preview: false
     files:
-      - file: "content/resources.json"
+      - file: "website/content/resources.json"
         label: "Resources"
         name: "resources"
         fields:
@@ -143,7 +143,7 @@ collections:
     editor:
       preview: false
     files:
-      - file: "content/blog.json"
+      - file: "website/content/blog.json"
         label: "Blog Posts"
         name: "blog"
         fields:
