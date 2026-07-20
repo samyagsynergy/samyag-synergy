@@ -1,0 +1,158 @@
+backend:
+  name: git-gateway
+  branch: main
+
+# All uploaded images/files (logo, photo, downloads, videos) live in one media library
+media_folder: "uploads"
+public_folder: "/uploads"
+
+publish_mode: simple
+
+collections:
+
+  - name: "settings"
+    label: "Site Settings"
+    editor:
+      preview: false
+    files:
+      - file: "content/settings.json"
+        label: "Hero, About & Contact"
+        name: "settings"
+        fields:
+          - { label: "Logo", name: "logo", widget: "image" }
+          - { label: "Brand Name", name: "brand_name", widget: "string" }
+          - { label: "Brand Tagline", name: "brand_tagline", widget: "string" }
+          - { label: "Hero Heading (use a new line for each line break)", name: "hero_heading", widget: "text" }
+          - { label: "Hero Subtext", name: "hero_lede", widget: "text" }
+          - { label: "Hero Photo", name: "hero_photo", widget: "image" }
+          - { label: "Hero Photo Caption", name: "hero_photo_tag", widget: "string" }
+          - { label: "About — Name", name: "about_name", widget: "string" }
+          - { label: "About — Credential line", name: "credential_line", widget: "string" }
+          - { label: "About — Intro paragraph", name: "about_intro", widget: "text" }
+          - { label: "About — Body paragraph", name: "about_body", widget: "text" }
+          - label: "Credentials list"
+            name: "credentials"
+            widget: "list"
+            field: { label: "Credential", name: "credential", widget: "string" }
+          - label: "Industries list"
+            name: "industries"
+            widget: "list"
+            field: { label: "Industry", name: "industry", widget: "string" }
+          - { label: "Email", name: "email", widget: "string" }
+          - { label: "Phone", name: "phone", widget: "string" }
+          - { label: "UEN", name: "uen", widget: "string" }
+          - { label: "LinkedIn — Company page URL", name: "linkedin_company", widget: "string" }
+          - { label: "LinkedIn — Founder profile URL", name: "linkedin_founder", widget: "string" }
+          - { label: "Instagram URL", name: "instagram", widget: "string" }
+          - { label: "Footer note", name: "footer_note", widget: "text" }
+
+  - name: "services"
+    label: "Services"
+    editor:
+      preview: false
+    files:
+      - file: "content/services.json"
+        label: "Services List"
+        name: "services"
+        fields:
+          - label: "Services"
+            name: "items"
+            widget: "list"
+            summary: "{{title}}"
+            fields:
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Description", name: "description", widget: "text" }
+
+  - name: "tools"
+    label: "Tools"
+    editor:
+      preview: false
+    files:
+      - file: "content/tools.json"
+        label: "Tools List"
+        name: "tools"
+        fields:
+          - label: "Tools"
+            name: "items"
+            widget: "list"
+            summary: "{{title}} — {{category}}"
+            fields:
+              - { label: "Title", name: "title", widget: "string" }
+              - label: "Category"
+                name: "category"
+                widget: "select"
+                options: ["PDF Utilities", "Payroll", "AI Automation", "Reporting", "Other"]
+              - { label: "Badge (e.g. Beta) — leave blank for none", name: "badge", widget: "string", required: false }
+              - { label: "Description", name: "description", widget: "text" }
+              - { label: "Link URL", name: "link", widget: "string" }
+              - { label: "Link button label", name: "link_label", widget: "string" }
+              - { label: "Demo video (optional)", name: "video", widget: "file", required: false }
+              - { label: "Note / disclaimer (optional)", name: "note", widget: "text", required: false }
+
+  - name: "resources"
+    label: "Resources"
+    editor:
+      preview: false
+    files:
+      - file: "content/resources.json"
+        label: "Resources"
+        name: "resources"
+        fields:
+          - label: "Category tags (used for the filter pills)"
+            name: "categories"
+            widget: "list"
+            field: { label: "Category", name: "category", widget: "string" }
+          - label: "Featured downloadable resources"
+            name: "items"
+            widget: "list"
+            summary: "{{title}}"
+            fields:
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Category", name: "category", widget: "string", hint: "Should match one of the category tags above" }
+              - { label: "Badge (e.g. Starter Kit · v1.0)", name: "badge", widget: "string", required: false }
+              - { label: "Description", name: "description", widget: "text" }
+              - label: "What's included (bullet list)"
+                name: "includes"
+                widget: "list"
+                required: false
+                field: { label: "Item", name: "item", widget: "string" }
+              - { label: "Primary download link/file", name: "link", widget: "file", required: false }
+              - { label: "Primary button label", name: "link_label", widget: "string", required: false }
+              - label: "Extra individual file links"
+                name: "extra_links"
+                widget: "list"
+                required: false
+                fields:
+                  - { label: "Label", name: "label", widget: "string" }
+                  - { label: "File", name: "url", widget: "file" }
+              - { label: "Note / disclaimer", name: "note", widget: "text", required: false }
+          - label: "Official / external links"
+            name: "official_links"
+            widget: "list"
+            summary: "{{title}}"
+            fields:
+              - { label: "Small tag (e.g. Tax, Compliance)", name: "tag", widget: "string" }
+              - { label: "Category", name: "category", widget: "string", hint: "Should match one of the category tags above" }
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Description", name: "description", widget: "string" }
+              - { label: "URL", name: "url", widget: "string" }
+
+  - name: "blog"
+    label: "Blog"
+    editor:
+      preview: false
+    files:
+      - file: "content/blog.json"
+        label: "Blog Posts"
+        name: "blog"
+        fields:
+          - label: "Posts"
+            name: "posts"
+            widget: "list"
+            summary: "{{title}}"
+            fields:
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Category", name: "category", widget: "string" }
+              - { label: "Byline", name: "byline", widget: "string" }
+              - { label: "Date", name: "date", widget: "datetime" }
+              - { label: "Body (Markdown)", name: "body", widget: "markdown" }

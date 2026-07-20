@@ -1,0 +1,30 @@
+{
+  "categories": ["IFRS", "Sustainability", "Singapore Business", "Business Processes"],
+  "items": [
+    {
+      "title": "IFRS S1 Starter Kit",
+      "category": "Sustainability",
+      "badge": "Starter Kit · v1.0",
+      "description": "Most IFRS S1 templates tell you what to disclose, but not how to think about the disclosure. This Starter Kit takes a different approach — a fully worked, illustrative sustainability report built for a fictional professional services company, paired with plain-English explanations and practical prompts to help you build your own disclosures rather than copy someone else's.",
+      "includes": [
+        "Introduction & User Guide (PDF) — how to use the kit, step by step",
+        "Sustainability Reporting Draft (Word) — an illustrative IFRS S1 report covering governance, strategy, risks & opportunities, and metrics & targets",
+        "Metrics & Targets Companion Workbook (Excel) — example metrics, activities and targets you can adapt"
+      ],
+      "link": "/uploads/IFRS-S1-Starter-Kit-v1.zip",
+      "link_label": "Download the Starter Kit (.zip)",
+      "extra_links": [
+        { "label": "Introduction & User Guide (PDF)", "url": "/uploads/IFRS-S1-Starter-Kit-Guide.pdf" },
+        { "label": "Sustainability Reporting Draft (Word)", "url": "/uploads/IFRS-S1-Sustainability-Report-Draft.docx" },
+        { "label": "Metrics & Targets Workbook (Excel)", "url": "/uploads/IFRS-S1-Metrics-Targets-Workbook.xlsx" }
+      ],
+      "note": "Built using Samyag Synergy Pte. Ltd. as a fictional illustrative example — not a real company's data or disclosures. For educational and informational use; not accounting, legal or professional advice."
+    }
+  ],
+  "official_links": [
+    { "tag": "Tax", "category": "Singapore Business", "title": "IRAS", "description": "Inland Revenue Authority of Singapore", "url": "https://www.iras.gov.sg" },
+    { "tag": "Compliance", "category": "Singapore Business", "title": "ACRA", "description": "Accounting and Corporate Regulatory Authority", "url": "https://www.acra.gov.sg" },
+    { "tag": "Profession", "category": "Singapore Business", "title": "ISCA", "description": "Institute of Singapore Chartered Accountants", "url": "https://www.isca.org.sg" },
+    { "tag": "Regulator", "category": "Singapore Business", "title": "MAS", "description": "Monetary Authority of Singapore", "url": "https://www.mas.gov.sg" }
+  ]
+}

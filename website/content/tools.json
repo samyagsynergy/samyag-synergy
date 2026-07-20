@@ -1,0 +1,24 @@
+{
+  "items": [
+    {
+      "title": "Split & Merge PDFs",
+      "category": "PDF Utilities",
+      "badge": "",
+      "description": "Split any PDF into individual pages, or merge multiple PDFs into one — entirely in your browser, no uploads, no accounts.",
+      "link": "https://toolssamyagsynergy.netlify.app/",
+      "link_label": "Try the tool",
+      "video": "",
+      "note": ""
+    },
+    {
+      "title": "AI Payroll (Singapore)",
+      "category": "Payroll",
+      "badge": "Beta",
+      "description": "Upload an Excel file with employee details and hours worked — the app generates payroll in under 60 seconds.",
+      "link": "https://samyagsynergy-payroll-sg.vercel.app",
+      "link_label": "Try the beta",
+      "video": "/uploads/samyag-synergy-payroll-demo.mp4",
+      "note": "Beta — testing phase only. Not for production use; verify all outputs independently. Feedback is genuinely appreciated."
+    }
+  ]
+}
