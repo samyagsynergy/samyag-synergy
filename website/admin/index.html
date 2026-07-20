@@ -6,20 +6,7 @@
   <title>Samyag Synergy — Content Admin</title>
 </head>
 <body>
-  <!-- Netlify Identity widget: required for the git-gateway backend -->
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-  <!-- Decap CMS -->
+  <!-- Decap CMS: uses the GitHub backend + Netlify's OAuth provider, so no Identity widget needed -->
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
-  <script>
-    if (window.netlifyIdentity) {
-      window.netlifyIdentity.on("init", (user) => {
-        if (!user) {
-          window.netlifyIdentity.on("login", () => {
-            document.location.href = "/admin/";
-          });
-        }
-      });
-    }
-  </script>
 </body>
 </html>
