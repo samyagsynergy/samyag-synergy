@@ -1,5 +1,6 @@
 backend:
-  name: git-gateway
+  name: github
+  repo: samyagsynergy/samyag-synergy
   branch: main
 
 # All uploaded images/files (logo, photo, downloads, videos) live in one media library
@@ -156,3 +157,4 @@ collections:
               - { label: "Byline", name: "byline", widget: "string" }
               - { label: "Date", name: "date", widget: "datetime" }
               - { label: "Body (Markdown)", name: "body", widget: "markdown" }
+
