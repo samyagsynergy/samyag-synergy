@@ -9,14 +9,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
-
-<!-- Google Analytics (GA4) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-T3T184TSNN"></script>
+<!-- Google Analytics loads only after cookie consent — see loadGoogleAnalytics() below -->
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-T3T184TSNN');
 </script>
 <style>
   :root{
@@ -152,6 +148,27 @@
   footer{ border-top:1px solid var(--line); padding: 30px 0; margin-top:20px; }
   .foot-row{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; }
   .foot-row .l{ font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--ink-soft); letter-spacing:.03em; }
+  .foot-links{ display:flex; gap:16px; flex-wrap:wrap; }
+  .foot-links a{ font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--ink-soft); text-decoration:none; letter-spacing:.03em; }
+  .foot-links a:hover{ color:var(--gold); }
+
+  .privacy-body p{ font-size:14px; color:var(--ink); margin:0 0 14px; line-height:1.7; }
+  .privacy-body h3{ font-family:'Fraunces', serif; font-size:17px; margin:24px 0 8px; }
+  .privacy-body strong{ color:var(--ink); }
+
+  #consent-banner{
+    position:fixed; left:0; right:0; bottom:0; z-index:100;
+    background:var(--ink); color:var(--cream);
+    padding:18px 24px; display:none;
+    align-items:center; justify-content:center; gap:20px; flex-wrap:wrap;
+    box-shadow: 0 -6px 20px rgba(0,0,0,0.15);
+  }
+  #consent-banner p{ margin:0; font-size:13px; color:#CFC9BC; max-width:560px; }
+  #consent-banner a{ color:var(--gold-soft); text-decoration:underline; }
+  #consent-banner .consent-actions{ display:flex; gap:10px; flex-shrink:0; }
+  #consent-banner .btn{ padding:10px 18px; font-size:11.5px; }
+  #consent-banner .btn.outline{ border-color:rgba(255,255,255,0.3); color:#CFC9BC; }
+  #consent-banner .btn.outline:hover{ border-color:var(--gold-soft); color:var(--gold-soft); }
 
   @media (max-width: 880px){
     nav.links{ display:none; }
@@ -294,15 +311,79 @@
   </div>
 </section>
 
+<div class="divider"></div>
+
+<!-- PRIVACY -->
+<section id="privacy">
+  <div class="wrap" style="max-width:760px;">
+    <div class="eyebrow">Legal</div>
+    <h2>Privacy Policy</h2>
+    <div class="privacy-body" id="privacy-body"></div>
+  </div>
+</section>
+
 <footer>
   <div class="wrap foot-row">
     <div class="l" id="foot-left">© <span id="year"></span> Samyag Synergy</div>
+    <div class="foot-links">
+      <a href="#privacy">Privacy Policy</a>
+      <a href="#" id="manage-cookies-link">Manage Cookie Preferences</a>
+    </div>
     <div class="l">Finance · Information Technology</div>
   </div>
 </footer>
 
+<!-- Cookie consent banner -->
+<div id="consent-banner">
+  <p>We use analytics cookies to understand how visitors use this site. You can accept or decline — declining won't affect how the site works. See our <a href="#privacy">Privacy Policy</a> for details.</p>
+  <div class="consent-actions">
+    <button class="btn outline" id="consent-decline">Decline</button>
+    <button class="btn solid" id="consent-accept">Accept</button>
+  </div>
+</div>
+
 <script>
 document.getElementById('year').textContent = new Date().getFullYear();
+
+/* ---------- COOKIE CONSENT + GOOGLE ANALYTICS ---------- */
+const GA_ID = 'G-T3T184TSNN';
+
+function loadGoogleAnalytics(){
+  if(window.gaLoaded) return;
+  window.gaLoaded = true;
+  const s = document.createElement('script');
+  s.async = true;
+  s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+  document.head.appendChild(s);
+  gtag('js', new Date());
+  gtag('config', GA_ID);
+}
+
+function initConsent(){
+  const banner = document.getElementById('consent-banner');
+  const stored = localStorage.getItem('cookie_consent');
+
+  if(stored === 'accepted'){
+    loadGoogleAnalytics();
+  } else if(stored !== 'declined'){
+    banner.style.display = 'flex';
+  }
+
+  document.getElementById('consent-accept').addEventListener('click', () => {
+    localStorage.setItem('cookie_consent', 'accepted');
+    banner.style.display = 'none';
+    loadGoogleAnalytics();
+  });
+  document.getElementById('consent-decline').addEventListener('click', () => {
+    localStorage.setItem('cookie_consent', 'declined');
+    banner.style.display = 'none';
+  });
+  document.getElementById('manage-cookies-link').addEventListener('click', (e) => {
+    e.preventDefault();
+    banner.style.display = 'flex';
+  });
+}
+initConsent();
 
 async function loadJSON(path){
   const res = await fetch(path, { cache: 'no-store' });
@@ -314,6 +395,21 @@ function el(html){
   const t = document.createElement('template');
   t.innerHTML = html.trim();
   return t.content.firstElementChild;
+}
+
+function extractYouTubeId(url){
+  if(!url) return null;
+  const patterns = [
+    /(?:youtube\.com\/watch\?v=)([\w-]{11})/,
+    /(?:youtu\.be\/)([\w-]{11})/,
+    /(?:youtube\.com\/embed\/)([\w-]{11})/,
+    /(?:youtube\.com\/shorts\/)([\w-]{11})/
+  ];
+  for(const p of patterns){
+    const m = url.match(p);
+    if(m) return m[1];
+  }
+  return null;
 }
 
 /* ---------- SETTINGS: hero, about, contact ---------- */
@@ -386,7 +482,17 @@ function renderTools(items){
     const shown = active === 'All' ? items : items.filter(t => t.category === active);
     if(!shown.length){ grid.innerHTML = '<div class="skeleton" style="color:#9C9788;">No tools in this category yet.</div>'; return; }
     shown.forEach(t => {
-      const videoHtml = t.video ? `<video controls preload="metadata" src="${t.video}"></video>` : '';
+      let videoHtml = '';
+      if(t.video_youtube){
+        const ytId = extractYouTubeId(t.video_youtube);
+        if(ytId){
+          videoHtml = `<div style="position:relative;padding-top:56.25%;margin-top:14px;border-radius:8px;overflow:hidden;border:1px solid rgba(255,255,255,0.14);">
+            <iframe src="https://www.youtube.com/embed/${ytId}" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>`;
+        }
+      } else if(t.video){
+        videoHtml = `<video controls preload="metadata" src="${t.video}"></video>`;
+      }
       const noteHtml = t.note ? `<div class="feedback-note">${t.note}</div>` : '';
       const badgeHtml = t.badge ? `<span class="badge">${t.badge}</span>` : '';
       grid.appendChild(el(`
@@ -502,21 +608,30 @@ function renderBlog(posts){
   }
 }
 
+/* ---------- LEGAL / PRIVACY ---------- */
+function renderLegal(legal){
+  const body = document.getElementById('privacy-body');
+  const html = window.marked ? marked.parse(legal.privacy_policy_body || '') : (legal.privacy_policy_body || '');
+  body.innerHTML = html;
+}
+
 /* ---------- INIT ---------- */
 async function init(){
   try{
-    const [settings, services, tools, resources, blog] = await Promise.all([
+    const [settings, services, tools, resources, blog, legal] = await Promise.all([
       loadJSON('content/settings.json'),
       loadJSON('content/services.json'),
       loadJSON('content/tools.json'),
       loadJSON('content/resources.json'),
       loadJSON('content/blog.json'),
+      loadJSON('content/legal.json'),
     ]);
     renderSettings(settings);
     renderServices(services.items);
     renderTools(tools.items);
     renderResources(resources);
     renderBlog(blog.posts);
+    renderLegal(legal);
   }catch(err){
     console.error('Content failed to load:', err);
   }
