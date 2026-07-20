@@ -1,16 +1,52 @@
 {
   "items": [
-    { "title": "Bookkeeping", "description": "Accurate, up-to-date books so you always know where the business stands." },
-    { "title": "Payroll & CPF", "description": "End-to-end payroll processing and CPF compliance, handled on time, every time." },
-    { "title": "Compilation Reports", "description": "Statutory compilation of unaudited financial statements for ACRA filing." },
-    { "title": "Tax Filing", "description": "Corporate and individual tax filing, planned and prepared with IRAS deadlines in mind." },
-    { "title": "GST", "description": "GST registration, filing, and advisory to keep you compliant and penalty-free." },
-    { "title": "Analysis & Budgeting", "description": "Budgets, forecasts and variance analysis that turn numbers into decisions." },
-    { "title": "IFRS / SFRS Advisory", "description": "Financial reporting and compliance support across IFRS, SFRS and IND AS." },
-    { "title": "Sustainability Reporting", "description": "ESG and sustainability reporting support as disclosure requirements evolve." },
-    { "title": "AI Enablement & Automation", "description": "We help companies adopt AI to simplify workflows, cut manual repetitive work, and increase efficiency across the finance function." },
-    { "title": "Tech Enablement", "description": "Helping finance teams adopt the right tools — from accounting software to internal dashboards." },
-    { "title": "Accounting Advisory", "description": "Process design, internal controls, and general accounting support as you scale." },
-    { "title": "And More", "description": "Every business is different — get in touch about what your finance function needs." }
+    {
+      "title": "Bookkeeping",
+      "description": "Accurate, up-to-date books so you always know where the business stands."
+    },
+    {
+      "title": "Payroll & CPF",
+      "description": "End-to-end payroll processing and CPF compliance, handled on time, every time."
+    },
+    {
+      "title": "Compilation Reports",
+      "description": "Statutory compilation of unaudited financial statements for ACRA filing."
+    },
+    {
+      "title": "Tax Filing",
+      "description": "Corporate and individual tax filing, planned and prepared with IRAS deadlines in mind."
+    },
+    {
+      "title": "GST",
+      "description": "GST registration, filing, and advisory to keep you compliant and penalty-free."
+    },
+    {
+      "title": "Analysis & Budgeting",
+      "description": "Budgets, forecasts and variance analysis that turn numbers into decisions."
+    },
+    {
+      "title": "IFRS / SFRS Advisory",
+      "description": "Financial reporting and compliance support across IFRS, SFRS and IND AS."
+    },
+    {
+      "title": "Sustainability Reporting",
+      "description": "ESG and sustainability reporting support as disclosure requirements evolve."
+    },
+    {
+      "title": "AI Enablement & Automation",
+      "description": "We help companies adopt AI to simplify workflows, cut manual repetitive work, and increase efficiency across the finance function."
+    },
+    {
+      "title": "Tech Enablement",
+      "description": "Helping finance teams adopt the right tools — from accounting software to internal dashboards."
+    },
+    {
+      "title": "Accounting Advisory",
+      "description": "Process design, internal controls, and general accounting support as you scale."
+    },
+    {
+      "title": "And Moree",
+      "description": "Every business is different — get in touch about what your finance function needs."
+    }
   ]
 }
