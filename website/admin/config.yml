@@ -87,7 +87,8 @@ collections:
               - { label: "Description", name: "description", widget: "text" }
               - { label: "Link URL", name: "link", widget: "string" }
               - { label: "Link button label", name: "link_label", widget: "string" }
-              - { label: "Demo video (optional)", name: "video", widget: "file", required: false }
+              - { label: "Demo video — upload (only for small clips; prefer YouTube below for anything longer)", name: "video", widget: "file", required: false }
+              - { label: "Demo video — YouTube URL (preferred)", name: "video_youtube", widget: "string", required: false, hint: "Paste the full YouTube URL, e.g. https://www.youtube.com/watch?v=XXXXXXXXXXX or https://youtu.be/XXXXXXXXXXX" }
               - { label: "Note / disclaimer (optional)", name: "note", widget: "text", required: false }
 
   - name: "resources"
@@ -138,6 +139,19 @@ collections:
               - { label: "Description", name: "description", widget: "string" }
               - { label: "URL", name: "url", widget: "string" }
 
+  - name: "legal"
+    label: "Legal & Privacy"
+    editor:
+      preview: false
+    files:
+      - file: "website/content/legal.json"
+        label: "Privacy Policy & DPO"
+        name: "legal"
+        fields:
+          - { label: "Data Protection Officer — Name", name: "dpo_name", widget: "string" }
+          - { label: "Data Protection Officer — Email", name: "dpo_email", widget: "string" }
+          - { label: "Privacy Policy (Markdown)", name: "privacy_policy_body", widget: "markdown" }
+
   - name: "blog"
     label: "Blog"
     editor:
@@ -157,4 +171,3 @@ collections:
               - { label: "Byline", name: "byline", widget: "string" }
               - { label: "Date", name: "date", widget: "datetime" }
               - { label: "Body (Markdown)", name: "body", widget: "markdown" }
-
