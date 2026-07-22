@@ -19,6 +19,13 @@
       "link_label": "Try the beta",
       "video": "/uploads/samyag-synergy-payroll-demo.mp4",
       "note": "Beta — testing phase only. Not for production use; verify all outputs independently. Feedback is genuinely appreciated."
+    },
+    {
+      "title": "Invoice Generator",
+      "category": "Other",
+      "description": "Quickly create SG-compliant invoices and quotations — no login, no signup, works offline after first use.",
+      "link": "tools/invoice-generator/index.html",
+      "link_label": "Open Tool"
     }
   ]
 }
