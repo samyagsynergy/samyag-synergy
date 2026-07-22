@@ -83,7 +83,7 @@ collections:
               - label: "Category"
                 name: "category"
                 widget: "select"
-                options: ["PDF Utilities", "Payroll", "AI Automation", "Reporting", "Other"]
+                options: ["PDF Utilities", "Payroll", "AI Automation", "Reporting", "IFRS Tool", "Quick SME Tools", "XBRL Tool", "Sustainability Reporting", "Compliance Checklist", "Tax Tools", "Accounting", "Other"]
               - { label: "Badge (e.g. Beta) — leave blank for none", name: "badge", widget: "string", required: false }
               - { label: "Description", name: "description", widget: "text" }
               - { label: "Link URL", name: "link", widget: "string" }
