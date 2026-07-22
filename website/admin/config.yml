@@ -2,6 +2,7 @@ backend:
   name: github
   repo: samyagsynergy/samyag-synergy
   branch: main
+  base_url: https://samyagsynergy-oauthclickdeploy.samyagsynergy.workers.dev
 
 # All uploaded images/files (logo, photo, downloads, videos) live in one media library
 media_folder: "website/uploads"
