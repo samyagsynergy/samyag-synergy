@@ -22,7 +22,7 @@
     },
     {
       "title": "Invoice Generator",
-      "category": "Other",
+      "category": "Quick SME Tools",
       "description": "Quickly create SG-compliant invoices and quotations — no login, no signup, works offline after first use.",
       "link": "tools/invoice-generator/index.html",
       "link_label": "Open Tool"
