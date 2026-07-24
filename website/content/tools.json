@@ -26,6 +26,13 @@
       "description": "Quickly create SG-compliant invoices and quotations — no login, no signup, works offline after first use.",
       "link": "tools/invoice-generator/index.html",
       "link_label": "Open Tool"
+    },
+    {
+      "link": "tools/image-slicer/index.html",
+      "link_label": "Try it here",
+      "title": "Image Slicer",
+      "category": "Quick SME Tools",
+      "description": "Split any image into Instagram-ready post, carousel, or story pieces — no upload, runs in your browser."
     }
   ]
 }
