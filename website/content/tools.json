@@ -33,6 +33,13 @@
       "title": "Image Slicer",
       "category": "Quick SME Tools",
       "description": "Split any image into Instagram-ready post, carousel, or story pieces — no upload, runs in your browser."
+    },
+    {
+      "title": "Image ⇄ PDF Tool",
+      "category": "Quick SME Tools",
+      "description": "Convert images to PDF or extract images from PDF instantly. No uploads required. Works offline. 100% private. Free forever.",
+      "link": "tools /ImageToPDF/index.html",
+      "link_label": "Open Tool"
     }
   ]
 }
