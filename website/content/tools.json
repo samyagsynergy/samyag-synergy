@@ -45,8 +45,8 @@
       "title": "LinkedIn Job Application AutoFill",
       "category": "Other",
       "link": "https://github.com/samyagsynergy/linkedin-job-autofill-extension/releases/tag/v1.0.0",
-      "link_label": "Try It",
-      "description": "# 🚀 Job Application AutoFill\n\nZero-touch autofill for LinkedIn, Workday, Greenhouse, and Lever.\n\n---\n\n## Step 1: Generate Your Profile\n\n[Embed config.html form here]\n\nOptions:\nA) Upload config.html to /static/ folder, embed as iframe\nB) Link out to it: [Open Profile Builder](link)\n\n---\n\n## Step 2: Download the Extension\n\n[⬇️ Download Extension (.zip)](paste your GitHub Release ZIP link here)\n\n---\n\n## Step 3: Install in Chrome\n\n1. Unzip the downloaded file\n2. Open Chrome → chrome://extensions/\n3. Turn on Developer mode (toggle top-right)\n4. Click \"Load unpacked\"\n5. Select the unzipped folder\n[Add 3 screenshots here]"
+      "link_label": "Open Tool",
+      "description": "# 🚀 Job Application AutoFill\n\nZero-touch autofill for LinkedIn, Workday, Greenhouse, and Lever.\n\n---\n\n## Step 1: Generate Your Profile\n\n[Embed config.html form here]\n\nOptions:\nA) Upload config.html to /static/ folder, embed as iframe\nB) Link out to it: [Open Profile Builder](link)\n\n---\n\n## Step 2: Download the Extension\n\n[⬇️ Download Extension (.zip)](paste your GitHub Release ZIP link here)\n\n---\n\n## Step 3: Install in Chrome\n\n1. Unzip the downloaded file\n2. Open Chrome → chrome://extensions/\n3. Turn on Developer mode (toggle top-right)\n4. Click \"Load unpacked\"\n5. Select the unzipped folder\n"
     }
   ]
 }
