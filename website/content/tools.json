@@ -44,9 +44,9 @@
     {
       "title": "LinkedIn Job Application AutoFill",
       "category": "Other",
-      "link": "https://github.com/samyagsynergy/linkedin-job-autofill-extension/releases/tag/v1.0.0",
-      "link_label": "Open Tool",
-      "description": "# 🚀 Job Application AutoFill\n\nZero-touch autofill for LinkedIn, Workday, Greenhouse, and Lever.\n\n---\n\n## Step 1: Generate Your Profile\n\n[Embed config.html form here]\n\nOptions:\nA) Upload config.html to /static/ folder, embed as iframe\nB) Link out to it: [Open Profile Builder](link)\n\n---\n\n## Step 2: Download the Extension\n\n[⬇️ Download Extension (.zip)](paste your GitHub Release ZIP link here)\n\n---\n\n## Step 3: Install in Chrome\n\n1. Unzip the downloaded file\n2. Open Chrome → chrome://extensions/\n3. Turn on Developer mode (toggle top-right)\n4. Click \"Load unpacked\"\n5. Select the unzipped folder\n"
+      "link": "https://github.com/samyagsynergy/linkedin-job-autofill-extension/releases/download/v1.0.0/job-autofill-extension.zip",
+      "link_label": "⬇️ Download Extension",
+      "description": "# Job Application AutoFill\n\nAuto-fill LinkedIn Easy Apply, Workday, Greenhouse, and Lever job applications. One profile setup, then it fills fields as you click through steps.\n\n---\n\n## 1. Download\n\n[⬇️ Download Extension (.zip)](your-github-release-link)\n\nExtract the `.zip` to a folder on your computer.\n\n---\n\n## 2. Build Your Profile\n\n[📝 Open Profile Builder](/assets/config.html)\n\nFill the form → click **Generate** → **Copy** → paste into the `profile.json` file inside the downloaded folder → **Save**.\n\n---\n\n## 3. Install\n\nOpen Chrome → `chrome://extensions/` → turn on **Developer mode** → click **Load unpacked** → select the extension folder.\n\n---\n\n## How to Use\n\n- Navigate to any job application. Fields fill automatically.\n- 🟢 **Green** = from your profile | 🟠 **Orange** = review before submit\n- If a field misses: click the puzzle piece icon → **Fill Current Page**\n\n---\n\n**Privacy:** 100% local. No accounts, no cloud, no data leaves your browser."
     }
   ]
 }
