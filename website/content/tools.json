@@ -47,6 +47,13 @@
       "link": "tools/job-autofill/index.html",
       "link_label": "⬇️ Download Extension",
       "description": "Auto-fill LinkedIn Easy Apply, Workday, Greenhouse, and Lever.\n\nPrivacy:100% local. No accounts, no cloud, no data leaves your browser."
+    },
+    {
+      "title": "PDF Editor (Fill & Sign)",
+      "category": "PDF Utilities",
+      "link": "tools/pdfeditor-fill-sign/index.html",
+      "description": "Fill, sign, and annotate PDFs entirely in your browser — no uploads, no sign-ups, no watermarks.",
+      "link_label": "Open Tool"
     }
   ]
 }
