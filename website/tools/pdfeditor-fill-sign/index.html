@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Samyag Synergy - PDF Editor</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+<style>
+  :root{
+    --ink: #1c1f26;
+    --paper: #fbfaf7;
+    --line: #dcd8cf;
+    --accent: #2f5d50;
+    --accent-soft: #e4ece9;
+    --warn: #9a3324;
+    --muted: #6b6558;
+    --panel: #ffffff;
+    --radius: 8px;
+  }
+  *{box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    margin:0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    color:var(--ink);
+    background:var(--paper);
+    display:flex;
+    flex-direction:column;
+    height:100vh;
+    overflow:hidden;
+  }
+
+  /* ---------- Top bar ---------- */
+  header{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:10px 16px;
+    background:var(--panel);
+    border-bottom:1px solid var(--line);
+    flex-wrap:wrap;
+    z-index:20;
+  }
+  .brand{display:flex; flex-direction:column; margin-right:10px; white-space:nowrap;}
+  .brand strong{font-size:14.5px; font-weight:800; letter-spacing:.2px;}
+  .brand span{font-size:10.5px; color:var(--muted); letter-spacing:.3px; text-transform:uppercase;}
+
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    padding:7px 11px;
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    font-size:13px;
+    font-weight:600;
+    color:var(--ink);
+    cursor:pointer;
+    transition:background .15s, border-color .15s;
+    white-space:nowrap;
+  }
+  .btn:hover{background:#f2f0ea;}
+  .btn.primary{background:var(--accent); border-color:var(--accent); color:#fff;}
+  .btn.primary:hover{background:#264c42;}
+  .btn.active{background:var(--accent-soft); border-color:var(--accent); color:var(--accent);}
+  .btn:disabled{opacity:.4; cursor:not-allowed;}
+  input[type=file]{display:none;}
+  .spacer{flex:1;}
+  .zoom-group{display:flex; align-items:center; gap:4px;}
+  .zoom-group span{font-size:12px; color:var(--muted); min-width:38px; text-align:center;}
+  select#fontSizePicker{
+    padding:6px 8px; border:1px solid var(--line); border-radius:var(--radius); font-size:13px;
+  }
+  .tool-group{
+    display:flex; align-items:center; gap:4px;
+    padding:3px; border:1px solid var(--line); border-radius:10px; background:#f7f5ef;
+  }
+  .tool-group .btn{padding:6px 9px; border:1px solid transparent; background:transparent;}
+  .tool-group .btn:hover{background:#eae7de;}
+  .tool-group .btn.active{background:var(--accent); border-color:var(--accent); color:#fff;}
+
+  /* ---------- Layout ---------- */
+  .layout{flex:1; display:flex; overflow:hidden;}
+  #viewer{
+    flex:1;
+    overflow:auto;
+    padding:24px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:20px;
+    background:
+      repeating-linear-gradient(45deg, #f2efe8 0 1px, transparent 1px 100%),
+      var(--paper);
+  }
+  #dropHint{
+    margin:auto;
+    text-align:center;
+    color:var(--muted);
+    max-width:440px;
+    padding:40px;
+  }
+  #dropHint .icon{font-size:40px; margin-bottom:12px;}
+  #dropHint .btn{margin-top:14px;}
+
+  .page-wrap{
+    position:relative;
+    box-shadow:0 2px 10px rgba(0,0,0,.12);
+    background:#fff;
+  }
+  .page-wrap canvas{display:block;}
+  .overlay{
+    position:absolute; top:0; left:0;
+    cursor:default;
+  }
+  .overlay.add-mode{cursor:crosshair;}
+
+  /* ---------- Shared annotation chrome ---------- */
+  .anno{
+    position:absolute;
+    display:flex;
+    align-items:flex-start;
+  }
+  .drag-handle{
+    width:14px; align-self:stretch;
+    display:flex; align-items:center; justify-content:center;
+    cursor:grab;
+    color:var(--accent);
+    font-size:11px;
+    background:var(--accent-soft);
+    user-select:none;
+    flex-shrink:0;
+  }
+  .drag-handle:active{cursor:grabbing;}
+  .box-controls{
+    position:absolute;
+    top:-26px; left:0;
+    display:none;
+    gap:2px;
+    background:var(--ink);
+    border-radius:5px;
+    padding:2px;
+    z-index:5;
+  }
+  .anno:hover .box-controls, .anno:focus-within .box-controls{display:flex;}
+  .box-controls button{
+    border:none; background:transparent; color:#fff; cursor:pointer;
+    font-size:12px; width:20px; height:20px; border-radius:3px;
+  }
+  .box-controls button:hover{background:rgba(255,255,255,.2);}
+  .box-controls button.del{color:#ff9d90;}
+
+  /* ---------- Text box ---------- */
+  .text-box{
+    min-width:26px; min-height:20px;
+    border:1px dashed var(--accent);
+    background:rgba(255,255,255,.55);
+    padding:2px 4px;
+  }
+  .text-box:hover, .text-box:focus-within{ background:rgba(255,255,255,.9); }
+  .text-content{
+    outline:none;
+    white-space:pre-wrap;
+    min-width:20px;
+    min-height:1em;
+    font-family: Helvetica, Arial, sans-serif;
+  }
+
+  /* ---------- Checkbox ---------- */
+  .checkbox-box{
+    border:1px dashed transparent;
+  }
+  .checkbox-glyph{
+    display:flex; align-items:center; justify-content:center;
+    width:1em; height:1em;
+    border:2px solid var(--ink);
+    background:rgba(255,255,255,.75);
+    cursor:pointer;
+    user-select:none;
+  }
+  .checkbox-glyph.checked::after{
+    content:"✕";
+    font-weight:700;
+    line-height:1;
+  }
+
+  /* ---------- Tick / Cross marks ---------- */
+  .mark-box{ border:1px dashed transparent; }
+  .mark-glyph{
+    font-weight:800;
+    line-height:1;
+    user-select:none;
+    background:rgba(255,255,255,.5);
+  }
+  .mark-glyph.tick{color:#1a7a3c;}
+  .mark-glyph.cross{color:var(--warn);}
+
+  /* ---------- Signature ---------- */
+  .sig-box{ border:1px dashed var(--accent); background:rgba(255,255,255,.4); }
+  .sig-box img{ display:block; pointer-events:none; }
+
+  /* ---------- Signature pad modal ---------- */
+  #sigModalBackdrop{
+    position:fixed; inset:0; background:rgba(20,20,18,.55);
+    display:none; align-items:center; justify-content:center; z-index:100;
+  }
+  #sigModalBackdrop.visible{display:flex;}
+  #sigModal{
+    background:#fff; border-radius:12px; padding:20px; width:min(94vw, 560px);
+    box-shadow:0 12px 40px rgba(0,0,0,.3);
+  }
+  #sigModal h3{margin:0 0 4px 0; font-size:15px;}
+  #sigModal p.hint{margin:0 0 12px 0; font-size:12.5px; color:var(--muted);}
+  #sigCanvas{
+    width:100%; height:180px; border:1.5px dashed var(--line); border-radius:8px;
+    touch-action:none; background:#fff; cursor:crosshair;
+  }
+  #sigModalActions{display:flex; justify-content:flex-end; gap:8px; margin-top:14px;}
+
+  /* ---------- Sidebar (form fields) ---------- */
+  #sidebar{
+    width:300px;
+    min-width:300px;
+    background:var(--panel);
+    border-left:1px solid var(--line);
+    overflow-y:auto;
+    padding:16px;
+    display:none;
+  }
+  #sidebar.visible{display:block;}
+  #sidebar h2{
+    font-size:13px;
+    text-transform:uppercase;
+    letter-spacing:.6px;
+    color:var(--muted);
+    margin:0 0 12px 0;
+  }
+  .field-row{margin-bottom:14px;}
+  .field-row label{
+    display:block;
+    font-size:12px;
+    font-weight:600;
+    color:var(--ink);
+    margin-bottom:4px;
+    word-break:break-word;
+  }
+  .field-row input[type=text], .field-row select{
+    width:100%;
+    padding:7px 8px;
+    border:1px solid var(--line);
+    border-radius:6px;
+    font-size:13px;
+    font-family:inherit;
+  }
+  .field-row input[type=checkbox]{width:16px; height:16px;}
+  .radio-opt{display:flex; align-items:center; gap:6px; font-size:13px; font-weight:400; margin-bottom:4px;}
+  .hint{font-size:12.5px; color:var(--muted); line-height:1.5;}
+  .flatten-row{
+    display:flex; align-items:center; gap:8px;
+    margin-top:6px; padding-top:14px; border-top:1px solid var(--line);
+    font-size:12.5px; color:var(--muted);
+  }
+
+  /* ---------- Privacy banner ---------- */
+  #privacyBanner{
+    background:var(--accent-soft);
+    color:#20463c;
+    font-size:12px;
+    padding:6px 16px;
+    text-align:center;
+    border-bottom:1px solid var(--line);
+  }
+
+  #fileNameTag{
+    font-size:12px;
+    color:var(--muted);
+    max-width:200px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+</style>
+</head>
+<body>
+
+<div id="privacyBanner">🔒 Samyag Synergy — PDF Editor runs entirely in your browser. Your PDF is never uploaded — nothing leaves this tab.</div>
+
+<header>
+  <div class="brand">
+    <strong>Samyag Synergy</strong>
+    <span>PDF Editor</span>
+  </div>
+
+  <label class="btn primary" for="fileInput">📂 Open PDF</label>
+  <input type="file" id="fileInput" accept="application/pdf">
+  <span id="fileNameTag"></span>
+
+  <div class="tool-group" id="toolGroup">
+    <button class="btn" data-tool="text" title="Add text">✏️ Text</button>
+    <button class="btn" data-tool="checkbox" title="Add checkbox">☐ Check</button>
+    <button class="btn" data-tool="tick" title="Add tick mark">✓ Tick</button>
+    <button class="btn" data-tool="cross" title="Add cross mark">✗ Cross</button>
+    <button class="btn" data-tool="date" title="Add today's date">📅 Date</button>
+    <button class="btn" id="signatureBtn" title="Draw a signature">✍️ Sign</button>
+  </div>
+
+  <select id="fontSizePicker" disabled title="Size for new text / marks">
+    <option value="10">10px</option>
+    <option value="12" selected>12px</option>
+    <option value="14">14px</option>
+    <option value="18">18px</option>
+    <option value="24">24px</option>
+  </select>
+
+  <div class="zoom-group">
+    <button class="btn" id="zoomOutBtn" disabled>−</button>
+    <span id="zoomLabel">100%</span>
+    <button class="btn" id="zoomInBtn" disabled>+</button>
+  </div>
+
+  <div class="spacer"></div>
+  <button class="btn primary" id="saveBtn" disabled>⬇️ Save &amp; Download PDF</button>
+</header>
+
+<div class="layout">
+  <div id="viewer">
+    <div id="dropHint">
+      <div class="icon">📄</div>
+      <div><strong>Open a PDF to get started.</strong><br>
+      If it has fillable fields, a form will appear on the right.<br>
+      If not, use the toolbar to click-and-place text, checkboxes, ticks, crosses, a date, or your signature.</div>
+      <label class="btn primary" for="fileInput">📂 Choose PDF file</label>
+    </div>
+  </div>
+  <div id="sidebar">
+    <h2>Form fields</h2>
+    <div id="fieldsContainer"></div>
+    <div class="flatten-row">
+      <input type="checkbox" id="flattenCheckbox">
+      <label for="flattenCheckbox">Flatten form when saving (locks values so they can't be edited further)</label>
+    </div>
+  </div>
+</div>
+
+<!-- Signature pad modal -->
+<div id="sigModalBackdrop">
+  <div id="sigModal">
+    <h3>Draw your signature</h3>
+    <p class="hint">Use your mouse or finger. It'll be placed on the page — drag it into position after.</p>
+    <canvas id="sigCanvas"></canvas>
+    <div id="sigModalActions">
+      <button class="btn" id="sigClearBtn">Clear</button>
+      <button class="btn" id="sigCancelBtn">Cancel</button>
+      <button class="btn primary" id="sigUseBtn">Use this signature</button>
+    </div>
+  </div>
+</div>
+
+<script>
+pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+
+const fileInput = document.getElementById('fileInput');
+const viewer = document.getElementById('viewer');
+const dropHint = document.getElementById('dropHint');
+const sidebar = document.getElementById('sidebar');
+const fieldsContainer = document.getElementById('fieldsContainer');
+const toolGroup = document.getElementById('toolGroup');
+const signatureBtn = document.getElementById('signatureBtn');
+const saveBtn = document.getElementById('saveBtn');
+const zoomInBtn = document.getElementById('zoomInBtn');
+const zoomOutBtn = document.getElementById('zoomOutBtn');
+const zoomLabel = document.getElementById('zoomLabel');
+const fontSizePicker = document.getElementById('fontSizePicker');
+const flattenCheckbox = document.getElementById('flattenCheckbox');
+const fileNameTag = document.getElementById('fileNameTag');
+
+const sigModalBackdrop = document.getElementById('sigModalBackdrop');
+const sigCanvas = document.getElementById('sigCanvas');
+const sigClearBtn = document.getElementById('sigClearBtn');
+const sigCancelBtn = document.getElementById('sigCancelBtn');
+const sigUseBtn = document.getElementById('sigUseBtn');
+
+let originalFile = null;
+let pdfDocProxy = null;
+let pages = [];            // {pageIndex, scale, overlay, pageHeightPts, pageWidthPts}
+let annotations = [];      // unified: {type, pageIndex, xPdf, yPdf, el, ...type fields}
+let formFieldsInfo = [];   // {name, type, inputEl}
+let currentTool = null;    // 'text' | 'checkbox' | 'tick' | 'cross' | 'date' | null
+let pendingSignatureDataUrl = null; // set after confirming the sig pad, consumed on next click
+let zoomFactor = 1;
+
+/* ============ File loading ============ */
+
+fileInput.addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (file) loadPdf(file);
+});
+viewer.addEventListener('dragover', (e) => e.preventDefault());
+viewer.addEventListener('drop', (e) => {
+  e.preventDefault();
+  const file = e.dataTransfer.files[0];
+  if (file && file.type === 'application/pdf') loadPdf(file);
+});
+
+async function loadPdf(file) {
+  originalFile = file;
+  fileNameTag.textContent = file.name;
+  dropHint.style.display = 'none';
+  annotations = [];
+  formFieldsInfo = [];
+  zoomFactor = 1;
+  zoomLabel.textContent = '100%';
+  setTool(null);
+
+  const arrayBuffer = await file.arrayBuffer();
+  try {
+    pdfDocProxy = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+  } catch (err) {
+    alert('Could not read this PDF. It may be corrupted or password-protected.\n\n' + err.message);
+    return;
+  }
+
+  await renderAllPages();
+  await detectFormFields();
+
+  toolGroup.querySelectorAll('.btn').forEach(b => b.disabled = false);
+  signatureBtn.disabled = false;
+  saveBtn.disabled = false;
+  zoomInBtn.disabled = false;
+  zoomOutBtn.disabled = false;
+  fontSizePicker.disabled = false;
+}
+
+/* ============ Rendering ============ */
+
+async function renderAllPages() {
+  viewer.querySelectorAll('.page-wrap').forEach(el => el.remove());
+  pages = [];
+
+  const numPages = pdfDocProxy.numPages;
+  const containerWidth = Math.min(viewer.clientWidth - 60, 900);
+
+  for (let i = 1; i <= numPages; i++) {
+    const page = await pdfDocProxy.getPage(i);
+    const baseViewport = page.getViewport({ scale: 1 });
+    const fitScale = containerWidth / baseViewport.width;
+    const scale = fitScale * zoomFactor;
+    const viewport = page.getViewport({ scale });
+
+    const pageWrap = document.createElement('div');
+    pageWrap.className = 'page-wrap';
+    pageWrap.style.width = viewport.width + 'px';
+    pageWrap.style.height = viewport.height + 'px';
+
+    const canvas = document.createElement('canvas');
+    canvas.width = viewport.width;
+    canvas.height = viewport.height;
+    const ctx = canvas.getContext('2d');
+    await page.render({ canvasContext: ctx, viewport }).promise;
+
+    const overlay = document.createElement('div');
+    overlay.className = 'overlay' + (currentTool ? ' add-mode' : '');
+    overlay.style.width = viewport.width + 'px';
+    overlay.style.height = viewport.height + 'px';
+    overlay.dataset.pageIndex = i - 1;
+    overlay.addEventListener('click', onOverlayClick);
+
+    pageWrap.appendChild(canvas);
+    pageWrap.appendChild(overlay);
+    viewer.appendChild(pageWrap);
+
+    pages.push({
+      pageIndex: i - 1,
+      scale,
+      overlay,
+      pageHeightPts: baseViewport.height,
+      pageWidthPts: baseViewport.width
+    });
+  }
+
+  redrawAnnotations();
+}
+
+function redrawAnnotations() {
+  annotations.forEach(a => {
+    const pageInfo = pages[a.pageIndex];
+    if (!pageInfo) return;
+    positionAnnotation(a, pageInfo);
+    pageInfo.overlay.appendChild(a.el);
+  });
+}
+
+function positionAnnotation(a, pageInfo) {
+  const xPx = a.xPdf * pageInfo.scale;
+  const yPx = a.yPdf * pageInfo.scale;
+  a.el.style.left = xPx + 'px';
+  a.el.style.top = yPx + 'px';
+  if (a.type === 'text') {
+    a.el.style.fontSize = (a.fontSize * pageInfo.scale) + 'px';
+  } else if (a.type === 'checkbox') {
+    a.el.style.fontSize = (a.sizePdf * pageInfo.scale) + 'px';
+  } else if (a.type === 'mark') {
+    a.el.style.fontSize = (a.sizePdf * pageInfo.scale) + 'px';
+  } else if (a.type === 'signature') {
+    const img = a.el.querySelector('img');
+    img.style.width = (a.widthPdf * pageInfo.scale) + 'px';
+    img.style.height = (a.heightPdf * pageInfo.scale) + 'px';
+  }
+}
+
+/* ============ Tool selection ============ */
+
+toolGroup.querySelectorAll('.btn[data-tool]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const tool = btn.dataset.tool;
+    setTool(currentTool === tool ? null : tool);
+  });
+});
+
+function setTool(tool) {
+  currentTool = tool;
+  toolGroup.querySelectorAll('.btn[data-tool]').forEach(b => {
+    b.classList.toggle('active', b.dataset.tool === tool);
+  });
+  signatureBtn.classList.toggle('active', tool === 'signature-place');
+  if (tool !== 'signature-place') pendingSignatureDataUrl = null;
+  document.querySelectorAll('.overlay').forEach(o => o.classList.toggle('add-mode', !!currentTool));
+}
+
+/* ============ Placing annotations ============ */
+
+function onOverlayClick(e) {
+  if (!currentTool) return;
+  if (e.target !== e.currentTarget) return; // ignore clicks landing on an existing annotation
+  const rect = e.currentTarget.getBoundingClientRect();
+  const xPx = e.clientX - rect.left;
+  const yPx = e.clientY - rect.top;
+  const pageIndex = parseInt(e.currentTarget.dataset.pageIndex, 10);
+
+  if (currentTool === 'text') {
+    createTextAnnotation(pageIndex, xPx, yPx, '');
+  } else if (currentTool === 'checkbox') {
+    createCheckboxAnnotation(pageIndex, xPx, yPx);
+  } else if (currentTool === 'tick') {
+    createMarkAnnotation(pageIndex, xPx, yPx, 'tick');
+  } else if (currentTool === 'cross') {
+    createMarkAnnotation(pageIndex, xPx, yPx, 'cross');
+  } else if (currentTool === 'date') {
+    const dateStr = formatToday();
+    createTextAnnotation(pageIndex, xPx, yPx, dateStr);
+  } else if (currentTool === 'signature-place' && pendingSignatureDataUrl) {
+    placeSignature(pendingSignatureDataUrl, pageIndex, xPx, yPx);
+    pendingSignatureDataUrl = null;
+    setTool(null);
+  }
+}
+
+function formatToday() {
+  const d = new Date();
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return String(d.getDate()).padStart(2,'0') + ' ' + months[d.getMonth()] + ' ' + d.getFullYear();
+}
+
+/* ---- Shared: annotation shell (drag handle + delete control) ---- */
+
+function buildAnnoShell(className) {
+  const el = document.createElement('div');
+  el.className = 'anno ' + className;
+
+  const handle = document.createElement('div');
+  handle.className = 'drag-handle';
+  handle.textContent = '⠿';
+
+  const controls = document.createElement('div');
+  controls.className = 'box-controls';
+  const del = document.createElement('button');
+  del.textContent = '✕';
+  del.className = 'del';
+  del.title = 'Delete';
+  controls.appendChild(del);
+
+  el.appendChild(handle);
+  el.appendChild(controls);
+
+  return { el, handle, controls, del };
+}
+
+/* ---- Text (and date) ---- */
+
+function createTextAnnotation(pageIndex, xPx, yPx, text) {
+  const pageInfo = pages[pageIndex];
+  const fontSizeCss = parseInt(fontSizePicker.value, 10);
+  const fontSizePdf = fontSizeCss / pageInfo.scale;
+
+  const shell = buildAnnoShell('text-box');
+  const content = document.createElement('div');
+  content.className = 'text-content';
+  content.contentEditable = 'true';
+  content.textContent = text;
+
+  const smaller = document.createElement('button');
+  smaller.textContent = 'A−'; smaller.title = 'Smaller';
+  const bigger = document.createElement('button');
+  bigger.textContent = 'A+'; bigger.title = 'Bigger';
+  shell.controls.insertBefore(smaller, shell.del);
+  shell.controls.insertBefore(bigger, shell.del);
+
+  shell.el.style.left = xPx + 'px';
+  shell.el.style.top = yPx + 'px';
+  shell.el.insertBefore(content, shell.controls);
+  pageInfo.overlay.appendChild(shell.el);
+
+  const record = { type: 'text', pageIndex, xPdf: xPx / pageInfo.scale, yPdf: yPx / pageInfo.scale, fontSize: fontSizePdf, el: shell.el };
+  annotations.push(record);
+
+  shell.del.addEventListener('click', (ev) => { ev.stopPropagation(); removeAnnotation(record); });
+  smaller.addEventListener('click', (ev) => {
+    ev.stopPropagation();
+    record.fontSize = Math.max(4, record.fontSize - 1);
+    shell.el.style.fontSize = (record.fontSize * pages[record.pageIndex].scale) + 'px';
+  });
+  bigger.addEventListener('click', (ev) => {
+    ev.stopPropagation();
+    record.fontSize += 1;
+    shell.el.style.fontSize = (record.fontSize * pages[record.pageIndex].scale) + 'px';
+  });
+
+  makeDraggable(shell.el, shell.handle, record);
+  content.focus();
+}
+
+/* ---- Checkbox ---- */
+
+function createCheckboxAnnotation(pageIndex, xPx, yPx) {
+  const pageInfo = pages[pageIndex];
+  const fontSizeCss = parseInt(fontSizePicker.value, 10) + 6; // a touch bigger than text by default
+  const sizePdf = fontSizeCss / pageInfo.scale;
+
+  const shell = buildAnnoShell('checkbox-box');
+  const glyph = document.createElement('div');
+  glyph.className = 'checkbox-glyph';
+  shell.el.style.fontSize = fontSizeCss + 'px';
+
+  shell.el.style.left = xPx + 'px';
+  shell.el.style.top = yPx + 'px';
+  shell.el.insertBefore(glyph, shell.controls);
+  pageInfo.overlay.appendChild(shell.el);
+
+  const record = { type: 'checkbox', pageIndex, xPdf: xPx / pageInfo.scale, yPdf: yPx / pageInfo.scale, sizePdf, checked: false, el: shell.el };
+  annotations.push(record);
+
+  glyph.addEventListener('click', (ev) => {
+    ev.stopPropagation();
+    record.checked = !record.checked;
+    glyph.classList.toggle('checked', record.checked);
+  });
+  shell.del.addEventListener('click', (ev) => { ev.stopPropagation(); removeAnnotation(record); });
+
+  makeDraggable(shell.el, shell.handle, record);
+}
+
+/* ---- Tick / Cross marks ---- */
+
+function createMarkAnnotation(pageIndex, xPx, yPx, markType) {
+  const pageInfo = pages[pageIndex];
+  const fontSizeCss = parseInt(fontSizePicker.value, 10) + 8;
+  const sizePdf = fontSizeCss / pageInfo.scale;
+
+  const shell = buildAnnoShell('mark-box');
+  const glyph = document.createElement('div');
+  glyph.className = 'mark-glyph ' + markType;
+  glyph.textContent = markType === 'tick' ? '✓' : '✗';
+  shell.el.style.fontSize = fontSizeCss + 'px';
+
+  shell.el.style.left = xPx + 'px';
+  shell.el.style.top = yPx + 'px';
+  shell.el.insertBefore(glyph, shell.controls);
+  pageInfo.overlay.appendChild(shell.el);
+
+  const record = { type: 'mark', markType, pageIndex, xPdf: xPx / pageInfo.scale, yPdf: yPx / pageInfo.scale, sizePdf, el: shell.el };
+  annotations.push(record);
+
+  shell.del.addEventListener('click', (ev) => { ev.stopPropagation(); removeAnnotation(record); });
+  makeDraggable(shell.el, shell.handle, record);
+}
+
+/* ---- Signature ---- */
+
+signatureBtn.addEventListener('click', () => {
+  if (!originalFile) return;
+  openSignaturePad();
+});
+
+let sigDrawing = false, sigCtx = null;
+
+function openSignaturePad() {
+  sigModalBackdrop.classList.add('visible');
+  // size canvas to its displayed CSS size for crisp drawing
+  requestAnimationFrame(() => {
+    const rect = sigCanvas.getBoundingClientRect();
+    sigCanvas.width = rect.width * 2;
+    sigCanvas.height = rect.height * 2;
+    sigCtx = sigCanvas.getContext('2d');
+    sigCtx.scale(2, 2);
+    sigCtx.lineWidth = 2.2;
+    sigCtx.lineCap = 'round';
+    sigCtx.strokeStyle = '#111';
+    sigCtx.clearRect(0, 0, sigCanvas.width, sigCanvas.height);
+  });
+}
+
+function sigPointerPos(e) {
+  const rect = sigCanvas.getBoundingClientRect();
+  const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+  const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+  return { x: clientX - rect.left, y: clientY - rect.top };
+}
+function sigStart(e) {
+  e.preventDefault();
+  sigDrawing = true;
+  const p = sigPointerPos(e);
+  sigCtx.beginPath();
+  sigCtx.moveTo(p.x, p.y);
+}
+function sigMove(e) {
+  if (!sigDrawing) return;
+  e.preventDefault();
+  const p = sigPointerPos(e);
+  sigCtx.lineTo(p.x, p.y);
+  sigCtx.stroke();
+}
+function sigEnd() { sigDrawing = false; }
+
+sigCanvas.addEventListener('mousedown', sigStart);
+sigCanvas.addEventListener('mousemove', sigMove);
+window.addEventListener('mouseup', sigEnd);
+sigCanvas.addEventListener('touchstart', sigStart, { passive: false });
+sigCanvas.addEventListener('touchmove', sigMove, { passive: false });
+sigCanvas.addEventListener('touchend', sigEnd);
+
+sigClearBtn.addEventListener('click', () => {
+  sigCtx.clearRect(0, 0, sigCanvas.width, sigCanvas.height);
+});
+sigCancelBtn.addEventListener('click', () => {
+  sigModalBackdrop.classList.remove('visible');
+});
+sigUseBtn.addEventListener('click', () => {
+  pendingSignatureDataUrl = sigCanvas.toDataURL('image/png');
+  sigModalBackdrop.classList.remove('visible');
+  // Arm click-to-place mode, same as the other tools, so the signature lands exactly where you click.
+  currentTool = 'signature-place';
+  document.querySelectorAll('.overlay').forEach(o => o.classList.add('add-mode'));
+  signatureBtn.classList.add('active');
+});
+
+function placeSignature(dataUrl, pageIndex, xPx, yPx) {
+  const pageInfo = pages[pageIndex];
+  const widthPx = 160;
+  const heightPx = 60;
+  // center the signature on the click point rather than starting its corner there
+  const leftPx = Math.max(0, xPx - widthPx / 2);
+  const topPx = Math.max(0, yPx - heightPx / 2);
+
+  const shell = buildAnnoShell('sig-box');
+  const img = document.createElement('img');
+  img.src = dataUrl;
+  img.style.width = widthPx + 'px';
+  img.style.height = heightPx + 'px';
+  shell.el.style.left = leftPx + 'px';
+  shell.el.style.top = topPx + 'px';
+  shell.el.insertBefore(img, shell.controls);
+  pageInfo.overlay.appendChild(shell.el);
+
+  const record = {
+    type: 'signature',
+    pageIndex,
+    xPdf: leftPx / pageInfo.scale,
+    yPdf: topPx / pageInfo.scale,
+    widthPdf: widthPx / pageInfo.scale,
+    heightPdf: heightPx / pageInfo.scale,
+    dataUrl,
+    el: shell.el
+  };
+  annotations.push(record);
+
+  shell.del.addEventListener('click', (ev) => { ev.stopPropagation(); removeAnnotation(record); });
+  makeDraggable(shell.el, shell.handle, record);
+}
+
+/* ---- Shared drag + remove ---- */
+
+function makeDraggable(el, handle, record) {
+  let dragging = false, startClientX, startClientY, startLeft, startTop;
+
+  handle.addEventListener('mousedown', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    dragging = true;
+    startClientX = e.clientX;
+    startClientY = e.clientY;
+    startLeft = parseFloat(el.style.left) || 0;
+    startTop = parseFloat(el.style.top) || 0;
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseup', onUp);
+  });
+
+  function onMove(e) {
+    if (!dragging) return;
+    const dx = e.clientX - startClientX;
+    const dy = e.clientY - startClientY;
+    const newLeft = Math.max(0, startLeft + dx);
+    const newTop = Math.max(0, startTop + dy);
+    el.style.left = newLeft + 'px';
+    el.style.top = newTop + 'px';
+    const info = pages[record.pageIndex];
+    record.xPdf = newLeft / info.scale;
+    record.yPdf = newTop / info.scale;
+  }
+  function onUp() {
+    dragging = false;
+    document.removeEventListener('mousemove', onMove);
+    document.removeEventListener('mouseup', onUp);
+  }
+}
+
+function removeAnnotation(record) {
+  record.el.remove();
+  annotations = annotations.filter(a => a !== record);
+}
+
+/* ============ Zoom ============ */
+
+zoomInBtn.addEventListener('click', async () => {
+  zoomFactor = Math.min(2.5, zoomFactor + 0.15);
+  zoomLabel.textContent = Math.round(zoomFactor * 100) + '%';
+  await renderAllPages();
+});
+zoomOutBtn.addEventListener('click', async () => {
+  zoomFactor = Math.max(0.4, zoomFactor - 0.15);
+  zoomLabel.textContent = Math.round(zoomFactor * 100) + '%';
+  await renderAllPages();
+});
+
+/* ============ AcroForm field detection ============ */
+
+async function detectFormFields() {
+  fieldsContainer.innerHTML = '';
+  formFieldsInfo = [];
+  sidebar.classList.remove('visible');
+
+  let arrayBuffer;
+  try {
+    arrayBuffer = await originalFile.arrayBuffer();
+  } catch (err) {
+    return;
+  }
+
+  try {
+    const pdfDoc = await PDFLib.PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
+    const form = pdfDoc.getForm();
+    const fields = form.getFields();
+
+    if (fields.length === 0) {
+      showNoFieldsHint();
+      return;
+    }
+
+    fields.forEach((field, idx) => {
+      const name = field.getName();
+      const wrap = document.createElement('div');
+      wrap.className = 'field-row';
+      const label = document.createElement('label');
+      label.textContent = name || ('Field ' + (idx + 1));
+      wrap.appendChild(label);
+
+      let type = null, inputEl = null;
+      const ctorName = field.constructor && field.constructor.name;
+
+      if (ctorName === 'PDFTextField') {
+        type = 'text';
+        inputEl = document.createElement('input');
+        inputEl.type = 'text';
+        try { inputEl.value = field.getText() || ''; } catch (e) {}
+      } else if (ctorName === 'PDFCheckBox') {
+        type = 'checkbox';
+        inputEl = document.createElement('input');
+        inputEl.type = 'checkbox';
+        try { inputEl.checked = field.isChecked(); } catch (e) {}
+      } else if (ctorName === 'PDFDropdown' || ctorName === 'PDFOptionList') {
+        type = 'dropdown';
+        inputEl = document.createElement('select');
+        try {
+          field.getOptions().forEach(opt => {
+            const o = document.createElement('option');
+            o.value = opt; o.textContent = opt;
+            inputEl.appendChild(o);
+          });
+          const sel = field.getSelected();
+          if (sel && sel.length) inputEl.value = sel[0];
+        } catch (e) {}
+      } else if (ctorName === 'PDFRadioGroup') {
+        type = 'radio';
+        inputEl = document.createElement('div');
+        try {
+          const options = field.getOptions();
+          let selected = null;
+          try { selected = field.getSelected(); } catch (e) {}
+          options.forEach(opt => {
+            const rlabel = document.createElement('label');
+            rlabel.className = 'radio-opt';
+            const r = document.createElement('input');
+            r.type = 'radio';
+            r.name = 'radio_group_' + idx;
+            r.value = opt;
+            if (selected === opt) r.checked = true;
+            rlabel.appendChild(r);
+            rlabel.appendChild(document.createTextNode(' ' + opt));
+            inputEl.appendChild(rlabel);
+          });
+        } catch (e) {}
+      } else {
+        return; // buttons, signatures, unsupported widget types
+      }
+
+      wrap.appendChild(inputEl);
+      fieldsContainer.appendChild(wrap);
+      formFieldsInfo.push({ name, type, inputEl });
+    });
+
+    if (formFieldsInfo.length === 0) {
+      showNoFieldsHint();
+    } else {
+      sidebar.classList.add('visible');
+    }
+  } catch (err) {
+    console.warn('Form field detection failed:', err);
+    showNoFieldsHint();
+  }
+}
+
+function showNoFieldsHint() {
+  fieldsContainer.innerHTML = '<p class="hint">No fillable form fields were detected in this PDF. Use the toolbar above: click <strong>Text</strong>, <strong>Check</strong>, <strong>Tick</strong>, <strong>Cross</strong> or <strong>Date</strong>, then click anywhere on the page to place it — or <strong>Sign</strong> to draw a signature.</p>';
+  sidebar.classList.add('visible');
+  if (!currentTool) setTool('text');
+}
+
+/* ============ Save ============ */
+
+saveBtn.addEventListener('click', async () => {
+  if (!originalFile) return;
+  saveBtn.disabled = true;
+  const originalLabel = saveBtn.textContent;
+  saveBtn.textContent = '⏳ Preparing…';
+
+  try {
+    const arrayBuffer = await originalFile.arrayBuffer();
+    const pdfDoc = await PDFLib.PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
+    const pdfPages = pdfDoc.getPages();
+    const helv = await pdfDoc.embedFont(PDFLib.StandardFonts.Helvetica);
+
+    // 1. Form field values
+    if (formFieldsInfo.length > 0) {
+      const form = pdfDoc.getForm();
+      for (const f of formFieldsInfo) {
+        try {
+          if (f.type === 'text') {
+            form.getTextField(f.name).setText(f.inputEl.value || '');
+          } else if (f.type === 'checkbox') {
+            const cb = form.getCheckBox(f.name);
+            if (f.inputEl.checked) cb.check(); else cb.uncheck();
+          } else if (f.type === 'dropdown') {
+            if (f.inputEl.value) form.getDropdown(f.name).select(f.inputEl.value);
+          } else if (f.type === 'radio') {
+            const checked = f.inputEl.querySelector('input[type=radio]:checked');
+            if (checked) form.getRadioGroup(f.name).select(checked.value);
+          }
+        } catch (err) {
+          console.warn('Could not set field', f.name, err);
+        }
+      }
+      if (flattenCheckbox.checked) {
+        try { form.flatten(); } catch (err) { console.warn('Flatten failed', err); }
+      }
+    }
+
+    // 2. Free-form annotations
+    for (const a of annotations) {
+      const page = pdfPages[a.pageIndex];
+      if (!page) continue;
+      const { height: pageHeightPts } = page.getSize();
+
+      if (a.type === 'text') {
+        const contentEl = a.el.querySelector('.text-content');
+        const text = contentEl ? contentEl.innerText : '';
+        if (!text.trim()) continue;
+        const fontSize = a.fontSize;
+        const lineHeight = fontSize * 1.25;
+        text.split('\n').forEach((line, idx) => {
+          const yTopPts = a.yPdf + idx * lineHeight;
+          const yPdf = pageHeightPts - yTopPts - fontSize;
+          try {
+            page.drawText(line, { x: a.xPdf, y: yPdf, size: fontSize, font: helv, color: PDFLib.rgb(0, 0, 0) });
+          } catch (err) { console.warn('drawText failed:', line, err); }
+        });
+
+      } else if (a.type === 'checkbox') {
+        const size = a.sizePdf * 0.85;
+        const x = a.xPdf, yTop = a.yPdf;
+        const yBottom = pageHeightPts - yTop - size;
+        try {
+          page.drawRectangle({
+            x, y: yBottom, width: size, height: size,
+            borderColor: PDFLib.rgb(0, 0, 0), borderWidth: 1.3,
+          });
+          if (a.checked) {
+            page.drawLine({ start: { x: x + size * 0.15, y: yBottom + size * 0.15 }, end: { x: x + size * 0.85, y: yBottom + size * 0.85 }, thickness: 1.6, color: PDFLib.rgb(0, 0, 0) });
+            page.drawLine({ start: { x: x + size * 0.85, y: yBottom + size * 0.15 }, end: { x: x + size * 0.15, y: yBottom + size * 0.85 }, thickness: 1.6, color: PDFLib.rgb(0, 0, 0) });
+          }
+        } catch (err) { console.warn('checkbox draw failed', err); }
+
+      } else if (a.type === 'mark') {
+        const size = a.sizePdf * 0.8;
+        const x = a.xPdf, yTop = a.yPdf;
+        const yBottom = pageHeightPts - yTop - size;
+        const color = a.markType === 'tick' ? PDFLib.rgb(0.08, 0.45, 0.2) : PDFLib.rgb(0.55, 0.15, 0.1);
+        try {
+          if (a.markType === 'tick') {
+            page.drawLine({ start: { x: x + size * 0.05, y: yBottom + size * 0.45 }, end: { x: x + size * 0.4, y: yBottom + size * 0.1 }, thickness: 2, color });
+            page.drawLine({ start: { x: x + size * 0.4, y: yBottom + size * 0.1 }, end: { x: x + size * 0.95, y: yBottom + size * 0.85 }, thickness: 2, color });
+          } else {
+            page.drawLine({ start: { x: x, y: yBottom }, end: { x: x + size, y: yBottom + size }, thickness: 2, color });
+            page.drawLine({ start: { x: x + size, y: yBottom }, end: { x: x, y: yBottom + size }, thickness: 2, color });
+          }
+        } catch (err) { console.warn('mark draw failed', err); }
+
+      } else if (a.type === 'signature') {
+        try {
+          const pngBytes = dataUrlToUint8Array(a.dataUrl);
+          const pngImage = await pdfDoc.embedPng(pngBytes);
+          const yTop = a.yPdf;
+          const yBottom = pageHeightPts - yTop - a.heightPdf;
+          page.drawImage(pngImage, { x: a.xPdf, y: yBottom, width: a.widthPdf, height: a.heightPdf });
+        } catch (err) { console.warn('signature embed failed', err); }
+      }
+    }
+
+    const outBytes = await pdfDoc.save();
+    const blob = new Blob([outBytes], { type: 'application/pdf' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    const baseName = (originalFile.name || 'document').replace(/\.pdf$/i, '');
+    a.href = url;
+    a.download = baseName + '-filled.pdf';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 5000);
+  } catch (err) {
+    console.error(err);
+    alert('Something went wrong while saving:\n\n' + err.message);
+  } finally {
+    saveBtn.disabled = false;
+    saveBtn.textContent = originalLabel;
+  }
+});
+
+function dataUrlToUint8Array(dataUrl) {
+  const base64 = dataUrl.split(',')[1];
+  const binary = atob(base64);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+  return bytes;
+}
+
+window.addEventListener('resize', () => {
+  if (pdfDocProxy) renderAllPages();
+});
+</script>
+</body>
+</html>
