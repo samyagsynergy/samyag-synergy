@@ -1,0 +1,1587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <title>Samyag Synergy · Parent–Child Ritual</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+        }
+
+        :root {
+            --primary: #7c9a8e;      /* Sage green header */
+            --primary-dark: #5a7d6e;  /* Deeper sage for buttons */
+            --primary-darker: #4a6b5e; /* Darker sage for hover */
+            --secondary: #e8b84c;    /* Warm gold accents/stars */
+            --bg-light: #fcf8f0;     /* Soft cream background */
+            --card-bg: #ffffff;
+            --text-dark: #3a3a3a;    /* Dark warm gray */
+            --text-muted: #6a8a7a;   /* Muted sage */
+            --shadow: 0 8px 24px rgba(0,0,0,0.06);
+            --radius: 24px;
+        }
+
+        body {
+            background: var(--bg-light);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 12px;
+        }
+
+        .app-container {
+            max-width: 430px;
+            width: 100%;
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            position: relative;
+            padding-bottom: 80px;
+        }
+
+        .app-header {
+            padding: 20px 20px 16px;
+            background: var(--primary);
+            color: white;
+            border-bottom: 3px solid var(--secondary);
+            text-align: center;
+        }
+        .logo-main {
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: white;
+        }
+        .logo-main span { color: var(--secondary); }
+        .logo-sub {
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            opacity: 0.9;
+            color: #e8f0e8;
+            margin-top: 2px;
+        }
+        .logo-sub i {
+            color: var(--secondary);
+            margin-right: 4px;
+        }
+        .tagline {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: white;
+            margin-top: 6px;
+            border-top: 1px solid rgba(255,255,255,0.15);
+            padding-top: 8px;
+            display: inline-block;
+            font-style: italic;
+        }
+
+        .kid-selector {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 16px;
+            background: white;
+            border-bottom: 1px solid #eee;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+        .kid-selector::-webkit-scrollbar { display: none; }
+
+        .kid-avatar {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #f0edf0;
+            padding: 6px 14px 6px 10px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            border: 2px solid transparent;
+            flex-shrink: 0;
+            transition: 0.15s;
+        }
+        .kid-avatar.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--secondary);
+        }
+        .kid-avatar .emoji { font-size: 1.4rem; }
+        .kid-avatar .name { max-width: 70px; overflow: hidden; text-overflow: ellipsis; }
+        .kid-avatar .edit-btn {
+            background: none;
+            border: none;
+            color: inherit;
+            font-size: 0.7rem;
+            cursor: pointer;
+            opacity: 0.7;
+            padding: 0 2px;
+        }
+        .kid-avatar .edit-btn:hover { opacity: 1; }
+
+        .add-kid-btn {
+            background: transparent;
+            border: 2px dashed #b0b8c5;
+            border-radius: 40px;
+            padding: 6px 14px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .tab-content {
+            padding: 16px 18px 10px;
+            display: none;
+            animation: fade 0.2s ease;
+        }
+        .tab-content.active { display: block; }
+        @keyframes fade { from { opacity: 0.3; } to { opacity: 1; } }
+
+        .daily-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px;
+        }
+        .daily-title i {
+            color: var(--secondary);
+        }
+        .daily-sub {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+            border-left: 3px solid var(--secondary);
+            padding-left: 12px;
+        }
+        .question-item {
+            background: #fafafc;
+            border-radius: 16px;
+            padding: 14px 16px;
+            margin-bottom: 12px;
+            border: 1px solid #eef0f2;
+        }
+        .question-item .q-text {
+            font-weight: 500;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+            flex-wrap: wrap;
+            color: var(--text-dark);
+        }
+        .question-item .q-text .q-num {
+            background: var(--secondary);
+            color: white;
+            border-radius: 30px;
+            width: 22px;
+            height: 22px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+        .q-options {
+            display: flex;
+            gap: 10px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+        .q-options button {
+            background: white;
+            border: 1.5px solid #dde0e5;
+            border-radius: 40px;
+            padding: 6px 14px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-dark);
+            font-weight: 500;
+            transition: 0.1s;
+        }
+        .q-options button.selected {
+            border-color: var(--primary-dark);
+            background: var(--primary-dark);
+            color: white;
+        }
+        .huddle-toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin: 12px 0 8px;
+        }
+        .huddle-toggle input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--secondary);
+        }
+        .huddle-question {
+            background: #f2efe8;
+            border-radius: 16px;
+            padding: 14px 16px;
+            margin: 8px 0 14px;
+            border-left: 4px solid var(--secondary);
+        }
+        .btn-primary {
+            background: var(--primary-dark);
+            color: white;
+            border: none;
+            padding: 14px 20px;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 1rem;
+            width: 100%;
+            cursor: pointer;
+            transition: 0.1s;
+            box-shadow: 0 4px 12px rgba(90, 125, 110, 0.3);
+            margin: 16px 0 6px;
+        }
+        .btn-primary:hover {
+            background: var(--primary-darker);
+        }
+        .btn-primary:active { transform: scale(0.98); }
+        .btn-secondary {
+            background: #eef0f4;
+            color: var(--text-dark);
+            border: none;
+            padding: 10px 16px;
+            border-radius: 40px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        .btn-secondary:hover {
+            background: #e0e4e8;
+        }
+        .already-done {
+            background: #e8f5e9;
+            border-radius: 16px;
+            padding: 16px;
+            text-align: center;
+            color: #2e7d32;
+            font-weight: 600;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .star-jar {
+            background: #f3f0eb;
+            border-radius: 30px;
+            padding: 18px 16px;
+            text-align: center;
+            border: 2px dashed var(--secondary);
+            margin: 12px 0 18px;
+        }
+        .star-jar .stars-big {
+            font-size: 2.6rem;
+            letter-spacing: 4px;
+            line-height: 1.4;
+            word-break: break-all;
+        }
+        .star-jar .stars-label {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--primary-dark);
+        }
+        .star-jar .stars-count {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+        .star-jar .stars-sub {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+        .empty-progress-msg {
+            text-align: center;
+            padding: 30px 10px;
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+        .empty-progress-msg .big-emoji { font-size: 3rem; display: block; margin-bottom: 10px; }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 16px 0;
+        }
+        .stat-card {
+            background: #f6f7fa;
+            padding: 12px 10px;
+            border-radius: 16px;
+            text-align: center;
+            border: 1px solid #eceff3;
+        }
+        .stat-card .num {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+        }
+        .stat-card .label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .weekly-breakdown {
+            margin: 16px 0 12px;
+            background: #f8f9fc;
+            border-radius: 16px;
+            padding: 14px 16px;
+            border: 1px solid #eceff3;
+        }
+        .weekly-breakdown h4 {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+        .week-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 4px 0;
+            border-bottom: 1px solid #eef0f4;
+            font-size: 0.9rem;
+        }
+        .week-row:last-child { border-bottom: none; }
+        .week-row .day-stars { letter-spacing: 2px; }
+
+        .progress-bar-bg {
+            background: #e6e9ef;
+            height: 14px;
+            border-radius: 30px;
+            overflow: hidden;
+            margin: 12px 0 8px;
+        }
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--secondary), #e6b422);
+            border-radius: 30px;
+            width: 0%;
+            transition: width 0.4s;
+        }
+
+        .settings-section {
+            background: #f8f9fc;
+            border-radius: 18px;
+            padding: 14px 16px;
+            margin-bottom: 14px;
+            border: 1px solid #eceff3;
+        }
+        .settings-section h4 {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+        .settings-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 0;
+            border-bottom: 1px solid #e8ecf0;
+        }
+        .settings-row:last-child { border-bottom: none; }
+        .settings-row button {
+            background: transparent;
+            border: 1px solid #cdd4de;
+            border-radius: 30px;
+            padding: 4px 14px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: 0.1s;
+        }
+        .settings-row button:hover {
+            background: #e8ecf0;
+        }
+        .settings-row button.danger { color: #b13e3e; border-color: #e6c5c5; }
+        .settings-row button.danger:hover { background: #fde8e8; }
+        .settings-row input[type="number"] {
+            width: 60px;
+            padding: 4px 8px;
+            border-radius: 30px;
+            border: 1px solid #cdd4de;
+            text-align: center;
+        }
+        .question-bank {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 8px 0;
+        }
+        .question-bank .pill {
+            background: white;
+            border: 1px solid #dde0e5;
+            border-radius: 30px;
+            padding: 4px 12px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: 0.1s;
+        }
+        .question-bank .pill:hover {
+            border-color: var(--primary-dark);
+        }
+        .question-bank .pill.active-pill {
+            background: var(--primary-dark);
+            color: white;
+            border-color: var(--primary-dark);
+        }
+
+        .parent-kid-card {
+            background: #f8f9fc;
+            border-radius: 16px;
+            padding: 14px 16px;
+            margin-bottom: 12px;
+            border: 1px solid #eceff3;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .parent-kid-card .kid-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .parent-kid-card .kid-info .emoji-big { font-size: 1.8rem; }
+        .parent-kid-card .kid-stars {
+            font-weight: 700;
+            color: var(--secondary);
+            font-size: 1.2rem;
+        }
+
+        .bottom-tabs {
+            display: flex;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid #e4e8ee;
+            justify-content: space-around;
+            padding: 6px 0 10px;
+        }
+        .tab-btn {
+            background: transparent;
+            border: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 0.65rem;
+            color: #8f9aaa;
+            cursor: pointer;
+            padding: 4px 10px;
+            gap: 2px;
+            transition: 0.1s;
+        }
+        .tab-btn i { font-size: 1.4rem; }
+        .tab-btn.active-tab {
+            color: var(--primary-dark);
+            font-weight: 600;
+        }
+        .tab-btn.active-tab i { color: var(--secondary); }
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(3px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+            padding: 20px;
+        }
+        .modal-overlay.hidden { display: none; }
+        .modal-box {
+            background: white;
+            border-radius: 28px;
+            max-width: 380px;
+            width: 100%;
+            padding: 24px 22px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+        }
+        .modal-box h3 { margin-bottom: 12px; color: var(--primary-dark); }
+        .modal-box input, .modal-box select {
+            width: 100%;
+            padding: 10px 14px;
+            border-radius: 40px;
+            border: 1.5px solid #d0d7e0;
+            margin: 6px 0 12px;
+            font-size: 0.95rem;
+        }
+        .modal-box input:focus, .modal-box select:focus {
+            border-color: var(--primary-dark);
+            outline: none;
+        }
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 10px;
+        }
+
+        .celebration-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(6px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            animation: fadeIn 0.3s ease;
+        }
+        .celebration-overlay.hidden { display: none; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .celebration-box {
+            text-align: center;
+            background: white;
+            padding: 40px 30px;
+            border-radius: 40px;
+            max-width: 340px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+        }
+        .celebration-box .big-emoji { font-size: 4rem; }
+        .celebration-box h2 {
+            font-size: 2rem;
+            color: var(--secondary);
+            margin: 10px 0;
+        }
+        .celebration-box .stars-earned {
+            font-size: 2.5rem;
+            letter-spacing: 8px;
+        }
+        .celebration-box .sub-text {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 6px;
+        }
+
+        .hidden { display: none !important; }
+        .flex { display: flex; align-items: center; gap: 8px; }
+        .mt-8 { margin-top: 8px; }
+        .text-center { text-align: center; }
+    </style>
+</head>
+<body>
+
+<div class="app-container" id="app">
+
+    <header class="app-header">
+        <div class="logo-wrapper">
+            <div class="logo-main">SAMYAG <span>SYNERGY</span></div>
+            <div class="logo-sub"><i class="fas fa-heart" style="color:var(--secondary);"></i> Parent–Child Bonding · Daily Ritual</div>
+            <div class="tagline">“Small steps, giant leaps.”</div>
+        </div>
+    </header>
+
+    <div class="kid-selector" id="kidSelector">
+        <button class="add-kid-btn" id="addKidBtn"><i class="fas fa-plus"></i> Add kid</button>
+    </div>
+
+    <div class="tab-content active" id="tabHome">
+        <div class="daily-title"><i class="fas fa-star"></i> Today's ritual</div>
+        <div class="daily-sub" id="todayDateDisplay"></div>
+        <div id="questionsContainer"></div>
+        <div class="huddle-toggle">
+            <input type="checkbox" id="huddleToggle" checked />
+            <label for="huddleToggle">Include huddle question</label>
+        </div>
+        <div id="huddleContainer" class="huddle-question">
+            <div style="font-weight:500;">💬 What did you learn about each other today?</div>
+            <div class="q-options" id="huddleOptions">
+                <button data-value="💛">💛 Yes</button>
+                <button data-value="💬">💬 Shared</button>
+                <button data-value="🤗">🤗 Hug</button>
+            </div>
+        </div>
+        <button class="btn-primary" id="submitDailyBtn"><i class="fas fa-check-circle"></i> Complete today's ritual</button>
+        <div id="alreadySubmittedMsg" class="already-done hidden">✅ Already submitted today! Check back tomorrow.</div>
+        <div style="font-size:0.7rem;color:var(--text-muted);text-align:center;margin:6px 0;">⭐ 1 star per question · +1 bonus for huddle</div>
+    </div>
+
+    <div class="tab-content" id="tabProgress">
+        <div class="progress-header">
+            <span style="font-weight:600;font-size:1.1rem;color:var(--primary-dark);"><i class="fas fa-chart-simple"></i> Progress</span>
+            <span id="selectedKidNameProgress" style="background:#eef0f4;padding:4px 12px;border-radius:40px;font-size:0.8rem;"></span>
+        </div>
+
+        <div id="progressContent">
+            <div class="star-jar" id="starJar">
+                <div class="stars-label"><i class="fas fa-star" style="color:var(--secondary);"></i> Star Jar</div>
+                <div class="stars-big" id="starJarEmojis">🌟 Start your journey!</div>
+                <div><span class="stars-count" id="starCountDisplay">0</span> stars this week</div>
+                <div class="stars-sub" id="starJarSub">0 / 20 stars</div>
+            </div>
+
+            <div class="weekly-breakdown" id="weeklyBreakdown">
+                <h4>📅 This week</h4>
+                <div id="weekRows"></div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card"><div class="num" id="monthlyStars">0</div><div class="label">This month</div></div>
+                <div class="stat-card"><div class="num" id="totalStars">0</div><div class="label">Total ever</div></div>
+                <div class="stat-card"><div class="num" id="streakDays">0</div><div class="label">Day streak</div></div>
+                <div class="stat-card"><div class="num" id="bestWeek">0</div><div class="label">Best week</div></div>
+            </div>
+
+            <div style="margin:12px 0 6px;font-weight:500;color:var(--primary-dark);">
+                <span id="monthlyGoalLabel">Goal: 20 stars this month</span>
+            </div>
+            <div class="progress-bar-bg"><div class="progress-bar-fill" id="monthlyProgressFill" style="width:0%;"></div></div>
+            <div style="display:flex;justify-content:space-between;font-size:0.8rem;color:var(--text-muted);">
+                <span>0%</span>
+                <span id="monthlyProgressLabel">0 / 20 stars</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="tab-content" id="tabParents">
+        <div style="font-weight:600;font-size:1.1rem;margin-bottom:12px;color:var(--primary-dark);">
+            <i class="fas fa-users" style="color:var(--secondary);"></i> All Kids Overview
+        </div>
+        <div id="parentOverview"></div>
+        <div style="margin-top:16px;background:#f8f9fc;border-radius:16px;padding:14px;border:1px solid #eceff3;">
+            <div style="font-weight:600;font-size:0.9rem;color:var(--primary-dark);">💡 Quick tip</div>
+            <div style="font-size:0.85rem;color:var(--text-muted);">Use the Settings tab to adjust monthly goals, edit questions, and manage backups.</div>
+        </div>
+    </div>
+
+    <div class="tab-content" id="tabSettings">
+        <div class="settings-section">
+            <h4><i class="fas fa-lock"></i> Parent PIN</h4>
+            <div class="settings-row">
+                <span>Set 4-digit PIN</span>
+                <button id="setPinBtn">Change</button>
+            </div>
+            <div class="settings-row">
+                <span>Monthly goal (stars)</span>
+                <input type="number" id="monthlyGoalInput" value="20" min="5" max="100" style="width:70px;" />
+                <button id="saveMonthlyGoalBtn">Save</button>
+            </div>
+        </div>
+
+        <div class="settings-section">
+            <h4><i class="fas fa-list"></i> Question bank</h4>
+            <div class="question-bank" id="questionBankContainer"></div>
+            <div style="display:flex;gap:6px;margin-top:6px;">
+                <input type="text" id="customQuestionInput" placeholder="Write custom question..." style="flex:1;padding:6px 12px;border-radius:40px;border:1px solid #d0d7e0;" />
+                <button class="btn-secondary" id="addCustomQuestionBtn">Add</button>
+            </div>
+        </div>
+
+        <div class="settings-section">
+            <h4><i class="fas fa-database"></i> Data backup</h4>
+            <div class="settings-row"><span>Export all data (JSON)</span><button id="exportDataBtn"><i class="fas fa-download"></i> Export</button></div>
+            <div class="settings-row"><span>Restore from backup</span><button id="importDataBtn"><i class="fas fa-upload"></i> Import</button></div>
+            <div class="settings-row" style="border:none;">
+                <span style="font-size:0.7rem;color:var(--text-muted);">Last backup: <span id="lastBackupLabel">never</span></span>
+                <button id="clearAllDataBtn" class="danger" style="border-color:#e6c5c5;color:#b13e3e;">Clear all</button>
+            </div>
+            <input type="file" id="fileInput" accept=".json" style="display:none;" />
+        </div>
+    </div>
+
+    <div class="bottom-tabs">
+        <button class="tab-btn active-tab" data-tab="tabHome"><i class="fas fa-home"></i><span>Home</span></button>
+        <button class="tab-btn" data-tab="tabProgress"><i class="fas fa-chart-simple"></i><span>Progress</span></button>
+        <button class="tab-btn" data-tab="tabParents"><i class="fas fa-users"></i><span>Parents</span></button>
+        <button class="tab-btn" data-tab="tabSettings"><i class="fas fa-sliders"></i><span>Settings</span></button>
+    </div>
+</div>
+
+<div class="modal-overlay hidden" id="modalOverlay">
+    <div class="modal-box" id="modalBox">
+        <h3 id="modalTitle">Add kid</h3>
+        <div id="modalBody"></div>
+        <div class="modal-actions">
+            <button class="btn-secondary" id="modalCancelBtn">Cancel</button>
+            <button class="btn-primary" id="modalConfirmBtn" style="width:auto;padding:10px 24px;">Save</button>
+        </div>
+    </div>
+</div>
+
+<div class="celebration-overlay hidden" id="celebrationOverlay">
+    <div class="celebration-box">
+        <div class="big-emoji">🌟</div>
+        <h2>Great Job!</h2>
+        <div class="stars-earned" id="celebrationStars">⭐⭐⭐⭐⭐</div>
+        <div class="sub-text" id="celebrationText">You earned 5 stars today!</div>
+        <button class="btn-primary" id="celebrationCloseBtn" style="margin-top:16px;width:auto;padding:10px 30px;">Awesome!</button>
+    </div>
+</div>
+
+<script>
+    (function(){
+        "use strict";
+
+        // APP VERSION - increment this to force reset old data
+        const APP_VERSION = 4;
+
+        // Only ONE default question now
+        const DEFAULT_QUESTIONS = [
+            "What made you feel proud today?"
+        ];
+        
+        const BANK_QUESTIONS = [
+            "What was hard today, and how did you handle it?",
+            "Did you help someone today?",
+            "What are you grateful for today?",
+            "What's one thing you want to do better tomorrow?",
+            "What made you smile today?",
+            "Who were you kind to today?",
+            "What did you do for your body today?",
+            "What was your favorite part of today?",
+            "What did you read or learn today?",
+            "If you could change one thing about today, what would it be?",
+            "What are you looking forward to tomorrow?",
+            "Did you try something new today?"
+        ];
+
+        let state = {
+            kids: [],
+            activeKidId: null,
+            pin: null,
+            pinVerified: false,
+            huddleAnswer: null,
+            appVersion: APP_VERSION
+        };
+
+        const $ = s => document.querySelector(s);
+        const $$ = s => document.querySelectorAll(s);
+
+        const kidSelector = $('#kidSelector');
+        const addKidBtn = $('#addKidBtn');
+        const questionsContainer = $('#questionsContainer');
+        const huddleContainer = $('#huddleContainer');
+        const huddleToggle = $('#huddleToggle');
+        const huddleOptions = $('#huddleOptions');
+        const submitBtn = $('#submitDailyBtn');
+        const alreadySubmittedMsg = $('#alreadySubmittedMsg');
+        const todayDateDisplay = $('#todayDateDisplay');
+
+        const starJarEmojis = $('#starJarEmojis');
+        const starCountDisplay = $('#starCountDisplay');
+        const starJarSub = $('#starJarSub');
+        const monthlyStars = $('#monthlyStars');
+        const totalStars = $('#totalStars');
+        const streakDays = $('#streakDays');
+        const bestWeek = $('#bestWeek');
+        const monthlyProgressFill = $('#monthlyProgressFill');
+        const monthlyProgressLabel = $('#monthlyProgressLabel');
+        const monthlyGoalLabel = $('#monthlyGoalLabel');
+        const selectedKidNameProgress = $('#selectedKidNameProgress');
+        const weekRows = $('#weekRows');
+
+        const parentOverview = $('#parentOverview');
+
+        const questionBankContainer = $('#questionBankContainer');
+        const customQuestionInput = $('#customQuestionInput');
+        const addCustomQuestionBtn = $('#addCustomQuestionBtn');
+        const exportDataBtn = $('#exportDataBtn');
+        const importDataBtn = $('#importDataBtn');
+        const fileInput = $('#fileInput');
+        const clearAllDataBtn = $('#clearAllDataBtn');
+        const setPinBtn = $('#setPinBtn');
+        const monthlyGoalInput = $('#monthlyGoalInput');
+        const saveMonthlyGoalBtn = $('#saveMonthlyGoalBtn');
+        const lastBackupLabel = $('#lastBackupLabel');
+
+        const modalOverlay = $('#modalOverlay');
+        const modalTitle = $('#modalTitle');
+        const modalBody = $('#modalBody');
+        const modalConfirmBtn = $('#modalConfirmBtn');
+        const modalCancelBtn = $('#modalCancelBtn');
+
+        const celebrationOverlay = $('#celebrationOverlay');
+        const celebrationStars = $('#celebrationStars');
+        const celebrationText = $('#celebrationText');
+        const celebrationCloseBtn = $('#celebrationCloseBtn');
+
+        const tabBtns = $$('.tab-btn');
+
+        // ---------- UTILITY ----------
+        function genId() { return Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
+        function getTodayStr() { return new Date().toISOString().slice(0,10); }
+        
+        function getWeekId(date = new Date()) {
+            const d = new Date(date);
+            d.setHours(0, 0, 0, 0);
+            const day = d.getDay();
+            const diff = d.getDate() - day + (day === 0 ? -6 : 1);
+            d.setDate(diff);
+            return d.toISOString().slice(0, 10);
+        }
+        
+        function getMonthId(date = new Date()) { return date.toISOString().slice(0,7); }
+        
+        function getWeekDays() {
+            const today = new Date();
+            const start = new Date(today);
+            start.setDate(today.getDate() - today.getDay() + (today.getDay()===0?-6:1));
+            const days = [];
+            for(let i=0; i<7; i++) {
+                const d = new Date(start);
+                d.setDate(start.getDate() + i);
+                days.push(d);
+            }
+            return days;
+        }
+        function formatDate(d) {
+            return d.toISOString().slice(0,10);
+        }
+
+        function saveState() {
+            try {
+                state.appVersion = APP_VERSION;
+                localStorage.setItem('samyag_synergy_state', JSON.stringify(state));
+            } catch(e) {}
+        }
+
+        function loadState() {
+            try {
+                const raw = localStorage.getItem('samyag_synergy_state');
+                if(raw) {
+                    const parsed = JSON.parse(raw);
+                    if(parsed.appVersion !== APP_VERSION) {
+                        console.log('App version mismatch. Resetting data...');
+                        localStorage.removeItem('samyag_synergy_state');
+                        return false;
+                    }
+                    state = parsed;
+                    state.kids = state.kids || [];
+                    state.pin = state.pin || null;
+                    state.pinVerified = false;
+                    if(!state.kids.length) addDefaultKid();
+                    if(!state.activeKidId && state.kids.length) state.activeKidId = state.kids[0].id;
+                    return true;
+                }
+            } catch(e) {}
+            return false;
+        }
+
+        function addDefaultKid() {
+            state.kids.push({
+                id: genId(),
+                name: 'Samyag',
+                emoji: '🌟',
+                questions: [...DEFAULT_QUESTIONS],
+                answers: {},
+                history: [],
+                monthlyGoal: 20
+            });
+        }
+
+        function getActiveKid() {
+            return state.kids.find(k => k.id === state.activeKidId) || state.kids[0];
+        }
+
+        function getKidQuestions(kid) {
+            return (kid.questions && kid.questions.length) ? kid.questions : DEFAULT_QUESTIONS;
+        }
+
+        // ---------- STAR CALCULATIONS ----------
+        function getStarsForDate(kid, dateStr) {
+            if(!kid.history) return 0;
+            const entry = kid.history.find(h => h.date === dateStr);
+            return entry ? (entry.stars || 0) : 0;
+        }
+
+        function getStarsForWeek(kid, weekId) {
+            if(!kid.history) return 0;
+            let total = 0;
+            const weekStart = new Date(weekId);
+            const weekEnd = new Date(weekStart);
+            weekEnd.setDate(weekEnd.getDate() + 7);
+            
+            kid.history.forEach(h => {
+                const entryDate = new Date(h.date);
+                if(entryDate >= weekStart && entryDate < weekEnd) {
+                    total += (h.stars || 0);
+                }
+            });
+            return total;
+        }
+
+        function getStarsForMonth(kid, monthId) {
+            if(!kid.history) return 0;
+            let total = 0;
+            const monthStart = new Date(monthId + '-01');
+            const monthEnd = new Date(monthStart);
+            monthEnd.setMonth(monthEnd.getMonth() + 1);
+            
+            kid.history.forEach(h => {
+                const entryDate = new Date(h.date);
+                if(entryDate >= monthStart && entryDate < monthEnd) {
+                    total += (h.stars || 0);
+                }
+            });
+            return total;
+        }
+
+        function getTotalStars(kid) {
+            if(!kid.history) return 0;
+            return kid.history.reduce((sum, h) => sum + (h.stars || 0), 0);
+        }
+
+        function getStreak(kid) {
+            if(!kid.history || !kid.history.length) return 0;
+            const sorted = [...kid.history].sort((a,b) => a.date.localeCompare(b.date));
+            let streak = 0;
+            let prev = null;
+            for(let i=sorted.length-1; i>=0; i--) {
+                const entry = sorted[i];
+                if(entry.stars === 0) break;
+                if(!prev) { streak = 1; prev = entry.date; continue; }
+                const prevDate = new Date(prev);
+                const currDate = new Date(entry.date);
+                const diff = (prevDate - currDate) / (1000*60*60*24);
+                if(diff === 1) { streak++; prev = entry.date; }
+                else if(diff === 0) continue;
+                else break;
+            }
+            return streak;
+        }
+
+        function getBestWeek(kid) {
+            if(!kid.history || !kid.history.length) return 0;
+            const weekMap = {};
+            kid.history.forEach(h => {
+                const week = getWeekId(new Date(h.date));
+                if(!weekMap[week]) weekMap[week] = 0;
+                weekMap[week] += (h.stars || 0);
+            });
+            let max = 0;
+            for(let w in weekMap) {
+                if(weekMap[w] > max) max = weekMap[w];
+            }
+            return max;
+        }
+
+        function getWeekStarsMap(kid, weekId) {
+            const map = {};
+            const days = getWeekDays();
+            days.forEach(d => {
+                const dateStr = formatDate(d);
+                map[dateStr] = getStarsForDate(kid, dateStr);
+            });
+            return map;
+        }
+
+        function isSubmittedToday(kid) {
+            const today = getTodayStr();
+            if(!kid.history) return false;
+            return kid.history.some(h => h.date === today);
+        }
+
+        // ---------- RENDER FUNCTIONS ----------
+        function renderKidSelector() {
+            kidSelector.querySelectorAll('.kid-avatar').forEach(el => el.remove());
+
+            state.kids.forEach(kid => {
+                const div = document.createElement('div');
+                div.className = `kid-avatar${kid.id === state.activeKidId ? ' active' : ''}`;
+                div.dataset.kidId = kid.id;
+                div.innerHTML = `
+                    <span class="emoji">${kid.emoji || '🧒'}</span>
+                    <span class="name">${kid.name}</span>
+                    <button class="edit-btn" data-action="editKid" data-id="${kid.id}"><i class="fas fa-pen"></i></button>
+                `;
+                div.addEventListener('click', (e) => {
+                    if(e.target.closest('.edit-btn')) return;
+                    state.activeKidId = kid.id;
+                    state.pinVerified = false;
+                    renderAll();
+                });
+                kidSelector.insertBefore(div, addKidBtn);
+            });
+
+            kidSelector.querySelectorAll('[data-action="editKid"]').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const id = this.dataset.id;
+                    showEditKidModal(id);
+                });
+            });
+        }
+
+        function renderQuestions() {
+            const kid = getActiveKid();
+            if(!kid) return;
+            const questions = getKidQuestions(kid);
+            const today = getTodayStr();
+
+            const now = new Date();
+            todayDateDisplay.textContent = `📅 ${now.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}`;
+
+            if(isSubmittedToday(kid)) {
+                questionsContainer.innerHTML = `<div class="already-done">✅ Already submitted today! Check back tomorrow.</div>`;
+                submitBtn.classList.add('hidden');
+                alreadySubmittedMsg.classList.remove('hidden');
+                return;
+            }
+            submitBtn.classList.remove('hidden');
+            alreadySubmittedMsg.classList.add('hidden');
+
+            if(!kid.answers[today]) kid.answers[today] = {};
+
+            let html = '';
+            questions.forEach((q, idx) => {
+                const saved = kid.answers[today] && kid.answers[today][q] ? kid.answers[today][q] : null;
+                const options = ['😊', '🙂', '😐', '😟'];
+                const labels = ['Great', 'Good', 'Okay', 'Tough'];
+                let optsHtml = options.map((emoji, i) => {
+                    const val = labels[i];
+                    const sel = (saved === val) ? 'selected' : '';
+                    return `<button class="${sel}" data-q="${q}" data-value="${val}">${emoji} ${val}</button>`;
+                }).join('');
+                html += `
+                    <div class="question-item">
+                        <div class="q-text"><span class="q-num">${idx+1}</span> ${q}</div>
+                        <div class="q-options" data-q="${q}">${optsHtml}</div>
+                    </div>
+                `;
+            });
+            questionsContainer.innerHTML = html;
+
+            questionsContainer.querySelectorAll('.q-options').forEach(container => {
+                container.querySelectorAll('button').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const q = this.dataset.q;
+                        const val = this.dataset.value;
+                        const parent = this.closest('.q-options');
+                        parent.querySelectorAll('button').forEach(b => b.classList.remove('selected'));
+                        this.classList.add('selected');
+                        const kid = getActiveKid();
+                        if(!kid) return;
+                        const today = getTodayStr();
+                        if(!kid.answers[today]) kid.answers[today] = {};
+                        kid.answers[today][q] = val;
+                        saveState();
+                    });
+                });
+            });
+
+            if(huddleToggle.checked) {
+                huddleContainer.classList.remove('hidden');
+            } else {
+                huddleContainer.classList.add('hidden');
+            }
+
+            huddleOptions.querySelectorAll('button').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    huddleOptions.querySelectorAll('button').forEach(b => b.classList.remove('selected'));
+                    this.classList.add('selected');
+                    state.huddleAnswer = this.dataset.value;
+                });
+            });
+            if(state.huddleAnswer) {
+                huddleOptions.querySelectorAll('button').forEach(b => {
+                    if(b.dataset.value === state.huddleAnswer) b.classList.add('selected');
+                });
+            }
+        }
+
+        function renderProgress() {
+            const kid = getActiveKid();
+            if(!kid) return;
+            
+            selectedKidNameProgress.textContent = `${kid.emoji} ${kid.name}`;
+
+            const today = getTodayStr();
+            const weekId = getWeekId();
+            const monthId = getMonthId();
+
+            const weekStars = getStarsForWeek(kid, weekId);
+            const monthStars = getStarsForMonth(kid, monthId);
+            const total = getTotalStars(kid);
+            const streak = getStreak(kid);
+            const best = getBestWeek(kid);
+            
+            const goal = kid.monthlyGoal || 20;
+            const maxVisual = goal;
+
+            let jarDisplay = '';
+            let subText = '';
+
+            if (total === 0 && weekStars === 0) {
+                jarDisplay = '🌟 Start your journey!';
+                subText = `Complete your first ritual to earn stars (Goal: ${goal})`;
+            } else {
+                const fill = Math.min(weekStars, maxVisual);
+                const empty = maxVisual - fill;
+                const filledStars = '⭐'.repeat(fill);
+                const emptyStars = '☆'.repeat(empty);
+                jarDisplay = filledStars + emptyStars;
+                subText = `${weekStars} / ${maxVisual} stars this week (Goal: ${goal})`;
+            }
+
+            starJarEmojis.textContent = jarDisplay;
+            starCountDisplay.textContent = weekStars;
+            starJarSub.textContent = subText;
+
+            monthlyStars.textContent = monthStars;
+            totalStars.textContent = total;
+            streakDays.textContent = streak;
+            bestWeek.textContent = best;
+
+            monthlyGoalLabel.textContent = `Goal: ${goal} stars this month`;
+            const pct = Math.min((monthStars / goal) * 100, 100);
+            monthlyProgressFill.style.width = pct + '%';
+            monthlyProgressLabel.textContent = `${monthStars} / ${goal} stars`;
+
+            const weekMap = getWeekStarsMap(kid, weekId);
+            const dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+            const days = getWeekDays();
+            let weekHtml = '';
+            days.forEach((d, i) => {
+                const dateStr = formatDate(d);
+                const stars = weekMap[dateStr] || 0;
+                const starStr = '⭐'.repeat(Math.min(stars, 5)) + '☆'.repeat(Math.max(0, 5 - Math.min(stars, 5)));
+                const isToday = dateStr === today;
+                weekHtml += `
+                    <div class="week-row" style="${isToday ? 'background:#eef6ff;border-radius:8px;padding:4px 6px;' : ''}">
+                        <span>${dayNames[i]} ${isToday ? '⭐' : ''}</span>
+                        <span class="day-stars">${starStr} ${stars > 0 ? stars : ''}</span>
+                    </div>
+                `;
+            });
+            weekRows.innerHTML = weekHtml;
+        }
+
+        function renderParentOverview() {
+            if(!state.kids.length) {
+                parentOverview.innerHTML = `<div class="empty-progress-msg"><span class="big-emoji">👶</span>Add a kid to get started!</div>`;
+                return;
+            }
+            let html = '';
+            state.kids.forEach(kid => {
+                const weekStars = getStarsForWeek(kid, getWeekId());
+                const total = getTotalStars(kid);
+                html += `
+                    <div class="parent-kid-card">
+                        <div class="kid-info">
+                            <span class="emoji-big">${kid.emoji || '🧒'}</span>
+                            <div>
+                                <div style="font-weight:600;">${kid.name}</div>
+                                <div style="font-size:0.75rem;color:var(--text-muted);">${total} total stars</div>
+                            </div>
+                        </div>
+                        <div class="kid-stars">⭐ ${weekStars} this week</div>
+                    </div>
+                `;
+            });
+            parentOverview.innerHTML = html;
+        }
+
+        function renderQuestionBank() {
+            const kid = getActiveKid();
+            if(!kid) return;
+            const currentQs = kid.questions || DEFAULT_QUESTIONS;
+            const allAvailable = [...new Set([...DEFAULT_QUESTIONS, ...BANK_QUESTIONS, ...currentQs])];
+            let html = '';
+            allAvailable.forEach(q => {
+                const active = currentQs.includes(q) ? 'active-pill' : '';
+                html += `<span class="pill ${active}" data-q="${q}">${q}</span>`;
+            });
+            questionBankContainer.innerHTML = html;
+
+            questionBankContainer.querySelectorAll('.pill').forEach(pill => {
+                pill.addEventListener('click', function() {
+                    if(!isPinVerified()) return;
+                    const q = this.dataset.q;
+                    const kid = getActiveKid();
+                    if(!kid) return;
+                    let qs = kid.questions || [...DEFAULT_QUESTIONS];
+                    if(qs.includes(q)) {
+                        qs = qs.filter(x => x !== q);
+                    } else {
+                        qs.push(q);
+                    }
+                    kid.questions = qs;
+                    saveState();
+                    renderQuestionBank();
+                    renderQuestions();
+                });
+            });
+        }
+
+        // ---------- PIN ----------
+        function isPinVerified() {
+            if(!state.pin) return true;
+            if(state.pinVerified) return true;
+            alert('Please verify your PIN in Settings first.');
+            return false;
+        }
+
+        // ---------- SUBMIT ----------
+        function submitDaily() {
+            const kid = getActiveKid();
+            if(!kid) { alert('Add a kid first!'); return; }
+
+            if(isSubmittedToday(kid)) {
+                alert('Already submitted today!');
+                return;
+            }
+
+            const today = getTodayStr();
+            if(!kid.answers[today]) kid.answers[today] = {};
+
+            const questions = getKidQuestions(kid);
+            let allAnswered = true;
+            questions.forEach(q => {
+                if(!kid.answers[today][q]) allAnswered = false;
+            });
+            if(!allAnswered) {
+                alert('Please answer all questions before submitting.');
+                return;
+            }
+
+            let starCount = questions.length;
+            if(huddleToggle.checked && state.huddleAnswer) {
+                starCount += 1;
+            }
+            starCount = Math.min(starCount, 7);
+
+            if(!kid.history) kid.history = [];
+            kid.history.push({ date: today, stars: starCount });
+            saveState();
+
+            showCelebration(starCount);
+
+            state.huddleAnswer = null;
+            huddleOptions.querySelectorAll('button').forEach(b => b.classList.remove('selected'));
+
+            renderAll();
+        }
+
+        // ---------- CELEBRATION ----------
+        function showCelebration(stars) {
+            const starStr = '⭐'.repeat(Math.min(stars, 7));
+            celebrationStars.textContent = starStr;
+            celebrationText.textContent = `You earned ${stars} stars today!`;
+            celebrationOverlay.classList.remove('hidden');
+        }
+
+        celebrationCloseBtn.addEventListener('click', function() {
+            celebrationOverlay.classList.add('hidden');
+        });
+
+        // ---------- MODALS ----------
+        function showEditKidModal(kidId) {
+            const kid = state.kids.find(k => k.id === kidId);
+            if(!kid) return;
+            modalTitle.textContent = 'Edit child';
+            modalBody.innerHTML = `
+                <label>Name</label>
+                <input type="text" id="editKidName" value="${kid.name}" />
+                <label>Emoji</label>
+                <input type="text" id="editKidEmoji" value="${kid.emoji || '🧒'}" />
+            `;
+            modalOverlay.classList.remove('hidden');
+            modalConfirmBtn.onclick = function() {
+                const name = document.getElementById('editKidName').value.trim() || 'Kid';
+                const emoji = document.getElementById('editKidEmoji').value.trim() || '🧒';
+                kid.name = name;
+                kid.emoji = emoji;
+                saveState();
+                renderAll();
+                modalOverlay.classList.add('hidden');
+            };
+            modalCancelBtn.onclick = () => modalOverlay.classList.add('hidden');
+        }
+
+        function showAddKidModal() {
+            modalTitle.textContent = 'Add child';
+            modalBody.innerHTML = `
+                <label>Name</label>
+                <input type="text" id="kidNameInput" placeholder="Enter name" value="" />
+                <label>Emoji</label>
+                <input type="text" id="kidEmojiInput" placeholder="e.g. 🐼" value="🧒" />
+            `;
+            modalOverlay.classList.remove('hidden');
+            modalConfirmBtn.onclick = function() {
+                const name = document.getElementById('kidNameInput').value.trim() || 'Kid';
+                const emoji = document.getElementById('kidEmojiInput').value.trim() || '🧒';
+                state.kids.push({
+                    id: genId(),
+                    name: name,
+                    emoji: emoji,
+                    questions: [...DEFAULT_QUESTIONS],
+                    answers: {},
+                    history: [],
+                    monthlyGoal: 20
+                });
+                state.activeKidId = state.kids[state.kids.length-1].id;
+                state.pinVerified = false;
+                saveState();
+                renderAll();
+                modalOverlay.classList.add('hidden');
+            };
+            modalCancelBtn.onclick = () => modalOverlay.classList.add('hidden');
+        }
+
+        function showPinModal() {
+            modalTitle.textContent = 'Set Parent PIN';
+            modalBody.innerHTML = `
+                <p style="font-size:0.9rem;color:var(--text-muted);">Enter a 4-digit PIN to protect settings.</p>
+                <div style="display:flex;gap:8px;justify-content:center;margin:12px 0;">
+                    <input type="password" maxlength="1" class="pin-set" style="width:50px;height:50px;text-align:center;font-size:1.4rem;border:2px solid #d0d7e0;border-radius:12px;">
+                    <input type="password" maxlength="1" class="pin-set" style="width:50px;height:50px;text-align:center;font-size:1.4rem;border:2px solid #d0d7e0;border-radius:12px;">
+                    <input type="password" maxlength="1" class="pin-set" style="width:50px;height:50px;text-align:center;font-size:1.4rem;border:2px solid #d0d7e0;border-radius:12px;">
+                    <input type="password" maxlength="1" class="pin-set" style="width:50px;height:50px;text-align:center;font-size:1.4rem;border:2px solid #d0d7e0;border-radius:12px;">
+                </div>
+            `;
+            modalOverlay.classList.remove('hidden');
+            modalConfirmBtn.textContent = 'Set PIN';
+            modalConfirmBtn.onclick = function() {
+                const inputs = document.querySelectorAll('.pin-set');
+                let pin = '';
+                inputs.forEach(inp => pin += inp.value);
+                if(pin.length === 4 && /^\d{4}$/.test(pin)) {
+                    state.pin = pin;
+                    state.pinVerified = true;
+                    saveState();
+                    alert('PIN set successfully.');
+                    modalOverlay.classList.add('hidden');
+                    renderAll();
+                } else {
+                    alert('Please enter exactly 4 digits.');
+                }
+            };
+            modalCancelBtn.onclick = () => modalOverlay.classList.add('hidden');
+        }
+
+        function verifyPinModal() {
+            if(!state.pin) return true;
+            modalTitle.textContent = 'Verify PIN';
+            modalBody.innerHTML = `
+                <p style="font-size:0.9rem;color:var(--text-muted);">Enter your 4-digit PIN.</p>
+                <div style="display:flex;gap:8px;justify-content:center;margin:12px 0;">
+                    <input type="password" maxlength="1" class="pin-verify" style="width:50px;height:50px;text-align:center;font-size:1.4rem;border:2px solid #d0d7e0;border-radius:12px;">
+                    <input type="password" maxlength="1" class="pin-verify" style="width:50px;height:50px;text-align:center;font-size:1.4rem;border:2px solid #d0d7e0;border-radius:12px;">
+                    <input type="password" maxlength="1" class="pin-verify" style="width:50px;height:50px;text-align:center;font-size:1.4rem;border:2px solid #d0d7e0;border-radius:12px;">
+                    <input type="password" maxlength="1" class="pin-verify" style="width:50px;height:50px;text-align:center;font-size:1.4rem;border:2px solid #d0d7e0;border-radius:12px;">
+                </div>
+            `;
+            modalOverlay.classList.remove('hidden');
+            modalConfirmBtn.textContent = 'Verify';
+            modalConfirmBtn.onclick = function() {
+                const inputs = document.querySelectorAll('.pin-verify');
+                let pin = '';
+                inputs.forEach(inp => pin += inp.value);
+                if(pin === state.pin) {
+                    state.pinVerified = true;
+                    alert('PIN verified.');
+                    modalOverlay.classList.add('hidden');
+                    renderAll();
+                } else {
+                    alert('Incorrect PIN.');
+                }
+            };
+            modalCancelBtn.onclick = () => modalOverlay.classList.add('hidden');
+            return false;
+        }
+
+        // ---------- EXPORT / IMPORT ----------
+        function exportData() {
+            const data = JSON.stringify(state, null, 2);
+            const blob = new Blob([data], {type: 'application/json'});
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `samyag_synergy_backup_${getTodayStr()}.json`;
+            a.click();
+            URL.revokeObjectURL(a.href);
+            lastBackupLabel.textContent = getTodayStr();
+            saveState();
+        }
+
+        function importData(file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const parsed = JSON.parse(e.target.result);
+                    if(parsed.kids) {
+                        state = parsed;
+                        state.pinVerified = false;
+                        if(!state.kids.length) addDefaultKid();
+                        if(!state.activeKidId && state.kids.length) state.activeKidId = state.kids[0].id;
+                        state.appVersion = APP_VERSION;
+                        saveState();
+                        renderAll();
+                        alert('Data restored successfully!');
+                    } else {
+                        alert('Invalid backup file.');
+                    }
+                } catch(err) {
+                    alert('Error reading file.');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // ---------- CLEAR ALL ----------
+        function clearAll() {
+            if(!isPinVerified()) return;
+            if(confirm('Delete ALL data for ALL kids? This cannot be undone.')) {
+                localStorage.removeItem('samyag_synergy_state');
+                state = { kids: [], activeKidId: null, pin: null, pinVerified: false, huddleAnswer: null, appVersion: APP_VERSION };
+                addDefaultKid();
+                state.activeKidId = state.kids[0].id;
+                saveState();
+                renderAll();
+            }
+        }
+
+        // ---------- RENDER ALL ----------
+        function renderAll() {
+            renderKidSelector();
+            renderQuestions();
+            renderProgress();
+            renderParentOverview();
+            renderQuestionBank();
+
+            const kid = getActiveKid();
+            if(kid) {
+                monthlyGoalInput.value = kid.monthlyGoal || 20;
+            }
+
+            const activeTab = document.querySelector('.tab-content.active');
+            if(activeTab) {
+                tabBtns.forEach(btn => {
+                    btn.classList.toggle('active-tab', btn.dataset.tab === activeTab.id);
+                });
+            }
+
+            const backup = localStorage.getItem('samyag_synergy_backup_date');
+            lastBackupLabel.textContent = backup || 'never';
+        }
+
+        // ---------- TAB SWITCHING ----------
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const tabId = this.dataset.tab;
+                document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+                document.getElementById(tabId).classList.add('active');
+                tabBtns.forEach(b => b.classList.remove('active-tab'));
+                this.classList.add('active-tab');
+                renderAll();
+            });
+        });
+
+        // ---------- INIT ----------
+        function init() {
+            if(!loadState()) {
+                addDefaultKid();
+                state.activeKidId = state.kids[0].id;
+                saveState();
+            }
+            if(!state.activeKidId && state.kids.length) state.activeKidId = state.kids[0].id;
+
+            addKidBtn.addEventListener('click', showAddKidModal);
+
+            huddleToggle.addEventListener('change', function() {
+                if(this.checked) huddleContainer.classList.remove('hidden');
+                else huddleContainer.classList.add('hidden');
+            });
+
+            submitBtn.addEventListener('click', submitDaily);
+
+            setPinBtn.addEventListener('click', function() {
+                if(state.pin) {
+                    if(verifyPinModal()) showPinModal();
+                } else {
+                    showPinModal();
+                }
+            });
+
+            saveMonthlyGoalBtn.addEventListener('click', function() {
+                const val = parseInt(monthlyGoalInput.value);
+                if(val >= 5 && val <= 100) {
+                    const kid = getActiveKid();
+                    if(kid) {
+                        kid.monthlyGoal = val;
+                        saveState();
+                        renderAll();
+                        alert('Monthly goal updated to ' + val + ' stars for ' + kid.name + '!');
+                    } else {
+                        alert('No kid selected.');
+                    }
+                } else {
+                    alert('Please enter a number between 5 and 100.');
+                }
+            });
+
+            exportDataBtn.addEventListener('click', exportData);
+            importDataBtn.addEventListener('click', function() { fileInput.click(); });
+            fileInput.addEventListener('change', function(e) {
+                if(this.files && this.files[0]) {
+                    importData(this.files[0]);
+                }
+                this.value = '';
+            });
+
+            clearAllDataBtn.addEventListener('click', clearAll);
+
+            addCustomQuestionBtn.addEventListener('click', function() {
+                if(!isPinVerified()) return;
+                const text = customQuestionInput.value.trim();
+                if(!text) return;
+                const kid = getActiveKid();
+                if(!kid) return;
+                if(!kid.questions) kid.questions = [...DEFAULT_QUESTIONS];
+                if(kid.questions.includes(text)) { alert('Question already exists.'); return; }
+                kid.questions.push(text);
+                saveState();
+                renderQuestionBank();
+                renderQuestions();
+                customQuestionInput.value = '';
+            });
+
+            modalCancelBtn.addEventListener('click', () => modalOverlay.classList.add('hidden'));
+            modalOverlay.addEventListener('click', function(e) {
+                if(e.target === this) this.classList.add('hidden');
+            });
+
+            document.addEventListener('input', function(e) {
+                if(e.target.classList.contains('pin-set') || e.target.classList.contains('pin-verify')) {
+                    const maxLen = parseInt(e.target.maxLength || 1);
+                    if(e.target.value.length >= maxLen) {
+                        const next = e.target.nextElementSibling;
+                        if(next && next.tagName === 'INPUT') next.focus();
+                    }
+                }
+            });
+
+            renderAll();
+        }
+
+        init();
+    })();
+</script>
+</body>
+</html>
