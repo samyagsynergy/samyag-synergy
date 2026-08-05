@@ -54,6 +54,13 @@
       "link": "tools/pdfeditor-fill-sign/index.html",
       "description": "Fill, sign, and annotate PDFs entirely in your browser — no uploads, no sign-ups, no watermarks.",
       "link_label": "Open Tool"
+    },
+    {
+      "title": "1-Minute Family Ritual",
+      "category": "Other",
+      "description": "1 question. 1 minute. Daily.  A simple parent–child bonding ritual.",
+      "link_label": "Open Tool",
+      "link": "tools /parent-child-ritual.index.html"
     }
   ]
 }
