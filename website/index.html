@@ -70,6 +70,28 @@
   .credential-line{ font-family:'IBM Plex Mono', monospace; font-size:12px; letter-spacing:.04em; color:var(--gold); margin:6px 0 16px; }
 
   .services-grid{ display:grid; grid-template-columns: repeat(3, 1fr); gap:16px; margin-top:28px; }
+    .events-list{ display:flex; flex-direction:column; gap:16px; margin-top:28px; }
+  .event-card{ background:var(--card); border:1px solid var(--line); border-radius:14px; padding:22px 24px; }
+  .event-top{ display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+  .event-tag{ font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink); background:var(--gold-soft); border-radius:20px; padding:4px 12px; }
+  .event-date{ font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--ink-soft); }
+  .event-card h3{ font-family:'Fraunces', serif; font-size:22px; margin:10px 0 4px 0; }
+  .event-venue{ color:var(--ink-soft); font-size:14px; margin-bottom:8px; }
+  .event-summary{ color:var(--ink-soft); font-size:15px; max-width:720px; }
+  .event-toggle{ margin-top:14px; }
+  .event-details{ display:none; margin-top:20px; padding-top:20px; border-top:1px solid var(--line); }
+  .event-details.open{ display:block; }
+  .event-details .desc{ color:var(--ink-soft); font-size:15px; max-width:720px; margin-bottom:16px; }
+  .event-highlights{ list-style:none; padding:0; margin:0 0 20px 0; display:grid; grid-template-columns:repeat(2,1fr); gap:8px; }
+  .event-highlights li{ font-size:14px; color:var(--ink); padding-left:18px; position:relative; }
+  .event-highlights li::before{ content:"—"; position:absolute; left:0; color:var(--gold); }
+  .event-photos{ display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:10px; margin-bottom:20px; }
+  .event-photos img{ width:100%; height:110px; object-fit:cover; border-radius:8px; }
+  .event-videos{ display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:14px; margin-bottom:20px; }
+  .event-videos iframe{ width:100%; aspect-ratio:16/9; border:0; border-radius:8px; }
+  .event-testimonial{ background:var(--cream-2); border-left:3px solid var(--gold); border-radius:6px; padding:14px 16px; margin-bottom:10px; }
+  .event-testimonial p{ margin:0 0 6px 0; font-size:14.5px; color:var(--ink); font-style:italic; }
+  .event-testimonial .who{ font-family:'IBM Plex Mono', monospace; font-size:11.5px; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.04em; }
   .svc-card{ background:var(--card); border:1px solid var(--line); border-radius:12px; padding:22px 20px; transition: transform .15s ease, box-shadow .15s ease; }
   .svc-card:hover{ transform: translateY(-3px); box-shadow: 0 10px 24px rgba(28,27,25,0.08); }
   .svc-card .num{ font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--gold); letter-spacing:.06em; }
@@ -192,6 +214,7 @@
       <a href="#services">Services</a>
       <a href="#tools">Tools</a>
       <a href="#resources">Resources</a>
+      <a href="#events">Events</a>
       <a href="#blog">Blog</a>
       <a href="#contact">Contact</a>
     </nav>
@@ -283,7 +306,18 @@
 
 <div class="divider"></div>
 
-<!-- BLOG -->
+<!-- EVENTS -->
+<section id="events">
+  <div class="wrap">
+    <div class="eyebrow">Workshops &amp; sessions</div>
+    <h2>Events</h2>
+    <p class="lede">Live sessions we've run for colleges and institutions — photos, feedback and details from each one.</p>
+    <div id="events-list"><div class="skeleton">Loading events…</div></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+  <!-- BLOG -->
 <section id="blog">
   <div class="wrap">
     <div class="eyebrow">Insights</div>
@@ -470,7 +504,63 @@ function renderServices(items){
   });
 }
 
-/* ---------- TOOLS ---------- */
+/* ---------- EVENTS ---------- */
+function renderEvents(items){
+  const list = document.getElementById('events-list');
+  list.innerHTML = '';
+  items = (items || []).slice().reverse();
+  if(!items.length){
+    list.innerHTML = '<p class="skeleton">No events published yet.</p>';
+    return;
+  }
+  const wrap = el('<div class="events-list"></div>');
+  items.forEach((ev, idx) => {
+    const dateStr = ev.date ? new Date(ev.date).toLocaleDateString('en-IN', { day:'numeric', month:'long', year:'numeric' }) : '';
+    const highlights = (ev.highlights || []).map(h => `<li>${h}</li>`).join('');
+    const photos = (ev.photos || []).map(p => `<img src="${p}" alt="${ev.title}">`).join('');
+    const videos = (ev.videos || []).map(v => {
+      const id = (v.match(/(?:v=|youtu\.be\/)([\w-]+)/) || [])[1];
+      return id ? `<iframe src="https://www.youtube.com/embed/${id}" allowfullscreen></iframe>` : '';
+    }).join('');
+    const testimonials = (ev.testimonials || []).map(t => `
+      <div class="event-testimonial">
+        <p>"${t.quote}"</p>
+        <div class="who">${t.name}${t.role ? ' · ' + t.role : ''}</div>
+      </div>`).join('');
+
+    const cardId = `event-details-${idx}`;
+    const card = el(`
+      <div class="event-card">
+        <div class="event-top">
+          <span class="event-tag">${ev.tag || 'Workshop'}</span>
+          <span class="event-date">${dateStr}${ev.duration ? ' · ' + ev.duration : ''}${ev.fee ? ' · ' + ev.fee : ''}</span>
+        </div>
+        <h3>${ev.title}</h3>
+        <div class="event-venue">${ev.venue || ''}</div>
+        <p class="event-summary">${ev.summary || ''}</p>
+        <button class="btn outline event-toggle" data-target="${cardId}">View Details</button>
+        <div class="event-details" id="${cardId}">
+          <p class="desc">${ev.description || ''}</p>
+          ${highlights ? `<ul class="event-highlights">${highlights}</ul>` : ''}
+          ${photos ? `<div class="event-photos">${photos}</div>` : ''}
+          ${videos ? `<div class="event-videos">${videos}</div>` : ''}
+          ${testimonials}
+        </div>
+      </div>
+    `);
+    wrap.appendChild(card);
+  });
+  list.appendChild(wrap);
+
+  list.querySelectorAll('.event-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const panel = document.getElementById(btn.dataset.target);
+      const open = panel.classList.toggle('open');
+      btn.textContent = open ? 'Hide Details' : 'View Details';
+    });
+  });
+}
+  /* ---------- TOOLS ---------- */
 function renderTools(items){
   items = items || [];
   const grid = document.getElementById('tools-grid');
@@ -618,11 +708,12 @@ function renderLegal(legal){
 /* ---------- INIT ---------- */
 async function init(){
   try{
-    const [settings, services, tools, resources, blog, legal] = await Promise.all([
+        const [settings, services, tools, resources, events, blog, legal] = await Promise.all([
       loadJSON('content/settings.json'),
       loadJSON('content/services.json'),
       loadJSON('content/tools.json'),
       loadJSON('content/resources.json'),
+      loadJSON('content/events.json'),
       loadJSON('content/blog.json'),
       loadJSON('content/legal.json'),
     ]);
@@ -630,6 +721,7 @@ async function init(){
     renderServices(services.items);
     renderTools(tools.items);
     renderResources(resources);
+    renderEvents(events.items);
     renderBlog(blog.posts);
     renderLegal(legal);
   }catch(err){
