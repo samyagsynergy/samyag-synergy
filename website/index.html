@@ -485,6 +485,7 @@ function renderSettings(s){
     <a href="${s.instagram}" target="_blank" rel="noopener">Instagram</a>
   `;
   document.getElementById('uen-value').textContent = s.uen || '—';
+  document.getElementById('events-intro').textContent = s.events_intro || '';
   document.getElementById('footer-note').textContent = s.footer_note || '';
   document.getElementById('foot-left').innerHTML = `© <span>${new Date().getFullYear()}</span> ${s.brand_name || 'Samyag Synergy'} · UEN ${s.uen || ''} · Singapore`;
 }
