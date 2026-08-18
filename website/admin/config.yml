@@ -172,3 +172,52 @@ collections:
               - { label: "Byline", name: "byline", widget: "string" }
               - { label: "Date", name: "date", widget: "datetime" }
               - { label: "Body (Markdown)", name: "body", widget: "markdown" }
+
+  - name: "events"
+    label: "Events"
+    editor:
+      preview: false
+    files:
+      - file: "website/content/events.json"
+        label: "Events / Workshops"
+        name: "events"
+        fields:
+          - label: "Events"
+            name: "items"
+            widget: "list"
+            summary: "{{title}} — {{venue}}"
+            fields:
+              - { label: "Title", name: "title", widget: "string" }
+              - label: "Tag"
+                name: "tag"
+                widget: "select"
+                options: ["Workshop", "Seminar", "Webinar", "Talk"]
+              - { label: "Venue / College", name: "venue", widget: "string" }
+              - { label: "Date", name: "date", widget: "date" }
+              - { label: "Duration", name: "duration", widget: "string", required: false }
+              - { label: "Fee", name: "fee", widget: "string", required: false }
+              - { label: "Short summary (shown on the card)", name: "summary", widget: "text" }
+              - { label: "Full description (shown on details)", name: "description", widget: "text" }
+              - label: "Highlights / what students learn"
+                name: "highlights"
+                widget: "list"
+                required: false
+                field: { label: "Point", name: "point", widget: "string" }
+              - label: "Photos"
+                name: "photos"
+                widget: "list"
+                required: false
+                field: { label: "Photo", name: "photo", widget: "image" }
+              - label: "Videos (YouTube URLs)"
+                name: "videos"
+                widget: "list"
+                required: false
+                field: { label: "YouTube URL", name: "url", widget: "string" }
+              - label: "Testimonials"
+                name: "testimonials"
+                widget: "list"
+                required: false
+                fields:
+                  - { label: "Quote", name: "quote", widget: "text" }
+                  - { label: "Name", name: "name", widget: "string" }
+                  - { label: "College / Role", name: "role", widget: "string", required: false }
