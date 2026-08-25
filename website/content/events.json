@@ -1,13 +1,21 @@
 {
   "items": [
     {
-      "photos": [],
+      "photos": [
+        "/uploads/whatsapp-image-2026-08-23-at-01.16.59.jpeg"
+      ],
       "fee": "",
-      "summary": "A hands-on session helping students use AI for effective learning, accounting/finance, prompting, and career prep — with quiz, activities and a completion certificate.",
+      "summary": "70+ Students | AI Fluency Workshop\nA practical, hands-on session covering AI for learning, accounting/finance, prompting, and career preparation — featuring activities, a quiz, and completion certificates.",
       "date": "2026-08-22",
       "venue": "Shri Venkatesh Mahavidyalaya, Ichalkaranji",
-      "duration": "1 hr 15 min",
-      "testimonials": [],
+      "duration": "1 hr 3 min",
+      "testimonials": [
+        {
+          "name": "Dr.Sarika Rajendra Thakar MA.,NET., Ph.D., MBA., GDC ",
+          "role": "Shri Venkatesh Mahavidyalaya Ichakaranji, Maharashtra India",
+          "quote": "\"It was truly a pleasure having you with us. Your insightful guidance and engaging interaction made the session very meaningful for our students. We sincerely appreciate your valuable time and support. Looking forward to having you with us again in the future!\""
+        }
+      ],
       "title": "AI Fluency Crash Course",
       "videos": [],
       "tag": "Workshop",
