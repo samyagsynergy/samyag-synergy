@@ -57,6 +57,29 @@
           "role": "DKTE's Society Yashwantrao Chavan Polytechnic, Ichalkaranji"
         }
       ]
+    },
+    {
+      "title": "AI Quick Crash Course with live demonstration",
+      "tag": "Seminar",
+      "venue": "The Institute of Chartered Accountants of India (ICAI), Ichalkaranji Branch, (WIRC)",
+      "duration": "27 Aug 2026 . 2 hr",
+      "summary": "Conducted an AI Quick Crash Course for Chartered Accountants at ICAI Ichalkaranji Branch, WIRC, combining live AI demonstrations, VBA automation and practical AI governance frameworks to help professionals move from AI awareness to confident, responsible adoption.",
+      "description": "I had the opportunity to conduct an AI Quick Crash Course for members of the ICAI Ichalkaranji Branch, WIRC—a session designed not merely to introduce AI tools, but to show professionals what becomes possible when AI is applied to real professional work.\n\nThrough live demonstrations, practical prompting, workflow automation and VBA scripting, we explored how AI can help professionals automate repetitive tasks, work with data, create practical solutions and enhance everyday productivity.\n\nThe session also brought AI governance into the conversation, covering AI Policy, AI Inventory & Risk Assessment, privacy considerations, a 6-Document Professional Firm Pack, and a project-level 12-Gate AI Screening Checklist.\n\nThe emphasis throughout was on a balanced approach:\n\nExperiment with AI. Build with AI. But govern it responsibly.\n\nFor me, the most valuable part of the session was demonstrating that AI fluency is not about collecting a list of tools—it is about developing the judgement to identify opportunities, the skills to build solutions, and the discipline to manage the risks.",
+      "photos": [
+        "/uploads/icai-flyer-27082026.jpeg",
+        "/uploads/whatsapp-image-2026-08-28-at-13.06.53-1-.jpeg",
+        "/uploads/whatsapp-image-2026-08-28-at-13.06.50.jpeg",
+        "/uploads/whatsapp-image-2026-08-28-at-13.06.53.jpeg",
+        "/uploads/whatsapp-image-2026-08-28-at-13.07.04-1-.jpeg",
+        "/uploads/whatsapp-image-2026-09-01-at-23.18.16.jpeg"
+      ],
+      "testimonials": [
+        {
+          "quote": "Interactive & open Session - 5 Star",
+          "name": "Sachin Khot",
+          "role": "ICAI Member, Ichalkaranji"
+        }
+      ]
     }
   ]
 }
