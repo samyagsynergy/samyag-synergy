@@ -113,14 +113,12 @@ collections:
               - { label: "Slug (URL)", name: "slug", widget: "string", hint: "e.g. ai-fluency-crash-course" }
               - { label: "Status", name: "status", widget: "select", options: ["live", "upcoming", "recorded", "closed"], default: "upcoming" }
               - { label: "Featured Image", name: "image", widget: "image", required: false }
-
               # ─── COHORT DETAILS ───
               - { label: "Next Cohort Date", name: "cohort_date", widget: "datetime", required: false }
               - { label: "Duration", name: "duration", widget: "string", default: "2 Hours" }
               - { label: "Mode", name: "mode", widget: "select", options: ["Live Online", "In-Person", "Hybrid", "Self-Paced"], default: "Live Online" }
               - { label: "Max Seats", name: "max_seats", widget: "number", value_type: "int", required: false, min: 1 }
               - { label: "Seats Filled", name: "seats_filled", widget: "number", value_type: "int", required: false, min: 0 }
-
               # ─── PRICING & LINKS ───
               - { label: "Price (SGD)", name: "price", widget: "string", default: "Free" }
               - { label: "Early Bird Price", name: "early_bird_price", widget: "string", required: false }
@@ -129,7 +127,6 @@ collections:
               - { label: "Recording Link", name: "recording_link", widget: "string", required: false }
               - { label: "WhatsApp Group Link", name: "whatsapp_link", widget: "string", required: false }
               - { label: "Feedback Form Link", name: "feedback_link", widget: "string", required: false }
-
               # ─── INSTRUCTOR ───
               - label: "Instructor"
                 name: "instructor"
@@ -140,7 +137,6 @@ collections:
                   - { label: "Title", name: "title", widget: "string", default: "Founder, Samyag Synergy" }
                   - { label: "Certification", name: "cert", widget: "string", default: "AI Fluency (ISCA) Certified" }
                   - { label: "Photo", name: "photo", widget: "image", required: false }
-
               # ─── COURSE CONTENT ───
               - label: "Course Agenda"
                 name: "agenda"
@@ -151,7 +147,6 @@ collections:
                   - { label: "Module Title", name: "title", widget: "string" }
                   - { label: "Duration", name: "duration", widget: "string", required: false }
                   - { label: "Description", name: "description", widget: "markdown", required: false }
-
               - label: "Bonus Materials"
                 name: "bonus"
                 widget: "list"
@@ -160,7 +155,6 @@ collections:
                   - { label: "Sr. No.", name: "sr_no", widget: "number", value_type: "int" }
                   - { label: "Item Name", name: "name", widget: "string" }
                   - { label: "Type", name: "type", widget: "select", options: ["Quarterly Audit", "Monthly Register", "Everyday Protection", "Per Project/Assignment"], default: "Everyday Protection" }
-
               # ─── MARKETING ───
               - { label: "Short Description (for cards)", name: "excerpt", widget: "text", required: false }
               - { label: "Full Description", name: "body", widget: "markdown" }
@@ -173,7 +167,6 @@ collections:
                     { label: "Answer", name: "answer", widget: "markdown" }
                   ]
                 }
-
               # ─── SEO ───
               - { label: "Meta Title", name: "meta_title", widget: "string", required: false }
               - { label: "Meta Description", name: "meta_description", widget: "text", required: false }
