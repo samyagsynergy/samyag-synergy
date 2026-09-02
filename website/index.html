@@ -518,15 +518,42 @@ function renderServices(items){
 function renderCourses(items){
   const grid = document.getElementById('courses-grid');
   grid.innerHTML = '';
-  (items || []).forEach(c => {
+  (items || []).forEach((c, idx) => {
+    const cardId = `course-details-${idx}`;
+    const agendaHtml = (c.agenda || []).map(a => `
+      <li><strong>${a.number ? a.number + '. ' : ''}${a.title}</strong>${a.duration ? ' — ' + a.duration : ''}<br>${a.description || ''}</li>
+    `).join('');
+    const bodyHtml = window.marked ? marked.parse(c.body || '') : (c.body || '');
+
     grid.appendChild(el(`
       <div class="svc-card">
+        ${c.image ? `<img src="${c.image}" alt="${c.title}" style="width:100%;border-radius:8px;margin-bottom:12px;">` : ''}
         <h3>${c.title}</h3>
         <p>${c.excerpt || ''}</p>
         <p style="margin-top:8px;"><strong>${c.price || ''}</strong></p>
-        ${c.register_link ? `<a class="btn solid" style="margin-top:10px;" href="${c.register_link}" target="_blank" rel="noopener">Register →</a>` : ''}
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;">
+          ${c.register_link ? `<a class="btn solid" href="${c.register_link}" target="_blank" rel="noopener">Register →</a>` : ''}
+          <button class="btn outline course-toggle" data-target="${cardId}">View Details</button>
+        </div>
+        <div class="event-details" id="${cardId}">
+          ${c.subtitle ? `<p style="font-weight:600;margin-bottom:10px;">${c.subtitle}</p>` : ''}
+          <p style="font-size:13px;color:var(--ink-soft);margin-bottom:10px;">
+            ${c.duration ? c.duration + ' &middot; ' : ''}${c.mode || ''}
+          </p>
+          ${c.instructor ? `<p style="font-size:13px;margin-bottom:14px;"><strong>${c.instructor.name || ''}</strong> — ${c.instructor.title || ''}${c.instructor.cert ? ' &middot; ' + c.instructor.cert : ''}</p>` : ''}
+          <div class="article-body">${bodyHtml}</div>
+          ${agendaHtml ? `<ul style="margin-top:14px;">${agendaHtml}</ul>` : ''}
+        </div>
       </div>
     `));
+  });
+
+  grid.querySelectorAll('.course-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const panel = document.getElementById(btn.dataset.target);
+      const open = panel.classList.toggle('open');
+      btn.textContent = open ? 'Hide Details' : 'View Details';
+    });
   });
 }
 /* ---------- EVENTS ---------- */
