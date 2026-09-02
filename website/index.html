@@ -291,7 +291,17 @@
 
 <div class="divider"></div>
 
-<!-- RESOURCES -->
+<!-- COURSES -->
+<section id="courses">
+  <div class="wrap">
+    <div class="eyebrow">Learn with us</div>
+    <h2>Courses</h2>
+    <p class="lede">Live and self-paced courses to build practical AI and finance skills.</p>
+    <div class="services-grid" id="courses-grid"><div class="skeleton">Loading courses…</div></div>
+  </div>
+</section>
+
+  <!-- RESOURCES -->
 <section id="resources">
   <div class="wrap">
     <div class="eyebrow">Free resources</div>
@@ -504,7 +514,20 @@ function renderServices(items){
     `));
   });
 }
-
+function renderCourses(items){
+  const grid = document.getElementById('courses-grid');
+  grid.innerHTML = '';
+  (items || []).forEach(c => {
+    grid.appendChild(el(`
+      <div class="svc-card">
+        <h3>${c.title}</h3>
+        <p>${c.excerpt || ''}</p>
+        <p style="margin-top:8px;"><strong>${c.price || ''}</strong></p>
+        ${c.register_link ? `<a class="btn solid" style="margin-top:10px;" href="${c.register_link}" target="_blank" rel="noopener">Register →</a>` : ''}
+      </div>
+    `));
+  });
+}
 /* ---------- EVENTS ---------- */
 function renderEvents(items){
   const list = document.getElementById('events-list');
@@ -709,10 +732,11 @@ function renderLegal(legal){
 /* ---------- INIT ---------- */
 async function init(){
   try{
-        const [settings, services, tools, resources, events, blog, legal] = await Promise.all([
+        const [settings, services, tools, courses, resources, events, blog, legal] = await Promise.all([
       loadJSON('content/settings.json'),
       loadJSON('content/services.json'),
       loadJSON('content/tools.json'),
+      loadJSON('content/courses.json'),
       loadJSON('content/resources.json'),
       loadJSON('content/events.json'),
       loadJSON('content/blog.json'),
@@ -720,6 +744,7 @@ async function init(){
     ]);
     renderSettings(settings);
     renderServices(services.items);
+    renderCourses(courses.items);
     renderTools(tools.items);
     renderResources(resources);
     renderEvents(events.items);
