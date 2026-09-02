@@ -93,7 +93,7 @@ collections:
               - { label: "Demo video — YouTube URL (preferred)", name: "video_youtube", widget: "string", required: false, hint: "Paste the full YouTube URL, e.g. https://www.youtube.com/watch?v=XXXXXXXXXXX or https://youtu.be/XXXXXXXXXXX" }
               - { label: "Note / disclaimer (optional)", name: "note", widget: "text", required: false }
 
-- name: "courses"
+   - name: "courses"
     label: "Courses"
     editor:
       preview: false
