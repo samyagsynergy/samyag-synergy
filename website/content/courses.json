@@ -1,3 +1,27 @@
 {
-  "items": []
+  "items": [
+    {
+      "excerpt": "Everyone talks about AI. Few use it with confidence in there respective fields. This session bridges the gap",
+      "body": "Everyone talks about AI. Few use it with confidence. This session bridges the gap.\n\n\n\nIn just 2 hours, we move from foundational tool capabilities — including ChatGPT, Claude, Gemini, Perplexity, Kimi, and DeepSeek — to strict Singapore-aligned regulatory compliance, structured prompting, and a practical preview of vibe coding.\n\n\n\n\\### What you'll cover\n\n\n\n1. \\*\\*AI Foundations & Landscape (15 mins)\\*\\* — Demystify AI, ML, DL, and LLMs. Explore the major tools and learn the structured CO-STAR prompting framework.\n\n2. \\*\\*The AI Generalist Roadmap\\*\\* — Navigate 6 progressive levels, from basic daily toolkits to advanced multimodal AI, workflow automation, and rapid vibe coding.\n\n3. \\*\\*Governance, Law & Risk\\*\\* — A deep dive into Singapore's Gen AI Model Framework, PDPC Advisory Guidelines, vendor checklists, and professional firm risk registers.\n\n4. \\*\\*Live Demonstrations & Workflows\\*\\* — Real prompts and real-world tools: automating Schedule III reports, financial dashboards, instant data cleaning, and automated reminders.\n\n5. \\*\\*Vibe Coding & Your Future\\*\\* — A practical preview of building bespoke local software tools (like payroll assistants or image slicers) using pure natural language.\n\n6. \\*\\*Trusted Practice & Professional Duty\\*\\* — Bridge theory and action: protect client data, guard against IP leakage and hallucinations, and retain ultimate human accountability.\n\n\n\n\\### Bonus: Exclusive Practical Cheat Sheets Pack\n\n\n\nEvery participant walks away with 8 practical, ready-to-use resources — from AI content compliance checklists to a 12-gate screening checklist — designed for everyday use and quarterly audits alike.\n\n\n\nThis is a highly interactive session with live games, quizzes, and prizes — bring your phone!",
+      "early_bird_deadline": "2026-09-15T10:00:00.000+08:00",
+      "mode": "Live Online",
+      "whatsapp_link": "https://chat.whatsapp.com/JaJds54TqlPIC3zB1LfraG",
+      "price": "SGD 99 (Singapore/Others) or INR 999 (India)",
+      "slug": "ai-fluency-crash-course",
+      "status": "upcoming",
+      "feedback_link": "https://docs.google.com/forms/d/e/1FAIpQLSfKQ6g3v2gOldmlFBrwMl76Kzi_VdORFvbnQ7lkO8-S48CiMA/viewform?usp=sharing&ouid=113692262160918737997",
+      "duration": "2 Hours",
+      "register_link": "https://docs.google.com/forms/d/e/1FAIpQLSfxJeEoX0h0xUt4duf08OMyqHzw8_jwYkNeBlHjKy15qjg0Jw/viewform?usp=sharing&ouid=113692262160918737997",
+      "subtitle": "Governance & Roadmap Edition",
+      "title": "AI Fluency Crash Course",
+      "image": "/uploads/ai-fluency-crash-course-flyer-redesigned-1-.png",
+      "instructor": {
+        "name": "CA Neelukumari Jain",
+        "title": "Founder, Samyag Synergy",
+        "cert": "AI Fluency (ISCA) Certified",
+        "photo": "/uploads/neelu.jpg"
+      },
+      "early_bird_price": "SGD 79 (Singapore/Others) or INR 799 (India)"
+    }
+  ]
 }
