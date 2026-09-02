@@ -530,7 +530,9 @@ function renderCourses(items){
         ${c.image ? `<img src="${c.image}" alt="${c.title}" style="width:100%;border-radius:8px;margin-bottom:12px;">` : ''}
         <h3>${c.title}</h3>
         <p>${c.excerpt || ''}</p>
-        <p style="margin-top:8px;"><strong>${c.price || ''}</strong></p>
+        <p style="margin-top:8px;">
+  ${c.early_bird_price ? `<strong style="color:var(--gold);">${c.early_bird_price}</strong> <span style="text-decoration:line-through;color:var(--ink-soft);font-size:12px;">${c.price}</span>${c.early_bird_deadline ? ` <span style="font-size:11px;color:var(--ink-soft);">(till ${new Date(c.early_bird_deadline).toLocaleDateString()})</span>` : ''}` : `<strong>${c.price || ''}</strong>`}
+</p>
         <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;">
           ${c.register_link ? `<a class="btn solid" href="${c.register_link}" target="_blank" rel="noopener">Register →</a>` : ''}
           <button class="btn outline course-toggle" data-target="${cardId}">View Details</button>
