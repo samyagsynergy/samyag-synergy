@@ -61,6 +61,14 @@
       "description": "1 question. 1 minute. Daily.  A simple parent–child bonding ritual.",
       "link_label": "Open Tool",
       "link": "tools/parent-child-ritual/index.html"
+    },
+    {
+      "category": "AI Automation",
+      "title": "Samyag Synergy AI Data Masking Tool",
+      "badge": "Protect client data before you use AI",
+      "description": "Protect client data before using AI. Mask and restore sensitive details in Excel, CSV and text-based PDF files using local browser-based processing.Your files stay on your device and are not uploaded or stored. Always review the masked output before sharing it with any AI tool",
+      "link_label": "OPEN TOOL",
+      "link": "tools/ai-data-masking-tool/index.html"
     }
   ]
 }
