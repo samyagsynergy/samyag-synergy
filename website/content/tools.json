@@ -93,6 +93,14 @@
       "badge": "Test your knowledge with MCQ's",
       "link": "tools/aiquiz3/index.html",
       "link_label": "OPEN QUIZ"
+    },
+    {
+      "title": "AI Quiz 4 · Final Quiz: Putting It All Together",
+      "category": "Quiz",
+      "badge": "Test your knowledge with MCQ's",
+      "description": ".",
+      "link": "tools/aiquiz4/index.html",
+      "link_label": "OPEN QUIZ"
     }
   ]
 }
