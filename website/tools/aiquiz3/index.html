@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI Fluency Quiz 3</title>
+<style>
+:root{--ink:#1c1c1c;--muted:#6b6b6b;--bg:#f6f1e9;--card:#fff;--gold:#c8962e;--dark:#161616;--ok:#1f8a4c;--bad:#c0392b;--line:#e4dccf}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.45}
+header{background:var(--dark);color:#fff;padding:14px 18px;border-bottom:4px solid var(--gold)}
+header b{color:var(--gold);letter-spacing:.04em;font-size:12px;display:block;text-transform:uppercase}
+header span{font-size:17px;font-weight:600}
+main{max-width:640px;margin:0 auto;padding:18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:16px;box-shadow:0 2px 6px rgba(0,0,0,.05)}
+h1{font-size:22px;margin:0 0 4px} h2{font-size:18px;margin:0 0 8px}
+.sub{color:var(--muted);font-size:14px;margin:0 0 14px}
+label{display:block;font-weight:600;font-size:14px;margin:12px 0 4px}
+input[type=text],input[type=tel]{width:100%;padding:12px;border:1px solid #cfc6b6;border-radius:10px;font-size:16px}
+button,.btn{display:block;width:100%;text-align:center;padding:14px;border:0;border-radius:10px;font-size:16px;font-weight:600;cursor:pointer;background:var(--dark);color:#fff;text-decoration:none;margin-top:12px}
+.gold{background:var(--gold);color:#1c1c1c}.green{background:#25a244}.ghost{background:#fff;color:var(--ink);border:1px solid #cfc6b6}
+button:disabled{opacity:.45;cursor:default}
+.opt{display:block;width:100%;text-align:left;background:#fff;color:var(--ink);border:1.5px solid #d8cfbf;margin-top:10px;font-weight:500}
+.opt.right{border-color:var(--ok);background:#e8f6ee}.opt.wrong{border-color:var(--bad);background:#fdecea}
+.bar{height:6px;background:#e9e2d4;border-radius:4px;overflow:hidden;margin-bottom:14px}.bar i{display:block;height:100%;background:var(--gold)}
+.meta{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-bottom:8px}
+.why{margin-top:12px;padding:12px;border-radius:10px;background:#faf6ee;border-left:4px solid var(--gold);font-size:14px}
+.score{font-size:54px;font-weight:800;text-align:center;margin:6px 0 0}.pct{text-align:center;color:var(--muted);margin:0 0 8px}
+.status{font-size:14px;padding:10px 12px;border-radius:10px;margin-top:10px;background:#f1ece1}
+.status.ok{background:#e8f6ee;color:#145c33}.status.bad{background:#fdecea;color:#8c2a1f}
+.miss{font-size:14px;border-top:1px solid var(--line);padding:10px 0}.miss:first-child{border-top:0}
+.board{background:var(--dark);color:#fff;border-radius:14px;padding:16px 18px;margin-top:6px;border-top:4px solid var(--gold)}
+.board h3{margin:0 0 4px;font-size:15px;color:var(--gold)}
+.board p{margin:0 0 10px;font-size:13px;color:#cfcfcf}
+.board a{display:block;color:#fff;text-decoration:none;font-size:14px;padding:8px 0;border-top:1px solid #333;word-break:break-all}
+.board a span{color:var(--gold);display:inline-block;min-width:74px;font-size:12px;text-transform:uppercase;letter-spacing:.04em}
+.cert{width:100%;border:1px solid var(--line);border-radius:8px;margin-top:8px}
+</style>
+</head>
+<body>
+<header><b id="evt"></b><span id="ttl"></span></header>
+<main id="app"></main>
+
+<script>
+/* ===================== CONFIG: EDIT THESE LINES ===================== */
+const CONFIG = {
+  SHEET_URL: "https://script.google.com/macros/s/AKfycbylTdeiWUb2h1yNV2401JGh4Gfm2JFPe0u2Xq_k69HVVEb2KhTEwfGARRwKswFuHPDJ/exec",   // from Apps Script > Deploy > Web app (same URL in all 4 quiz files)
+  WHATSAPP_NUMBER: "918956293305",                        // country code + number, no + or spaces
+  EVENT: "AI Fluency Workshop",                           // shown at the top and on the certificate
+  HOST: "Neelukumari Jain, CA · Samyag Synergy",
+  BRAND: "Samyag Synergy · One-Stop F&A Solution",
+  WEBSITE: "https://website.samyagsynergy.workers.dev",
+  EMAIL: "samyagsynergy@gmail.com",
+  LINKEDIN: "https://www.linkedin.com/in/ca-neelukumari-jain-89a20945"
+};
+/* ==================================================================== */
+
+/* FIRST option of every question is the correct one; the page shuffles the order for students. */
+const QID = 3;
+const IS_FINAL = false;
+const QUIZ = {
+ "title": "Agents & Vibe Coding",
+ "when": "Quiz 3 of 4",
+ "questions": [
+  {
+   "q": "What best separates an AI agent from a chatbot?",
+   "opts": [
+    "It plans multi-step tasks and uses tools, with limited human input at each step",
+    "It is faster at answering questions",
+    "It never makes mistakes",
+    "It only works on spreadsheets"
+   ],
+   "why": "Chatbots answer; agents plan and act. More autonomy means more need for human checkpoints."
+  },
+  {
+   "q": "Which is NOT one of the four governance pillars for agentic AI?",
+   "opts": [
+    "Remove human review to save time",
+    "Assess and bound risks upfront",
+    "Make humans meaningfully accountable",
+    "Implement technical controls"
+   ],
+   "why": "The four pillars: assess and bound risks upfront, keep humans accountable, implement technical controls, enable end-user responsibility."
+  },
+  {
+   "q": "'Automation bias' means…",
+   "opts": [
+    "Over-trusting automated output because it has usually been right before",
+    "Preferring manual work over automation",
+    "An AI model favouring one country's data",
+    "A bug in automation software"
+   ],
+   "why": "The longer an agent works well, the easier it is to stop checking. Keep real checkpoints."
+  },
+  {
+   "q": "What does 'vibe coding' mean?",
+   "opts": [
+    "Describing the tool you want in plain language and iterating on AI-generated code",
+    "Writing code faster by hand",
+    "Using AI only to fix spelling in code",
+    "Buying ready-made software"
+   ],
+   "why": "Describe, generate, test, refine — no CS degree required, but you remain responsible for the result."
+  },
+  {
+   "q": "Your vibe-coded tool works on sample data. What must happen before real use?",
+   "opts": [
+    "Check numbers by hand, remove secrets, and name an owner",
+    "Share the link widely to test it",
+    "Test it on real client data straight away",
+    "Nothing — it already works"
+   ],
+   "why": "Review and secure: verify by hand, keep keys and passwords out of the file, and name an accountable owner."
+  }
+ ]
+};
+
+const $=s=>document.querySelector(s);
+const app=$('#app');
+$('#evt').textContent=CONFIG.EVENT;
+$('#ttl').textContent=`Quiz ${QID} · ${QUIZ.title}`;
+const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,8);
+const sheetReady=()=>CONFIG.SHEET_URL && CONFIG.SHEET_URL.indexOf('PASTE_')!==0;
+
+const boardHtml=()=>`<div class="board"><h3>${esc(CONFIG.HOST)}</h3><p>${esc(CONFIG.BRAND)}</p>
+ <a href="${CONFIG.WEBSITE}" target="_blank" rel="noopener"><span>Website</span>${esc(CONFIG.WEBSITE.replace('https://',''))}</a>
+ <a href="mailto:${CONFIG.EMAIL}"><span>Email</span>${esc(CONFIG.EMAIL)}</a>
+ <a href="${CONFIG.LINKEDIN}" target="_blank" rel="noopener"><span>LinkedIn</span>${esc(CONFIG.LINKEDIN.replace('https://www.',''))}</a></div>`;
+
+/* ---------- saving ---------- */
+async function submitResult(payload){
+  if(!sheetReady()) return 'noconfig';
+  const body=JSON.stringify(payload), headers={'Content-Type':'text/plain;charset=utf-8'};
+  try{
+    const r=await fetch(CONFIG.SHEET_URL,{method:'POST',body,headers});
+    const j=await r.json();
+    return j&&j.ok?'saved':'failed';
+  }catch(e){
+    try{await fetch(CONFIG.SHEET_URL,{method:'POST',body,headers,mode:'no-cors'});return 'sent';}
+    catch(e2){return 'failed';}
+  }
+}
+function queuePending(p){try{const a=JSON.parse(store.get('pending')||'[]');if(!a.find(x=>x.id===p.id))a.push(p);store.set('pending',JSON.stringify(a))}catch(e){}}
+function clearPending(id){try{store.set('pending',JSON.stringify(JSON.parse(store.get('pending')||'[]').filter(x=>x.id!==id)))}catch(e){}}
+async function flushPending(){
+  if(!sheetReady())return;
+  let a=[];try{a=JSON.parse(store.get('pending')||'[]')}catch(e){}
+  for(const p of a){const s=await submitResult(p);if(s==='saved'||s==='sent')clearPending(p.id)}
+}
+
+/* ---------- certificate (Quiz 4 only) ---------- */
+function fitText(x,text,maxW,startPx,weight,family){
+  let px=startPx; x.font=`${weight} ${px}px ${family}`;
+  while(x.measureText(text).width>maxW && px>18){px-=2;x.font=`${weight} ${px}px ${family}`}
+}
+function makeCertificate(name,inst,certId){
+  const W=1600,H=1131,c=document.createElement('canvas');c.width=W;c.height=H;const x=c.getContext('2d');
+  const serif='Georgia,"Times New Roman",serif';
+  x.fillStyle='#fbf7ee';x.fillRect(0,0,W,H);
+  x.strokeStyle='#c8962e';x.lineWidth=14;x.strokeRect(40,40,W-80,H-80);
+  x.lineWidth=3;x.strokeRect(72,72,W-144,H-144);
+  x.textAlign='center';
+  x.fillStyle='#c8962e';x.font=`600 26px ${serif}`;x.fillText(CONFIG.BRAND.toUpperCase(),W/2,155);
+  x.fillStyle='#1c1c1c';x.font=`bold 74px ${serif}`;x.fillText('Certificate of Participation',W/2,285);
+  x.strokeStyle='#c8962e';x.lineWidth=3;x.beginPath();x.moveTo(W/2-160,320);x.lineTo(W/2+160,320);x.stroke();
+  x.fillStyle='#555';x.font=`italic 32px ${serif}`;x.fillText('This certificate is proudly presented to',W/2,400);
+  x.fillStyle='#1c1c1c';fitText(x,name,W-340,92,'bold',serif);x.fillText(name,W/2,520);
+  x.strokeStyle='#999';x.lineWidth=1.5;x.beginPath();x.moveTo(300,545);x.lineTo(W-300,545);x.stroke();
+  x.fillStyle='#333';fitText(x,'of '+inst,W-340,40,'600',serif);x.fillText('of '+inst,W/2,615);
+  x.fillStyle='#444';x.font=`32px ${serif}`;
+  x.fillText('for successfully completing the '+CONFIG.EVENT+' and the final',W/2,705);
+  x.fillText('assessment on AI fundamentals, governance, agents and practical use.',W/2,752);
+  const date=new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
+  x.fillStyle='#555';x.font=`28px ${serif}`;x.textAlign='left';x.fillText('Date: '+date,160,880);
+  x.textAlign='right';x.fillText('Certificate ID: '+certId,W-160,880);
+  x.textAlign='center';
+  x.strokeStyle='#333';x.lineWidth=1.5;x.beginPath();x.moveTo(W/2-220,890);x.lineTo(W/2+220,890);x.stroke();
+  x.fillStyle='#1c1c1c';x.font=`bold 32px ${serif}`;x.fillText('Neelukumari Jain, CA',W/2,933);
+  x.fillStyle='#666';x.font=`24px ${serif}`;x.fillText('Founder, Samyag Synergy',W/2,968);
+  x.fillStyle='#c8962e';x.font=`22px ${serif}`;x.fillText(CONFIG.WEBSITE.replace('https://',''),W/2,1015);
+  return c;
+}
+
+/* ---------- screens ---------- */
+function renderStart(){
+  app.innerHTML=`<div class="card"><h1>Quiz ${QID} · ${esc(QUIZ.title)}</h1>
+  <p class="sub">${esc(QUIZ.when)} · ${QUIZ.questions.length} questions · one tap each · you see the answer after every question.${IS_FINAL?' Everyone who completes this final quiz can download a certificate, whatever the score.':''}</p>
+  <label for="nm">Full name</label><input id="nm" type="text" autocomplete="name" placeholder="e.g. Aarav Sharma" value="${esc(store.get('name')||'')}">
+  <label for="no">Contact number</label><input id="no" type="tel" autocomplete="tel" placeholder="e.g. 9876543210" value="${esc(store.get('num')||'')}">
+  <label for="in">Institute name</label><input id="in" type="text" autocomplete="organization" placeholder="e.g. your college, university or company" value="${esc(store.get('inst')||'')}">
+  <div id="err" class="status bad" style="display:none"></div>
+  <button class="gold" id="go">Start Quiz ${QID}</button></div>${boardHtml()}`;
+  $('#go').onclick=()=>{
+    const name=$('#nm').value.trim(), num=$('#no').value.trim(), inst=$('#in').value.trim(), e=$('#err');
+    if(name.length<2||num.length<5||inst.length<2){e.style.display='block';e.textContent='Please fill in your full name, contact number and institute name.';return}
+    store.set('name',name);store.set('num',num);store.set('inst',inst);
+    runQuiz(name,num,inst);
+  };
+}
+function runQuiz(name,num,inst){
+  const qs=shuffle(QUIZ.questions).map(x=>{const opts=shuffle(x.opts.map((t,i)=>({t,ok:i===0})));return{q:x.q,opts,why:x.why,correct:x.opts[0]}});
+  const start=Date.now(); let i=0, score=0; const marks=[], missed=[];
+  function show(){
+    const x=qs[i], pct=Math.round(i/qs.length*100);
+    app.innerHTML=`<div class="meta"><span>Question ${i+1} of ${qs.length}</span><span>Score ${score}</span></div>
+    <div class="bar"><i style="width:${pct}%"></i></div>
+    <div class="card"><h2>${esc(x.q)}</h2><div>${x.opts.map((o,k)=>`<button class="opt" data-k="${k}">${esc(o.t)}</button>`).join('')}</div><div id="fb"></div></div>`;
+    document.querySelectorAll('.opt').forEach(b=>b.onclick=()=>answer(b));
+    window.scrollTo(0,0);
+  }
+  function answer(btn){
+    const x=qs[i], k=+btn.dataset.k, ok=x.opts[k].ok;
+    document.querySelectorAll('.opt').forEach((b,j)=>{b.disabled=true;if(x.opts[j].ok)b.classList.add('right')});
+    if(!ok)btn.classList.add('wrong');
+    if(ok){score++;marks.push(1)}else{marks.push(0);missed.push(x)}
+    $('#fb').innerHTML=`<div class="why"><b>${ok?'Correct ✔':'Not quite ✘'}</b><br>${esc(x.why)}</div><button class="gold" id="nx">${i+1<qs.length?'Next question':'See my result'}</button>`;
+    $('#nx').onclick=()=>{i++;i<qs.length?show():finish()};
+  }
+  async function finish(){
+    const secs=Math.round((Date.now()-start)/1000), total=qs.length, pct=Math.round(score/total*100);
+    const id=uid(), certId=IS_FINAL?('SS-'+id.slice(-8).toUpperCase()):'';
+    const payload={id,quiz:QID,quizTitle:QUIZ.title,name,number:num,institute:inst,score,total,percent:pct,seconds:secs,answers:marks.join(','),certId,device:navigator.userAgent.slice(0,120),submittedAt:new Date().toISOString()};
+    const mm=Math.floor(secs/60), ss=secs%60;
+    const msg=`${CONFIG.EVENT}\nQuiz ${QID} – ${QUIZ.title}\nName: ${name}\nContact: ${num}\nInstitute: ${inst}\nScore: ${score}/${total} (${pct}%)\nTime: ${mm}m ${ss}s`;
+    const wa=`https://wa.me/${CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+    let certBlock='';
+    if(IS_FINAL){certBlock=`<h2 style="margin-top:22px">🎓 Your certificate</h2><p class="sub">Yours to keep, whatever your score.</p><img id="certimg" class="cert" alt="Certificate"><a id="certdl" class="btn gold" href="#">Download certificate (PNG)</a>`}
+    app.innerHTML=`<div class="card"><h1 style="text-align:center">Quiz ${QID} complete</h1>
+      <div class="score">${score}/${total}</div><p class="pct">${pct}% · ${mm}m ${ss}s · ${esc(name)}</p>
+      <div id="st" class="status">Saving your result…</div>
+      <a class="btn green" href="${wa}" target="_blank" rel="noopener">Send my result on WhatsApp</a>
+      <button class="ghost" id="rt" style="display:none">Try saving again</button>
+      ${certBlock}
+      ${missed.length?`<h2 style="margin-top:22px">Review: what to remember</h2>${missed.map(m=>`<div class="miss"><b>${esc(m.q)}</b><br>✔ ${esc(m.correct)}</div>`).join('')}`:'<p class="sub" style="margin-top:16px;text-align:center">Perfect score. Nothing to review. 🎉</p>'}
+      </div>${boardHtml()}`;
+    if(IS_FINAL){
+      const cv=makeCertificate(name,inst,certId), url=cv.toDataURL('image/png');
+      $('#certimg').src=url;
+      const dl=$('#certdl'); dl.href=url; dl.download='AI_Fluency_Certificate_'+name.replace(/[^A-Za-z0-9]+/g,'_')+'.png';
+    }
+    const st=$('#st'), rt=$('#rt');
+    async function save(){
+      st.className='status';st.textContent='Saving your result…';rt.style.display='none';
+      const s=await submitResult(payload);
+      if(s==='saved'){st.className='status ok';st.textContent='✔ Result saved. Tap the green button to also send it on WhatsApp.';clearPending(payload.id)}
+      else if(s==='sent'){st.className='status ok';st.textContent='✔ Result sent. Tap the green button to also send it on WhatsApp.';clearPending(payload.id)}
+      else if(s==='noconfig'){st.className='status bad';st.textContent='Online saving is not switched on yet. Please use the green WhatsApp button so your score is recorded.'}
+      else{st.className='status bad';st.textContent='Could not save online (network?). Use the WhatsApp button, or try again.';rt.style.display='block';queuePending(payload)}
+    }
+    rt.onclick=save; save();
+  }
+  show();
+}
+flushPending();
+renderStart();
+</script>
+</body>
+</html>
