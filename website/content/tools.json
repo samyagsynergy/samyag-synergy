@@ -85,6 +85,14 @@
       "link": "tools/aiquiz2/index.html",
       "link_label": "OPEN QUIZ",
       "category": "Quiz"
+    },
+    {
+      "title": "AI Quiz 3 · Agents & Vibe Coding",
+      "category": "Quiz",
+      "description": ".",
+      "badge": "Test your knowledge with MCQ's",
+      "link": "tools/aiquiz3/index.html",
+      "link_label": "OPEN QUIZ"
     }
   ]
 }
