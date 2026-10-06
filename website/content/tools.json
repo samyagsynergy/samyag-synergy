@@ -71,11 +71,12 @@
       "link": "tools/ai-data-masking-tool/index.html"
     },
     {
-      "title": "AI Quiz 1",
+      "title": "AI Quiz 1 · Foundations & Governance",
       "category": "AI Automation",
       "link": "tools/aiquiz/index.html",
-      "description": "AI Quiz 1",
-      "link_label": "Open Quiz"
+      "description": "Test your knowledge with multiple-choice questions.\n",
+      "link_label": "Open Quiz",
+      "badge": ""
     }
   ]
 }
