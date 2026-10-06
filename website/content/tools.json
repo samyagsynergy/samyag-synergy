@@ -77,6 +77,14 @@
       "description": ".",
       "link_label": "Open Quiz",
       "badge": "Test your knowledge with multiple-choice questions."
+    },
+    {
+      "title": "AI Quiz 2 · Practical Use Cases",
+      "description": ".",
+      "badge": "Test your knowledge with MCQ's",
+      "link": "tools/aiquiz2/index.html",
+      "link_label": "OPEN QUIZ",
+      "category": "Quiz"
     }
   ]
 }
