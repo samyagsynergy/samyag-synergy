@@ -69,6 +69,13 @@
       "description": "Protect client data before using AI. Mask and restore sensitive details in Excel, CSV and text-based PDF files using local browser-based processing.Your files stay on your device and are not uploaded or stored. Always review the masked output before sharing it with any AI tool",
       "link_label": "OPEN TOOL",
       "link": "tools/ai-data-masking-tool/index.html"
+    },
+    {
+      "title": "AI Quiz 1",
+      "category": "AI Automation",
+      "link": "tools/AIQuiz /AI_Quiz_1.html",
+      "description": "AI Quiz 1",
+      "link_label": "Open Quiz"
     }
   ]
 }
