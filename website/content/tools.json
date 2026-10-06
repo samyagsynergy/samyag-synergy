@@ -74,9 +74,9 @@
       "title": "AI Quiz 1 · Foundations & Governance",
       "category": "AI Automation",
       "link": "tools/aiquiz/index.html",
-      "description": "With multiple-choice questions.\n",
+      "description": "Test your knowledge With multiple-choice questions.\n",
       "link_label": "Open Quiz",
-      "badge": "Test your knowledge "
+      "badge": ""
     }
   ]
 }
