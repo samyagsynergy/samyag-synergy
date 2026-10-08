@@ -72,8 +72,9 @@ button:disabled{opacity:.5;cursor:default}
 const CONFIG = {
   SHEET_URL: "https://script.google.com/macros/s/AKfycbylTdeiWUb2h1yNV2401JGh4Gfm2JFPe0u2Xq_k69HVVEb2KhTEwfGARRwKswFuHPDJ/exec",  // the same /exec URL used in the quiz files
   EVENT: "AI Fluency Workshop",
+  WHATSAPP: "918956293305",  // facilitator WhatsApp number, country code first, no + or spaces. Leave "" to hide the fallback.
   CASE_BRIEF: "case-briefing.pdf",  // briefing file name in the same GitHub folder as this page, e.g. "case-briefing.pdf". Leave "" to hide.
-  CASE_FILE: "case-data.csv",  // Excel file name in the same folder, e.g. "case-data.csv". Leave "" to hide.
+  CASE_FILE: "case-data.xlsx",  // Excel file name in the same folder, e.g. "case-data.xlsx". Leave "" to hide.
   HOST: "Neelukumari Jain, CA · Samyag Synergy",
   BRAND: "Samyag Synergy · One-Stop F&A Solution",
   WEBSITE: "https://website.samyagsynergy.workers.dev",
@@ -92,6 +93,11 @@ $('#board').innerHTML=`<h3>${esc(CONFIG.HOST)}</h3><p>${esc(CONFIG.BRAND)}</p>
  <a href="mailto:${CONFIG.EMAIL}"><span>Email</span>${esc(CONFIG.EMAIL)}</a>
  <a href="${CONFIG.LINKEDIN}" target="_blank" rel="noopener"><span>LinkedIn</span>${esc(CONFIG.LINKEDIN.replace('https://www.',''))}</a>`;
 
+const waBtn=v=>{
+  if(!CONFIG.WHATSAPP) return '';
+  const t='Case Study answers\nName: '+v.name+'\nContact: '+v.number+'\nInstitute: '+v.institute+'\nQ1 rows removed: '+v.q1+'\nQ2 total net sales: '+v.q2+'\nQ3 store: '+v.q3store+'\nQ3 amount: '+v.q3amt;
+  return '<a class="btn" style="text-decoration:none;background:#25D366" target="_blank" rel="noopener" href="https://wa.me/'+CONFIG.WHATSAPP+'?text='+encodeURIComponent(t)+'">Send my answers on WhatsApp instead</a>';
+};
 function check(params){
   return new Promise((res,rej)=>{
     if(!CONFIG.SHEET_URL||CONFIG.SHEET_URL.indexOf('PASTE_')===0) return rej(new Error('This page is not connected yet. Please tell your facilitator.'));
@@ -126,7 +132,7 @@ $('#go').onclick=async()=>{
       b.disabled=false; b.textContent='Check my answers again';
     }
   }catch(e){
-    m.innerHTML='<div class="status bad">'+esc(e.message)+'</div>';
+    m.innerHTML='<div class="status bad">'+esc(e.message)+(CONFIG.WHATSAPP?' If it keeps failing, send your answers on WhatsApp.':'')+'</div>'+waBtn(v);
     b.disabled=false; b.textContent='Check my answers';
   }
 };
