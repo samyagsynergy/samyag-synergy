@@ -1,0 +1,233 @@
+﻿Txn_ID,Date,Store,City,Category,Product,Qty,Unit_Price,Discount_Pct,Amount,Payment_Mode,Customer_Mobile
+SR26090117,2026-09-16,Sadar,Nagpur,Electronics,Phone Charger 20W,3,699,5,1992.15,Cash,9760553848
+SR26090020,2026-09-03,Sitabuldi,Nagpur,Grocery,Toor Dal 1kg,2,165,0,330.0,Card,9820525898
+SR26090206,2026-09-28,Wardha Main,Wardha,Grocery,Masala Tea 500g,1,235,0,235.0,UPI,9654908982
+SR26090054,2026-09-08,Amravati Central,Amravati,Electronics,Phone Charger 20W,1,699,10,629.1,UPI,9073368828
+SR26090037,2026/09/05,Wardha Main,Wardha,Electronics,Phone Charger 20W,2,699,5,1328.1,Card,9828025822
+SR26090170,2026-09-23,Sadar,Nagpur,Personal Care,Toothpaste 200g,2,120,5,228.0,Cash,9837176345
+SR26090035,2026-09-05,Wardha Main,Wardha,Electronics,Power Bank 10000mAh,4,1199,0,4796.0,Cash,9112658440
+SR26090200,2026-09-28,DHARAMPETH,Nagpur,Grocery,Masala Tea 500g,2,235,10,423.0,UPI,9838149574
+SR26090146,2026-09-20,Sadar,Nagpur,Electronics,Power Bank 10000mAh,2,1199,0,"₹2,398.00",Card,9013510063
+SR26090044,2026-09-06,Wardha Main,Wardha,Electronics,Power Bank 10000mAh,1,1199,0,"₹1,199.00",Card,9976608565
+SR26090024,2026-09-04,Sadar ,Nagpur,Grocery,Toor Dal 1kg,1,165,10,148.5,Cash,9557990659
+SR26090077,2026-09-10,Dharampeth,Nagpur,Grocery,Basmati Rice 5kg,1,620,5,589.0,Card,9817922328
+SR26090167,2026/09/23,Wardha Main,Wardha,Grocery,Basmati Rice 5kg,5,620,0,3100.0,UPI,9212668692
+SR26090070,2026-09-10,Amravati Central,Amravati,Home,Cotton Bedsheet,1,899,5,854.05,UPI,9608724385
+SR26090148,2026-09-20,Wardha Main,Wardha,Personal Care,Shampoo 340ml,1,330,10,297.0,Cash,9680154316
+SR26090005,2026-09-01,Amravati Central,Amravati,Grocery,Toor Dal 1kg,2,165,10,297.0,Cash,9768469788
+RT26090038,2026-09-05,Sitabuldi,Nagpur,Grocery,Toor Dal 1kg,-1,165,0,-165.0,Card,9154382993
+SR26090139,2026-09-19,Chandrapur Road,Chandrapur,Personal Care,Toothpaste 200g,2,120,0,240.0,Cash,9290920824
+SR26090063,2026-09-09,Dharampeth,Nagpur,Electronics,Phone Charger 20W,4,699,0,2796.0,Card,9560787457
+SR26090132,2026-09-18,Chandrapur Road,Chandrapur,Grocery,Masala Tea 500g,1,235,0,235.0,Card,9263716715
+SR26090046,2026-09-07,Sadar,Nagpur,Home,Cotton Bedsheet,4,899,0,3596.0,UPI,9599677500
+SR26090094,2026-09-13,Wardha Main,Wardha,Grocery,Sunflower Oil 1L,1,148,0,148.0,Card,9327718621
+SR26090004,2026-09-01,Dharampeth,Nagpur,Electronics,Phone Charger 20W,4,699,10,2516.4,Card,9055761698
+SR26090021,2026-09-03,Dharampeth,Nagpur,Grocery,Toor Dal 1kg,3,165,0,495.0,Cash,9939494821
+SR26090116,2026-09-16,Sitabuldi,Nagpur,Electronics,Phone Charger 20W,5,699,0,3495.0,UPI,9478658930
+SR26090165,2026/09/22,Dharampeth,Nagpur,Grocery,Sunflower Oil 1L,4,148,0,592.0,UPI,9677792141
+SR26090069,2026-09-09,Wardha Main,Wardha,Personal Care,Shampoo 340ml,2,330,0,660.0,Card,9392731979
+SR26090133,2026-09-18,Sadar,Nagpur,Grocery,Sunflower Oil 1L,5,148,10,666.0,UPI,9012670812
+SR26090175,2026-09-24,Sitabuldi,Nagpur,Grocery,Toor Dal 1kg,3,165,0,₹495.00,Cash,9444615157
+SR26090031,2026-09-05,Sitabuldi,Nagpur,Electronics,Phone Charger 20W,5,699,0,3495.0,Cash,9370382653
+SR26090202,2026-09-28,Chandrapur Road,Chandrapur,Electronics,Earphones,2,499,0,998.0,Card,9511626958
+SR26090147,2026-09-20,Chandrapur Road,Chandrapur,Home,Steel Lunch Box,1,540,5,513.0,UPI,9124335165
+SR26090023,2026-09-04,Sadar,Nagpur,Grocery,Sunflower Oil 1L,2,148,0,296.0,UPI,9064600130
+SR26090136,2026-09-18,Wardha Main,WARDHA,Grocery,Toor Dal 1kg,1,165,10,148.5,Cash,9914706755
+SR26090053,2026-09-08,Wardha Main,Wardha,Personal Care,Shampoo 340ml,2,330,0,660.0,Cash,9552182488
+SR26090065,2026/09/09,Sadar,Nagpur,Electronics,Phone Charger 20W,1,699,5,664.05,Card,9588814401
+SR26090115,2026-09-15,Dharampeth,Nagpur,Electronics,Earphones,5,499,0,2495.0,UPI,9461338005
+SR26090114,2026-09-15,Amravati Central,Amravati,Personal Care,Toothpaste 200g,5,120,0,600.0,UPI,9414617544
+SR26090121,2026-09-16,Sadar ,Nagpur,Grocery,Sunflower Oil 1L,2,148,5,281.2,Card,9668631665
+SR26090197,2026-09-27,Chandrapur Road,Chandrapur,Home,Cotton Bedsheet,2,899,0,"₹1,798.00",Card,9674714732
+SR26090190,2026-09-26,Wardha Main,Wardha,Home,Steel Lunch Box,3,540,0,1620.0,Card,9756605548
+SR26090112,2026-09-15,Amravati Central,Amravati,Personal Care,Bath Soap (4 pack),3,190,5,541.5,Card,9332571929
+SR26090191,2026-09-26,Dharampeth,Nagpur,Electronics,Earphones,4,499,5,1896.2,Card,9088785316
+SR26090051,2026-09-07,Sadar,Nagpur,Grocery,Basmati Rice 5kg,4,620,5,2356.0,UPI,9075473548
+SR26090180,25 Sep 2026,Chandrapur Road,Chandrapur,Personal Care,Toothpaste 200g,2,120,0,240.0,Cash,9562528456
+SR26090166,2026-09-23,Dharampeth,Nagpur,Electronics,Power Bank 10000mAh,2,1199,0,2398.0,Card,9967252189
+SR26090056,2026-09-08,Dharampeth,Nagpur,Grocery,Sunflower Oil 1L,3,148,10,399.6,Cash,9222900442
+SR26090034,2026-09-05,Chandrapur Road,Chandrapur,Personal Care,Bath Soap (4 pack),1,190,0,190.0,UPI,9839490668
+SR26090072,10-09-2026,Wardha Main,Wardha,Grocery,Toor Dal 1kg,3,165,0,495.0,Card,9611660330
+SR26090104,2026-09-14,Dharampeth,Nagpur,Grocery,Masala Tea 500g,1,235,0,235.0,UPI,9205987198
+SR26090124,2026-09-17,Chandrapur Road,Chandrapur,Grocery,Toor Dal 1kg,4,165,0,660.0,Card,9751688656
+SR26090219,2026-09-30,Amravati Central,Amravati,Grocery,Basmati Rice 5kg,1,620,5,589.0,Cash,9676447978
+SR26090055,2026-09-08,Dharampeth,Nagpur,Electronics,Power Bank 10000mAh,5,1199,0,5995.0,Cash,9728556898
+SR26090093,2026-09-13,SADAR,Nagpur,Grocery,Basmati Rice 5kg,1,620,0,620.0,Card,9276113875
+SR26090082,2026-09-11,Dharampeth,Nagpur,Electronics,Phone Charger 20W,2,699,0,1537.8,Cash,9871120984
+SR26090209,2026-09-29,Sitabuldi Store,Nagpur,Home,LED Bulb 9W (3 pack),3,310,0,930.0,Cash,9593929817
+SR26090010,2026-09-02,Amravati Central,Amravati,Grocery,Sunflower Oil 1L,2,148,5,281.2,UPI,9475136270
+SR26090127,17-09-2026,Wardha Main,Wardha,Grocery,Sunflower Oil 1L,2,148,0,296.0,Card,9026195680
+SR26090102,2026-09-14,Sadar,Nagpur,Grocery,Basmati Rice 5kg,5,620,0,3100.0,Card,9547056709
+SR26090110,15-09-2026,Sitabuldi,Nagpur,Personal Care,Shampoo 340ml,3,330,0,990.0,Card,9833541488
+SR26090185,2026-09-25,Amravati Central,amravati,Grocery,Toor Dal 1kg,5,165,0,825.0,Cash,9406956314
+SR26090193,2026-09-27,Dharampeth,Nagpur,Grocery,Sunflower Oil 1L,1,148,0,148.0,Cash,9172290357
+SR26090158,2026-09-21,Sadar,nagpur,Personal Care,Bath Soap (4 pack),2,190,5,361.0,Cash,9403720568
+SR26090128,2026-09-17,Chandrapur Road,Chandrapur,Home,Cotton Bedsheet,1,899,0,₹899.00,UPI,9005200700
+SR26090067,2026-09-09,Dharampeth,Nagpur,Personal Care,Shampoo 340ml,1,330,0,330.0,UPI,9612840019
+SR26090025,2026-09-04,Dharampeth ,Nagpur,Home,LED Bulb 9W (3 pack),2,310,5,589.0,Cash,9158464506
+SR26090012,2026-09-02,Chandrapur Road,Chandrapur,Electronics,Power Bank 10000mAh,4,1199,0,4796.0,UPI,9059972837
+SR26090032,2026-09-05,Wardha Main,WARDHA,Personal Care,Bath Soap (4 pack),2,190,0,380.0,Card,9577879432
+SR26090113,2026-09-15,Sadar,Nagpur,Electronics,Power Bank 10000mAh,5,1199,10,5395.5,UPI,9853470424
+SR26090212,2026-09-29,Dharampeth,Nagpur,Electronics,Power Bank 10000mAh,4,1199,5,"₹4,556.20",Card,9125398257
+SR26090027,04-09-2026,Wardha Main,Wardha,Grocery,Basmati Rice 5kg,4,620,0,2480.0,UPI,9911028594
+SR26090108,2026-09-14,Amravati Central,Amravati,,Steel Lunch Box,4,540,0,2160.0,UPI,9412634789
+SR26090144,2026-09-19,Chandrapur Road,Chandrapur,Home,LED Bulb 9W (3 pack),2,310,0,620.0,UPI,9138560700
+SR26090129,2026-09-17,Wardha Main,Wardha,Grocery,Toor Dal 1kg,2,165,0,165.0,UPI,9927330570
+RT26090041,2026-09-06,Chandrapur Road,Chandrapur,Grocery,Masala Tea 500g,-1,235,0,-235.0,Card,9885576523
+SR26090022,2026-09-03,Sadar,Nagpur,Grocery,Toor Dal 1kg,2,165,0,330.0,UPI,9052185491
+SR26090171,2026-09-23,Dharampeth,Nagpur,Personal Care,Toothpaste 200g,5,120,0,600.0,Cash,9645011459
+SR26090022,2026-09-03,Sadar,Nagpur,Grocery,Toor Dal 1kg,2,165,0,330.0,UPI,9052185491
+SR26090157,2026-09-21,Amravati Central,Amravati,Electronics,Power Bank 10000mAh,5,1199,10,5395.5,UPI,9687710996
+SR26090143,2026-09-19,Sadar,Nagpur,Electronics,Earphones,2,499,0,₹998.00,Cash,9782760821
+SR26090062,9 Sep 2026,Sadar,Nagpur,Electronics,Earphones,4,499,10,1796.4,Cash,9212363608
+SR26090169,2026-09-23,Chandrapur Road Store,Chandrapur,Grocery,Basmati Rice 5kg,4,620,0,2480.0,Cash,9952920742
+SR26090058,2026-09-08,Wardha Main,Wardha,Grocery,Basmati Rice 5kg,2,620,0,"₹1,240.00",Cash,9581762528
+RT26090086,2026-09-12,Sitabuldi,Nagpur,Grocery,Masala Tea 500g,-1,235,0,-235.0,Cash,9586398488
+SR26090095,2026-09-13,SITABULDI,Nagpur,Electronics,Phone Charger 20W,2,699,5,1328.1,UPI,9770775106
+SR26090029,2026-09-04,Sitabuldi,Nagpur,Electronics,Phone Charger 20W,4,699,10,2516.4,Cash,9864230048
+SR26090182,2026-09-25,sadar,Nagpur,Grocery,Basmati Rice 5kg,2,620,10,1116.0,Cash,9426698143
+SR26090099,2026-09-13,Wardha Main,Wardha,Home,LED Bulb 9W (3 pack),2,310,10,558.0,Card,9464397258
+SR26090216,2026-09-30,Sadar,Nagpur,Grocery,Toor Dal 1kg,2,165,0,₹330.00,UPI,9657675260
+SR26090096,2026-09-13,Dharampeth,Nagpur,Personal Care,Toothpaste 200g,4,120,0,480.0,Card,9883615202
+SR26090045,2026-09-06,Sitabuldi,Nagpur ,Electronics,Phone Charger 20W,5,699,5,3320.25,Cash,9883655062
+SR26090122,2026-09-16,Dharampeth,Nagpur,Home,LED Bulb 9W (3 pack),3,310,10,837.0,Cash,9745358134
+SR26090220,2026-09-30,Dharampeth,Nagpur,,Steel Lunch Box,2,540,10,972.0,Cash,9177603423
+SR26090092,12 Sep 2026,Wardha Main,Wardha,Grocery,Toor Dal 1kg,1,165,0,165.0,UPI,9617958163
+SR26090111,2026-09-15,sitabuldi,Nagpur,Home,Cotton Bedsheet,1,899,0,899.0,Card,9852223841
+SR26090153,2026-09-21,Chandrapur Road,Chandrapur,Grocery,Basmati Rice 5kg,2,620,0,1240.0,UPI,9468542427
+SR26090097,2026/09/13,Wardha Main,Wardha,Home,LED Bulb 9W (3 pack),5,310,0,1550.0,Card,9613516199
+SR26090002,2026-09-01,Dharampeth Store,Nagpur,Grocery,Basmati Rice 5kg,3,620,0,1860.0,UPI,9417075364
+SR26090205,2026-09-28,Sitabuldi,Nagpur,Personal Care,Bath Soap (4 pack),5,190,5,₹902.50,Card,9557223488
+SR26090154,2026-09-21,Amravati Central,Amravati,Personal Care,Bath Soap (4 pack),5,190,0,950.0,Cash,9297447660
+SR26090214,2026-09-30,Amravati Central,amravati,Home,Steel Lunch Box,1,540,0,540.0,Card,9445274368
+SR26090042,2026-09-06,Amravati Central ,Amravati,Grocery,Masala Tea 500g,5,235,0,1175.0,Card,9696327926
+SR26090014,2026/09/02,Dharampeth,Nagpur,Home,Cotton Bedsheet,5,899,0,4495.0,Card,9016105500
+SR26090137,2026-09-19,Wardha Main,Wardha,Personal Care,Shampoo 340ml,1,330,5,313.5,Card,9351676825
+SR26090120,2026-09-16,Dharampeth ,Nagpur,Home,Steel Lunch Box,4,540,0,2160.0,UPI,9087526239
+SR26090013,2026-09-02,Wardha Main,WARDHA,Grocery,Sunflower Oil 1L,3,148,10,399.6,Card,9162294866
+SR26090015,2026-09-02,Wardha Main,Wardha,Home,Steel Lunch Box,2,540,0,1080.0,Card,9517799229
+SR26090215,2026-09-30,Sitabuldi,Nagpur,Personal Care,Bath Soap (4 pack),1,190,0,190.0,UPI,9417261422
+SR26090208,2026-09-29,Amravati Central,amravati,Personal Care,Shampoo 340ml,2,330,0,660.0,Card,9483447445
+SR26090091,2026-09-12,Sitabuldi,Nagpur,Grocery,Masala Tea 500g,1,235,0,235.0,Card,9967268350
+SR26090130,2026-09-18,Sitabuldi,Nagpur,Personal Care,Bath Soap (4 pack),3,190,10,513.0,Card,9781661146
+SR26090088,2026-09-12,Amravati Central,Amravati,Electronics,Phone Charger 20W,3,699,0,2097.0,Card,9670940985
+SR26090213,2026-09-29,Sadar,Nagpur,,Earphones,1,499,5,474.05,UPI,9730809086
+SR26090189,2026-09-26,Sitabuldi,Nagpur,Home,Steel Lunch Box,2,540,10,486.0,Cash,9784999617
+SR26090218,2026-09-30,Wardha Main,Wardha,Electronics,Earphones,1,499,5,474.05,Card,9091317570
+SR26090050,2026-09-07,Wardha Main,Wardha,Electronics,Earphones,3,499,0,1497.0,Card,9555597475
+SR26090204,2026-09-28,Chandrapur Road,Chandrapur,Home,LED Bulb 9W (3 pack),2,310,5,589.0,UPI,9551830007
+SR26090207,2026-09-29,Dharampeth,Nagpur,Home,Cotton Bedsheet,5,899,0,4495.0,UPI,9059061922
+SR26090043,2026-09-06,Sadar,Nagpur,Personal Care,Shampoo 340ml,5,330,0,1650.0,Card,9474284352
+SR26090003,2026-09-01,Sadar Store,Nagpur,Personal Care,Shampoo 340ml,5,330,5,1567.5,Cash,9815188447
+SR26090059,2026-09-08,Sitabuldi,Nagpur,Home,Steel Lunch Box,1,540,0,₹540.00,UPI,9594502831
+SR26090107,2026-09-14,Sitabuldi,Nagpur,Personal Care,Toothpaste 200g,2,120,0,240.0,Card,9829601796
+SR26090061,2026-09-09,Sadar,Nagpur,Electronics,Earphones,1,499,0,499.0,Cash,9789713311
+SR26090177,2026-09-24,Dharampeth,Nagpur,Electronics,Phone Charger 20W,5,699,0,3495.0,Cash,9890499531
+SR26090039,2026-09-06,Sitabuldi,Nagpur,Personal Care,Shampoo 340ml,2,330,0,1320.0,Cash,9164941577
+SR26090196,2026-09-27,Amravati Central,Amravati,Personal Care,Bath Soap (4 pack),2,190,0,380.0,Cash,9435115937
+SR26090217,2026-09-30,Sadar,Nagpur,Home,Cotton Bedsheet,4,899,0,3596.0,Cash,9858938329
+SR26090210,2026-09-29,Sitabuldi,Nagpur,Electronics,Power Bank 10000mAh,4,1199,0,4796.0,Cash,9613873037
+SR26090074,2026-09-10,Amravati Central,Amravati,Home,Cotton Bedsheet,4,899,0,3596.0,Card,9780370412
+SR26090098,2026-09-13,Sadar Store,Nagpur,Personal Care,Shampoo 340ml,2,330,10,594.0,Cash,9439828640
+SR26090118,2026-09-16,Chandrapur Road Store,Chandrapur,Home,Cotton Bedsheet,2,899,5,1708.1,Cash,9106709072
+RT26090150,2026-09-20,Chandrapur Road,Chandrapur,Grocery,Toor Dal 1kg,-1,165,0,-165.0,Cash,9294183419
+SR26090080,11 Sep 2026,Chandrapur Road,Chandrapur,Home,LED Bulb 9W (3 pack),2,310,10,558.0,Card,9190431634
+SR26090052,2026-09-08,Sadar,Nagpur,Grocery,Masala Tea 500g,3,235,0,705.0,Card,9188479188
+SR26090172,2026-09-23,Sadar,Nagpur,Personal Care,Toothpaste 200g,1,120,10,108.0,Card,9584500748
+SR26090040,2026-09-06,Sitabuldi,Nagpur,Home,Cotton Bedsheet,3,899,0,2697.0,Card,9795111744
+SR26090188,2026-09-26,sadar,Nagpur,Home,Cotton Bedsheet,2,899,0,1798.0,Cash,9580257978
+SR26090155,2026-09-21,Sadar,Nagpur,Electronics,Earphones,2,499,0,998.0,UPI,9936055049
+SR26090103,2026-09-14,Sitabuldi ,Nagpur,Electronics,Earphones,2,499,10,898.2,Cash,9015646440
+SR26090076,2026-09-10,Chandrapur Road,Chandrapur,,Cotton Bedsheet,3,899,10,2427.3,UPI,9708538671
+SR26090064,2026-09-09,Dharampeth,Nagpur,Grocery,Toor Dal 1kg,5,165,0,825.0,Cash,9357699085
+SR26090011,2026-09-02,Sitabuldi,Nagpur,Grocery,Basmati Rice 5kg,2,620,10,1116.0,Cash,9193319084
+SR26090016,2026-09-03,Amravati Central,Amravati,Home,LED Bulb 9W (3 pack),2,310,5,589.0,Cash,9318603208
+SR26090037,2026/09/05,Wardha Main,Wardha,Electronics,Phone Charger 20W,2,699,5,1328.1,Card,9828025822
+SR26090081,11-09-2026,Wardha Main,Wardha,Electronics,Phone Charger 20W,3,699,10,1887.3,UPI,9480052791
+SR26090100,2026-09-13,Sadar,Nagpur,Personal Care,Bath Soap (4 pack),2,190,0,380.0,Cash,9303995515
+RT26090211,2026-09-29,Sadar,Nagpur,Grocery,Sunflower Oil 1L,-1,148,5,-140.6,Cash,9057860518
+SR26090145,20-09-2026,Dharampeth,Nagpur,Grocery,Masala Tea 500g,3,235,5,669.75,Cash,9969534327
+SR26090156,2026/09/21,Amravati Central,Amravati,Personal Care,Shampoo 340ml,2,330,0,660.0,Cash,9605643338
+SR26090199,2026-09-28,Sitabuldi,Nagpur,Personal Care,Bath Soap (4 pack),1,190,0,190.0,Cash,9642824314
+SR26090087,2026-09-12,Amravati Central,Amravati,Electronics,Earphones,2,499,0,998.0,Card,9328409342
+SR26090060,2026-09-08,Amravati Central,Amravati,Electronics,Phone Charger 20W,2,699,0,1398.0,UPI,9337352866
+SR26090089,2026-09-12,Wardha Main,WARDHA,Personal Care,Bath Soap (4 pack),5,190,5,902.5,UPI,9884985568
+SR26090006,1 Sep 2026,Sitabuldi,Nagpur,Home,LED Bulb 9W (3 pack),1,310,0,310.0,UPI,9819672731
+SR26090135,2026-09-18,Wardha Main,WARDHA,Grocery,Toor Dal 1kg,4,165,0,660.0,UPI,9702718615
+SR26090176,2026-09-24,Sadar,Nagpur,,Earphones,4,499,0,1996.0,Cash,9210254909
+SR26090173,2026-09-23,Sadar,Nagpur,Grocery,Toor Dal 1kg,2,165,10,297.0,UPI,9013315604
+SR26090203,2026-09-28,DHARAMPETH,Nagpur,Personal Care,Shampoo 340ml,4,330,10,1188.0,UPI,9271052865
+SR26090187,2026-09-26,Sitabuldi,Nagpur,Home,Steel Lunch Box,1,540,0,₹540.00,Cash,9664122028
+SR26090075,2026-09-10,Chandrapur Road,Chandrapur,Grocery,Toor Dal 1kg,2,165,0,495.0,UPI,9490741828
+SR26090090,2026-09-12,Dharampeth,Nagpur,,Basmati Rice 5kg,2,620,10,1116.0,Card,9695389650
+SR26090033,2026-09-05,Chandrapur Road,Chandrapur,Personal Care,Toothpaste 200g,1,120,5,114.0,UPI,9586021458
+SR26090149,2026-09-20,Sitabuldi,Nagpur,Grocery,Basmati Rice 5kg,1,620,0,₹620.00,UPI,9250215205
+SR26090151,2026-09-20,Sitabuldi,Nagpur,Home,Cotton Bedsheet,1,899,0,899.0,Cash,9613521222
+SR26090168,2026-09-23,Dharampeth,Nagpur,Home,Steel Lunch Box,5,540,0,2700.0,UPI,9831294715
+SR26090140,2026-09-19,Dharampeth,Nagpur,Electronics,Phone Charger 20W,1,699,0,699.0,Cash,9426283709
+SR26090123,2026-09-17,Sitabuldi,Nagpur,Home,Steel Lunch Box,1,540,0,540.0,Cash,9349677044
+SR26090204,2026-09-28,Chandrapur Road,Chandrapur,Home,LED Bulb 9W (3 pack),2,310,5,589.0,UPI,9551830007
+SR26090195,2026-09-27,Sitabuldi,Nagpur,Grocery,Basmati Rice 5kg,1,620,5,589.0,Cash,9929383271
+SR26090007,2026-09-02,Chandrapur Road,Chandrapur,Home,Steel Lunch Box,4,540,10,1944.0,Card,9864887663
+SR26090192,2026/09/26,Dharampeth,Nagpur,Personal Care,Bath Soap (4 pack),5,190,0,950.0,Cash,9717748364
+SR26090001,2026-09-01,Sadar,Nagpur,Home,Cotton Bedsheet,500,899,0,449500.0,UPI,9998698797
+SR26090198,27 Sep 2026,Dharampeth,Nagpur,Grocery,Toor Dal 1kg,1,165,0,165.0,Card,9287713274
+SR26090027,04-09-2026,Wardha Main,Wardha,Grocery,Basmati Rice 5kg,4,620,0,2480.0,UPI,9911028594
+SR26090162,22 Sep 2026,Wardha Main,Wardha,Home,LED Bulb 9W (3 pack),5,310,5,1472.5,Card,9002822070
+SR26090017,2026-09-03,Sitabuldi,Nagpur,Home,Steel Lunch Box,5,540,0,2700.0,Card,9028382226
+SR26090194,2026-09-27,Sadar,Nagpur,Grocery,Basmati Rice 5kg,2,620,10,1116.0,UPI,9777854579
+SR26090079,2026-09-11,Amravati Central,Amravati,Electronics,Earphones,1,499,0,499.0,UPI,9781206176
+SR26090183,2026/09/25,Dharampeth,Nagpur,Grocery,Toor Dal 1kg,2,165,10,297.0,UPI,9430747776
+SR26090164,2026-09-22,Sitabuldi,Nagpur ,Electronics,Earphones,2,499,0,998.0,Card,9431774664
+SR26090184,2026-09-25,Dharampeth,Nagpur,Electronics,Phone Charger 20W,5,699,10,3145.5,Cash,9691804418
+SR26090078,2026-09-10,Dharampeth,Nagpur,,Cotton Bedsheet,5,899,0,4495.0,Card,9427105129
+SR26090152,2026-09-21,Chandrapur Road,Chandrapur,Electronics,Power Bank 10000mAh,5,1199,10,5395.5,Cash,9637877604
+SR26090057,2026-09-08,DHARAMPETH,Nagpur,Personal Care,Bath Soap (4 pack),3,190,0,570.0,UPI,9722022697
+SR26090138,2026-09-19,wardha main,Wardha,Home,Steel Lunch Box,1,540,0,540.0,Cash,9124172643
+SR26090159,2026-09-22,Dharampeth,Nagpur,Personal Care,Toothpaste 200g,2,120,0,240.0,Card,9568965164
+SR26090008,02-09-2026,Sadar,Nagpur,Personal Care,Bath Soap (4 pack),1,190,0,190.0,UPI,9978753477
+SR26090071,2026-09-10,Sadar,Nagpur ,Electronics,Power Bank 10000mAh,2,1199,10,2158.2,UPI,9598281953
+SR26090049,2026-09-07,wardha main,Wardha,Personal Care,Toothpaste 200g,4,120,10,432.0,Cash,9982104602
+SR26090134,2026-09-18,WARDHA MAIN,Wardha,Electronics,Power Bank 10000mAh,2,1199,5,2278.1,UPI,9579299239
+SR26090014,2026/09/02,Dharampeth,Nagpur,Home,Cotton Bedsheet,5,899,0,4495.0,Card,9016105500
+SR26090126,2026-09-17,Wardha Main,Wardha,Electronics,Phone Charger 20W,2,699,0,1398.0,Cash,9429474781
+SR26090085,11 Sep 2026,Sadar,Nagpur,Personal Care,Shampoo 340ml,5,330,0,1650.0,UPI,9980334635
+SR26090160,2026-09-22,Wardha Main,Wardha,Grocery,Basmati Rice 5kg,2,620,10,1116.0,Cash,9203962209
+SR26090018,3 Sep 2026,Sadar,Nagpur,Personal Care,Toothpaste 200g,3,120,5,342.0,UPI,9642524776
+SR26090031,2026-09-05,Sitabuldi,Nagpur,Electronics,Phone Charger 20W,5,699,0,3495.0,Cash,9370382653
+SR26090066,2026-09-09,Wardha Main,Wardha,Grocery,Basmati Rice 5kg,1,620,10,558.0,Card,9916979780
+SR26090179,2026-09-24,Wardha Main,Wardha,Personal Care,Shampoo 340ml,2,330,0,₹660.00,Card,9744805949
+SR26090161,2026-09-22,Chandrapur Road,Chandrapur,Home,Cotton Bedsheet,2,899,5,1708.1,Cash,9539711009
+SR26090172,2026-09-23,Sadar,Nagpur,Personal Care,Toothpaste 200g,1,120,10,108.0,Card,9584500748
+SR26090202,2026-09-28,Chandrapur Road,Chandrapur,Electronics,Earphones,2,499,0,998.0,Card,9511626958
+SR26090090,2026-09-12,Dharampeth,Nagpur,,Basmati Rice 5kg,2,620,10,1116.0,Card,9695389650
+SR26090073,2026-09-10,Sadar,Nagpur,Electronics,Power Bank 10000mAh,5,1199,0,5995.0,Cash,9451420381
+SR26090096,2026-09-13,Dharampeth,Nagpur,Personal Care,Toothpaste 200g,4,120,0,480.0,Card,9883615202
+SR26090141,2026-09-19,Chandrapur Road,Chandrapur,Electronics,Earphones,2,499,0,998.0,Card,9018898704
+SR26090101,2026-09-14,Chandrapur Road,Chandrapur,Personal Care,Toothpaste 200g,3,120,5,342.0,Cash,9615679596
+SR26090030,2026-09-04,amravati central,Amravati,Personal Care,Toothpaste 200g,2,120,0,240.0,UPI,9912808458
+SR26090186,2026-09-26,Wardha Main,Wardha,Electronics,Phone Charger 20W,5,699,0,3844.5,Card,9618075678
+SR26090201,2026/09/28,Sadar,Nagpur,Grocery,Toor Dal 1kg,5,165,0,825.0,Cash,9662712520
+SR26090026,2026-09-04,Sitabuldi,Nagpur,Personal Care,Bath Soap (4 pack),4,190,0,760.0,Card,9146590853
+SR26090174,2026-09-24,Wardha Main,Wardha,,Earphones,5,499,0,2495.0,Card,9819596101
+SR26090048,2026-09-07,Chandrapur Road,Chandrapur,Grocery,Masala Tea 500g,3,235,0,705.0,UPI,9253739241
+SR26090019,2026-09-03,Sadar,Nagpur,Home,Steel Lunch Box,1,540,0,540.0,Cash,9771884133
+SR26090029,2026-09-04,Sitabuldi,Nagpur,Electronics,Phone Charger 20W,4,699,10,2516.4,Cash,9864230048
+SR26090109,2026-09-14,Dharampeth,Nagpur,Grocery,Masala Tea 500g,2,235,0,470.0,Cash,9401376156
+SR26090158,2026-09-21,Sadar,nagpur,Personal Care,Bath Soap (4 pack),2,190,5,361.0,Cash,9403720568
+SR26090047,2026-09-07,Dharampeth,Nagpur,Electronics,Phone Charger 20W,1,699,0,699.0,Card,9037849518
+SR26090119,2026-09-16,Chandrapur Road,Chandrapur,Home,Steel Lunch Box,2,540,0,1080.0,Cash,9514136334
+SR26090105,2026-09-14,Wardha Main,Wardha,Electronics,Phone Charger 20W,500,699,0,349500.0,Card,9216311119
+SR26090083,2026-09-11,Dharampeth,Nagpur,Personal Care,Toothpaste 200g,2,120,0,240.0,Card,9942607911
+SR26090181,2026-09-25,Sitabuldi,Nagpur,Home,Cotton Bedsheet,5,899,5,4270.25,Cash,9340561357
+SR26090028,04-09-2026,Sitabuldi,Nagpur,Personal Care,Toothpaste 200g,3,120,0,360.0,Card,9666363228
+SR26090009,2026-09-02,Wardha Main,Wardha,Electronics,Power Bank 10000mAh,5,1199,5,5695.25,Card,9804571784
+SR26090068,2026-09-09,Wardha Main,Wardha,Grocery,Toor Dal 1kg,4,165,0,660.0,Cash,9247357363
+SR26090084,2026-09-11,Dharampeth,Nagpur,Personal Care,Shampoo 340ml,2,330,0,660.0,Card,9477447967
+SR26090163,22-09-2026,Sitabuldi,Nagpur,Electronics,Phone Charger 20W,5,699,5,3320.25,Cash,9298442782
+SR26090142,2026-09-19,Sitabuldi,Nagpur,Personal Care,Shampoo 340ml,1,330,5,313.5,Cash,9013325269
+SR26090036,5 Sep 2026,Chandrapur Road,Chandrapur,Home,LED Bulb 9W (3 pack),4,310,0,1240.0,UPI,9448452630
+SR26090178,2026-09-24,Sadar,Nagpur,Grocery,Sunflower Oil 1L,1,148,5,140.6,Cash,9336979516
+SR26090125,2026-09-17,Sitabuldi,Nagpur,Grocery,Toor Dal 1kg,4,165,0,₹660.00,UPI,9082359534
+SR26090131,2026-09-18,Dharampeth,Nagpur,Personal Care,Shampoo 340ml,1,330,0,330.0,UPI,9203830040
+SR26090106,14-09-2026,Chandrapur Road,Chandrapur,Electronics,Earphones,2,499,0,998.0,UPI,9780465873

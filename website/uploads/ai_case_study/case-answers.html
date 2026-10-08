@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Case Study Answers</title>
+<style>
+:root{--ink:#1c1c1c;--muted:#6b6b6b;--bg:#f6f1e9;--card:#fff;--gold:#c8962e;--dark:#161616;--ok:#1f8a4c;--bad:#c0392b;--line:#e4dccf}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.45}
+header{background:var(--dark);color:#fff;padding:14px 18px;border-bottom:4px solid var(--gold)}
+header b{color:var(--gold);letter-spacing:.04em;font-size:12px;display:block;text-transform:uppercase}
+header span{font-size:17px;font-weight:600}
+main{max-width:640px;margin:0 auto;padding:18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:16px;box-shadow:0 2px 6px rgba(0,0,0,.05)}
+h1{font-size:22px;margin:0 0 4px} h2{font-size:17px;margin:18px 0 2px}
+.sub{color:var(--muted);font-size:14px;margin:0 0 10px}
+label{display:block;font-weight:600;font-size:14px;margin:12px 0 4px}
+input{width:100%;padding:12px;border:1px solid #cfc6b6;border-radius:10px;font-size:16px}
+.q{background:#faf6ee;border-left:4px solid var(--gold);border-radius:10px;padding:12px;margin-top:16px;font-size:15px}
+.q b{display:block;margin-bottom:2px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+button,.btn{display:block;width:100%;text-align:center;padding:14px;border:0;border-radius:10px;font-size:16px;font-weight:600;cursor:pointer;background:var(--gold);color:#1c1c1c;margin-top:16px}
+button:disabled{opacity:.5;cursor:default}
+.status{font-size:15px;padding:14px;border-radius:10px;margin-top:14px}
+.status.ok{background:#e8f6ee;color:#145c33;text-align:center}
+.status.ok .big{font-size:26px;font-weight:800;display:block;margin-bottom:4px}
+.status.retry{background:#fff4d6;color:#6b4a00}
+.status.bad{background:#fdecea;color:#8c2a1f}
+.board{background:var(--dark);color:#fff;border-radius:14px;padding:16px 18px;margin-top:6px;border-top:4px solid var(--gold)}
+.board h3{margin:0 0 4px;font-size:15px;color:var(--gold)}
+.board p{margin:0 0 10px;font-size:13px;color:#cfcfcf}
+.board a{display:block;color:#fff;text-decoration:none;font-size:14px;padding:8px 0;border-top:1px solid #333;word-break:break-all}
+.board a span{color:var(--gold);display:inline-block;min-width:74px;font-size:12px;text-transform:uppercase;letter-spacing:.04em}
+</style>
+</head>
+<body>
+<header><b id="evt"></b><span>Case Study · Your Answers</span></header>
+<main>
+<div class="card" id="dl" hidden>
+  <h2 style="margin-top:0">Case study files</h2>
+  <p class="sub">Read the briefing, use the Excel data to build your tool, then type your 3 answers below.</p>
+  <a class="btn" id="dlb" hidden style="text-decoration:none;margin-top:0">&#11015; Download case briefing</a>
+  <a class="btn" id="dlbtn" hidden style="text-decoration:none">&#11015; Download case data (Excel)</a>
+</div>
+<div class="card" id="form">
+  <h1>Type your 3 answers</h1>
+  <p class="sub">Use the numbers from the tool you built. You get your result instantly, and you can recheck and try again.</p>
+  <label for="nm">Full name</label><input id="nm" type="text" autocomplete="name">
+  <label for="no">Contact number</label><input id="no" type="tel" autocomplete="tel">
+  <label for="in">Institute name</label><input id="in" type="text" autocomplete="organization">
+
+  <div class="q"><b>Question 1</b>How many exact duplicate rows (same Txn_ID) did you remove?</div>
+  <label for="q1">Rows removed</label><input id="q1" type="text" inputmode="numeric" placeholder="e.g. 7">
+
+  <div class="q"><b>Question 2</b>What is the total net sales (₹)? Take each row's amount as Qty × Unit_Price × (1 − Discount%), remove the duplicates, keep returns, and exclude rows with a Qty of 100 or more.</div>
+  <label for="q2">Total net sales (₹)</label><input id="q2" type="text" inputmode="decimal" placeholder="e.g. 123456.78">
+
+  <div class="q"><b>Question 3</b>After the same cleaning, which store has the highest net sales, and how much (₹)?</div>
+  <div class="two">
+    <div><label for="q3s">Store name</label><input id="q3s" type="text" placeholder="e.g. Sadar"></div>
+    <div><label for="q3a">Its net sales (₹)</label><input id="q3a" type="text" inputmode="decimal" placeholder="e.g. 54000.50"></div>
+  </div>
+  <div id="msg"></div>
+  <button id="go">Check my answers</button>
+</div>
+<div class="board" id="board"></div>
+</main>
+<script>
+/* ===================== CONFIG: EDIT THIS LINE ===================== */
+const CONFIG = {
+  SHEET_URL: "https://script.google.com/macros/s/AKfycbylTdeiWUb2h1yNV2401JGh4Gfm2JFPe0u2Xq_k69HVVEb2KhTEwfGARRwKswFuHPDJ/exec",  // the same /exec URL used in the quiz files
+  EVENT: "AI Fluency Workshop",
+  CASE_BRIEF: "case-briefing.pdf",  // briefing file name in the same GitHub folder as this page, e.g. "case-briefing.pdf". Leave "" to hide.
+  CASE_FILE: "case-data.xlsx",  // Excel file name in the same folder, e.g. "case-data.xlsx". Leave "" to hide.
+  HOST: "Neelukumari Jain, CA · Samyag Synergy",
+  BRAND: "Samyag Synergy · One-Stop F&A Solution",
+  WEBSITE: "https://website.samyagsynergy.workers.dev",
+  EMAIL: "samyagsynergy@gmail.com",
+  LINKEDIN: "https://www.linkedin.com/in/ca-neelukumari-jain-89a20945"
+};
+/* ================================================================== */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+$('#evt').textContent=CONFIG.EVENT;
+[['dlb',CONFIG.CASE_BRIEF],['dlbtn',CONFIG.CASE_FILE]].forEach(([id,f])=>{if(f){const a=$('#'+id);a.href=f;a.setAttribute('download','');a.hidden=false;$('#dl').hidden=false}});
+const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+$('#nm').value=store.get('name')||''; $('#no').value=store.get('num')||''; $('#in').value=store.get('inst')||'';
+$('#board').innerHTML=`<h3>${esc(CONFIG.HOST)}</h3><p>${esc(CONFIG.BRAND)}</p>
+ <a href="${CONFIG.WEBSITE}" target="_blank" rel="noopener"><span>Website</span>${esc(CONFIG.WEBSITE.replace('https://',''))}</a>
+ <a href="mailto:${CONFIG.EMAIL}"><span>Email</span>${esc(CONFIG.EMAIL)}</a>
+ <a href="${CONFIG.LINKEDIN}" target="_blank" rel="noopener"><span>LinkedIn</span>${esc(CONFIG.LINKEDIN.replace('https://www.',''))}</a>`;
+
+function check(params){
+  return new Promise((res,rej)=>{
+    if(!CONFIG.SHEET_URL||CONFIG.SHEET_URL.indexOf('PASTE_')===0) return rej(new Error('This page is not connected yet. Please tell your facilitator.'));
+    const cb='cs'+Date.now(), s=document.createElement('script');
+    const clean=()=>{delete window[cb];s.remove();clearTimeout(t)};
+    const t=setTimeout(()=>{clean();rej(new Error('No reply. Please check your internet and try again.'))},20000);
+    window[cb]=d=>{clean();d&&d.ok?res(d):rej(new Error('Something went wrong on our side. Please try again in a moment.'))};
+    s.onerror=()=>{clean();rej(new Error('Could not connect. Please check your internet and try again.'))};
+    const q=Object.keys(params).map(k=>encodeURIComponent(k)+'='+encodeURIComponent(params[k])).join('&');
+    s.src=CONFIG.SHEET_URL+(CONFIG.SHEET_URL.indexOf('?')>-1?'&':'?')+'action=case&callback='+cb+'&'+q;
+    document.body.appendChild(s);
+  });
+}
+$('#go').onclick=async()=>{
+  const v={name:$('#nm').value.trim(),number:$('#no').value.trim(),institute:$('#in').value.trim(),
+    q1:$('#q1').value.trim(),q2:$('#q2').value.trim(),q3store:$('#q3s').value.trim(),q3amt:$('#q3a').value.trim()};
+  const m=$('#msg');
+  if(v.name.length<2||v.number.length<5||v.institute.length<2){m.innerHTML='<div class="status bad">Please fill in your name, contact number and institute name.</div>';return}
+  if(!v.q1||!v.q2||!v.q3store||!v.q3amt){m.innerHTML='<div class="status bad">Please answer all 3 questions before checking.</div>';return}
+  store.set('name',v.name);store.set('num',v.number);store.set('inst',v.institute);
+  const b=$('#go'); b.disabled=true; b.textContent='Checking…'; m.innerHTML='';
+  try{
+    const r=await check(v);
+    if(r.status==='passed'){
+      m.innerHTML=`<div class="status ok"><span class="big">🎉 Congratulations, ${esc(v.name.split(' ')[0])}!</span>Your case study is complete. Great work cleaning the data and checking your numbers.</div>`;
+      b.style.display='none';
+    }else if(r.status==='locked'){
+      m.innerHTML='<div class="status retry">You have used all your attempts. Please speak to your facilitator and they will help you.</div>';
+      b.style.display='none';
+    }else{
+      m.innerHTML=`<div class="status retry"><b>Almost there!</b> Please recheck: <b>${esc(r.wrong.join(', '))}</b>. Look again at your cleaning steps, then try once more.${r.left>0?' ('+r.left+(r.left===1?' attempt':' attempts')+' left)':''}</div>`;
+      b.disabled=false; b.textContent='Check my answers again';
+    }
+  }catch(e){
+    m.innerHTML='<div class="status bad">'+esc(e.message)+'</div>';
+    b.disabled=false; b.textContent='Check my answers';
+  }
+};
+</script>
+</body>
+</html>
