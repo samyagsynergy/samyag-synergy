@@ -9,17 +9,19 @@ const L={Human:'🧑 Human',AI:'🤖 AI',Both:'🤝 Both','Use after a quick rev
 const SRC=['Human','AI','Both'],ACT=['Use after a quick review','Verify and improve','Do not use as proposed'];
 const app=document.getElementById('app'),esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 function ls(k,v){try{if(v===undefined)return localStorage.getItem(k)||'';localStorage.setItem(k,v)}catch(e){return ''}}
+let conn='';
 let id=ls('gjaId')||('v'+Math.random().toString(36).slice(2,10)+Date.now().toString(36).slice(-4)),name=ls('gjaName'),st=null,sig='',picks={},msg='';
 ls('gjaId',id);
 function jp(params,cb){const n='cb'+Date.now()+Math.floor(Math.random()*1e6),s=document.createElement('script');const t=setTimeout(()=>{done();cb&&cb(null)},8000);function done(){clearTimeout(t);delete window[n];s.remove()}window[n]=d=>{done();cb&&cb(d)};s.onerror=()=>{done();cb&&cb(null)};s.src=CONFIG.SHEET_URL+'?'+new URLSearchParams(Object.assign({},params,{callback:n})).toString();document.body.appendChild(s)}
 function sendJoin(){jp({action:'gvote',id:id,name:name,step:'join',choice:'in'})}
 function nameScreen(){app.innerHTML='<div class="lbl">Welcome! Enter your name to join.</div><input id="nm" maxlength="40" placeholder="Your name" autocomplete="name"><button class="btn" id="go">Join the game</button><div id="err" class="err"></div>';
 document.getElementById('go').onclick=()=>{const n=document.getElementById('nm').value.trim();if(!n){document.getElementById('err').textContent='Please type your name.';return}name=n;ls('gjaName',n);sendJoin();render()}}
+function status(){return conn==='bad'?'<div class="err">Cannot reach the server. '+(CONFIG.SHEET_URL.indexOf('PASTE')>-1?'The web app URL is not set in this file.':'Check the web app URL in this file.')+'</div>':conn==='ok'?'<div class="note">Connected to the server ✓ (page v2)</div>':''}
 function keys(){const c=st.round==='opening'?'o':'c';return[c+st.n+'s-'+st.run,c+st.n+'a-'+st.run]}
 function group(t,list,step){const mine=picks[step];return '<div class="lbl">'+t+'</div>'+list.map(k=>'<button class="opt'+(mine===k?' sel':'')+'" data-s="'+step+'" data-k="'+k+'">'+L[k]+'</button>').join('')}
 function render(){
 if(!name)return nameScreen();
-if(!st){app.innerHTML='<div class="lbl">Hi '+esc(name)+'!</div><div class="note">You are in. Waiting for the first question…</div>';return}
+if(!st){app.innerHTML='<div class="lbl">Hi '+esc(name)+'!</div><div class="note">You are in. Waiting for the first question…</div>'+status();return}
 if(st.phase==='done'){app.innerHTML='<div class="lbl">Round complete 🎉</div><div class="note">Please look at the main screen.</div>';return}
 const k=keys(),opening=st.round==='opening';
 let h='<div class="meta">Example '+st.n+' of '+st.of+'</div><div class="q">'+esc(st.text)+'</div>';
@@ -27,6 +29,6 @@ if(st.phase==='vote')h+=(opening?group('Who wrote this?',SRC,k[0]):'')+group('Wh
 else h+='<div class="note">'+(opening?'Source: <b>'+(picks[k[0]]?L[picks[k[0]]]:'no answer')+'</b><br>':'')+'Action: <b>'+(picks[k[1]]?L[picks[k[1]]]:'no answer')+'</b><br>Please look at the main screen.</div>';
 app.innerHTML=h;app.querySelectorAll('.opt').forEach(b=>b.onclick=()=>cast(b.dataset.s,b.dataset.k))}
 function cast(step,k){picks[step]=k;msg='';render();jp({action:'gvote',id:id,name:name,step:step,choice:k},d=>{if(!d||!d.ok){msg='Could not send. Tap your answer again.';render()}})}
-function poll(){jp({action:'gstate'},d=>{if(d&&d.ok){const s=JSON.stringify(d.state);if(s!==sig){sig=s;st=d.state;if(name)render()}}setTimeout(poll,3000+Math.random()*2500)})}
+function poll(){jp({action:'gstate'},d=>{const was=conn;conn=d&&d.ok?'ok':'bad';if(d&&d.ok){const s=JSON.stringify(d.state);if(s!==sig){sig=s;st=d.state;if(name)render()}}if(conn!==was&&name&&!st)render();setTimeout(poll,3000+Math.random()*2500)})}
 if(name)sendJoin();render();poll();
 </script></body></html>
