@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Vote · AI Fluency: Guess, Judge, Act</title>
+<style>
+:root{--navy:#17324d;--blue:#2563eb;--muted:#64748b;--bg:#f5f7fb}*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Segoe UI,Arial,sans-serif;color:#1f2937}.wrap{max-width:560px;margin:auto;padding:16px}h1{font-size:1.3rem;color:#fff;background:linear-gradient(135deg,#17324d,#285b83);padding:16px;border-radius:14px;margin:0 0 14px}.card{background:#fff;border-radius:14px;padding:18px;box-shadow:0 3px 12px #0001}.meta{color:var(--muted);font-weight:800;font-size:.85rem}.q{font-size:1.15rem;line-height:1.45;color:var(--navy);margin:10px 0 16px}.lbl{font-weight:800;color:var(--navy);margin:8px 0}input{width:100%;font:inherit;padding:13px;border:2px solid #d7dfeb;border-radius:10px;margin:10px 0}.opt,.btn{display:block;width:100%;font:inherit;font-weight:750;padding:15px;border-radius:11px;margin:9px 0;cursor:pointer}.opt{border:2px solid #d7dfeb;background:#fff;color:#1f2937;text-align:left}.opt.sel{border-color:var(--blue);background:#eff6ff}.btn{border:0;background:var(--blue);color:#fff;text-align:center}.note{color:var(--muted);margin-top:10px;line-height:1.5}.err{color:#b91c1c;font-weight:700;margin-top:8px}
+</style></head><body><div class="wrap"><h1>AI Fluency: Guess, Judge, Act</h1><div id="app" class="card"></div></div>
+<script>
+const CONFIG={SHEET_URL:'https://script.google.com/macros/s/AKfycbylTdeiWUb2h1yNV2401JGh4Gfm2JFPe0u2Xq_k69HVVEb2KhTEwfGARRwKswFuHPDJ/exec'};
+const L={Human:'🧑 Human',AI:'🤖 AI',Both:'🤝 Both','Use after a quick review':'🟢 Use after a quick review','Verify and improve':'🟡 Verify and improve','Do not use as proposed':'🔴 Do not use as proposed'};
+const SRC=['Human','AI','Both'],ACT=['Use after a quick review','Verify and improve','Do not use as proposed'];
+const app=document.getElementById('app'),esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function ls(k,v){try{if(v===undefined)return localStorage.getItem(k)||'';localStorage.setItem(k,v)}catch(e){return ''}}
+let id=ls('gjaId')||('v'+Math.random().toString(36).slice(2,10)+Date.now().toString(36).slice(-4)),name=ls('gjaName'),st=null,sig='',picks={},msg='';
+ls('gjaId',id);
+function jp(params,cb){const n='cb'+Date.now()+Math.floor(Math.random()*1e6),s=document.createElement('script');const t=setTimeout(()=>{done();cb&&cb(null)},8000);function done(){clearTimeout(t);delete window[n];s.remove()}window[n]=d=>{done();cb&&cb(d)};s.onerror=()=>{done();cb&&cb(null)};s.src=CONFIG.SHEET_URL+'?'+new URLSearchParams(Object.assign({},params,{callback:n})).toString();document.body.appendChild(s)}
+function sendJoin(){jp({action:'gvote',id:id,name:name,step:'join',choice:'in'})}
+function nameScreen(){app.innerHTML='<div class="lbl">Welcome! Enter your name to join.</div><input id="nm" maxlength="40" placeholder="Your name" autocomplete="name"><button class="btn" id="go">Join the game</button><div id="err" class="err"></div>';
+document.getElementById('go').onclick=()=>{const n=document.getElementById('nm').value.trim();if(!n){document.getElementById('err').textContent='Please type your name.';return}name=n;ls('gjaName',n);sendJoin();render()}}
+function keys(){const c=st.round==='opening'?'o':'c';return[c+st.n+'s-'+st.run,c+st.n+'a-'+st.run]}
+function group(t,list,step){const mine=picks[step];return '<div class="lbl">'+t+'</div>'+list.map(k=>'<button class="opt'+(mine===k?' sel':'')+'" data-s="'+step+'" data-k="'+k+'">'+L[k]+'</button>').join('')}
+function render(){
+if(!name)return nameScreen();
+if(!st){app.innerHTML='<div class="lbl">Hi '+esc(name)+'!</div><div class="note">You are in. Waiting for the first question…</div>';return}
+if(st.phase==='done'){app.innerHTML='<div class="lbl">Round complete 🎉</div><div class="note">Please look at the main screen.</div>';return}
+const k=keys(),opening=st.round==='opening';
+let h='<div class="meta">Example '+st.n+' of '+st.of+'</div><div class="q">'+esc(st.text)+'</div>';
+if(st.phase==='vote')h+=(opening?group('Who wrote this?',SRC,k[0]):'')+group('What should you do with this output?',ACT,k[1])+'<div class="note">Your answers are saved. You can change them until the screen moves on.</div>'+(msg?'<div class="err">'+msg+'</div>':'');
+else h+='<div class="note">'+(opening?'Source: <b>'+(picks[k[0]]?L[picks[k[0]]]:'no answer')+'</b><br>':'')+'Action: <b>'+(picks[k[1]]?L[picks[k[1]]]:'no answer')+'</b><br>Please look at the main screen.</div>';
+app.innerHTML=h;app.querySelectorAll('.opt').forEach(b=>b.onclick=()=>cast(b.dataset.s,b.dataset.k))}
+function cast(step,k){picks[step]=k;msg='';render();jp({action:'gvote',id:id,name:name,step:step,choice:k},d=>{if(!d||!d.ok){msg='Could not send. Tap your answer again.';render()}})}
+function poll(){jp({action:'gstate'},d=>{if(d&&d.ok){const s=JSON.stringify(d.state);if(s!==sig){sig=s;st=d.state;if(name)render()}}setTimeout(poll,3000+Math.random()*2500)})}
+if(name)sendJoin();render();poll();
+</script></body></html>
