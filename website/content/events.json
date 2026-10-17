@@ -98,7 +98,7 @@
       "title": "IIM Nagpur - AI Fluency Crash Course",
       "tag": "Webinar",
       "venue": "IIM Nagpur",
-      "duration": "2 hour 30 Mins",
+      "duration": "10 October 2026, 2 hour 30 Mins",
       "summary": "AI Fluency: From Foundations to Practical Automation\n\nA hands-on session covering AI fundamentals, the CO-STAR framework, AI adoption roadmap, governance, data privacy, and responsible AI use. Explore real-world business applications, Agentic AI workflows, and vibe coding through live demonstrations, followed by a practical case study where students build a basic automation tool.",
       "photos": [
         "/uploads/ai-workshop-1-.png"
@@ -114,7 +114,8 @@
           "name": "Gaurav Shilimkar",
           "role": "IIM Nagpur"
         }
-      ]
+      ],
+      "description": "."
     }
   ]
 }
