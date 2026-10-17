@@ -93,6 +93,28 @@
       ],
       "description": "My AI Fluency journey started with ISCA's certification — and led back to their stage, as an invited speaker at the AI Fluency Café. I shared the practical side of that journey: 15+ tools built through self-taught experimentation, and one belief that guided all of them — in this profession, trust should be given, not proven.",
       "duration": "24 September 2026"
+    },
+    {
+      "title": "IIM Nagpur - AI Fluency Crash Course",
+      "tag": "Webinar",
+      "venue": "IIM Nagpur",
+      "duration": "2 hour 30 Mins",
+      "summary": "AI Fluency: From Foundations to Practical Automation\n\nA hands-on session covering AI fundamentals, the CO-STAR framework, AI adoption roadmap, governance, data privacy, and responsible AI use. Explore real-world business applications, Agentic AI workflows, and vibe coding through live demonstrations, followed by a practical case study where students build a basic automation tool.",
+      "photos": [
+        "/uploads/ai-workshop-1-.png"
+      ],
+      "testimonials": [
+        {
+          "quote": "I loved how live demos were done to teach us how to actually build AI models in real life instead of just a theory session.\n\n",
+          "name": "Dhairya Garg",
+          "role": "IIM NAGPUR"
+        },
+        {
+          "quote": "All about the Al, like we can use that more effectively\n\n",
+          "name": "Gaurav Shilimkar",
+          "role": "IIM Nagpur"
+        }
+      ]
     }
   ]
 }
