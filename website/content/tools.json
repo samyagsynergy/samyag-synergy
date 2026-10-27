@@ -101,6 +101,13 @@
       "description": ".",
       "link": "tools/aiquiz4/index.html",
       "link_label": "OPEN QUIZ"
+    },
+    {
+      "title": "Singapore-India-DTAA-Tax-Navigator",
+      "category": "Tax Tools",
+      "description": "A single-file, zero-dependency interactive tax navigator and withholding calculator for the Singapore–India Double Taxation Avoidance Agreement (DTAA), covering Articles 5–29A, MLI anti-abuse rules, and 30-day related-party PE alerts.",
+      "link_label": "OPEN TOOL",
+      "link": "tools/dtaa-sg-india/index.html"
     }
   ]
 }
