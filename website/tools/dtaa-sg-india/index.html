@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Samyag Synergy | Singapore–India Bilateral DTAA Master Navigator</title>
+  <style>
+    :root {
+      --primary: #0f2b5c;
+      --primary-accent: #1d4ed8;
+      --primary-light: #eff6ff;
+      --gold: #d97706;
+      --gold-light: #fef3c7;
+      --success: #15803d;
+      --success-light: #dcfce7;
+      --danger: #b91c1c;
+      --danger-light: #fef2f2;
+      --slate-50: #f8fafc;
+      --slate-100: #f1f5f9;
+      --slate-200: #e2e8f0;
+      --slate-400: #94a3b8;
+      --slate-600: #475569;
+      --slate-800: #1e293b;
+      --radius: 10px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+    body { background-color: #f1f5f9; color: var(--slate-800); height: 100vh; overflow-y: auto; padding: 10px 14px; font-size: 12.5px; line-height: 1.35; }
+    @media (min-height: 800px) { body { overflow: hidden; } }
+
+    .app-wrapper { max-width: 1280px; margin: 0 auto; height: 100%; display: flex; flex-direction: column; justify-content: space-between; }
+
+    /* Compact Header */
+    header {
+      background: #ffffff;
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius);
+      padding: 8px 14px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+      gap: 10px;
+    }
+    .brand-group { display: flex; align-items: center; gap: 10px; }
+    .brand-logo { width: 42px; height: 42px; border-radius: 8px; object-fit: contain; border: 1px solid var(--slate-200); }
+    .brand-text h1 { font-size: 1.15rem; color: var(--primary); font-weight: 800; line-height: 1.1; }
+    .brand-text .tagline { font-size: 0.7rem; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 0.5px; }
+
+    .header-actions { display: flex; align-items: center; gap: 10px; }
+    
+    .preset-select {
+      background: var(--primary-light);
+      border: 1.5px solid #bfdbfe;
+      color: var(--primary-accent);
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      outline: none;
+    }
+
+    .advisor-pill {
+      background: var(--slate-50);
+      border: 1px solid var(--slate-200);
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .advisor-photo-wrap {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      overflow: hidden;
+      background: linear-gradient(135deg, var(--primary), var(--primary-accent));
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 0.75rem;
+      border: 1.5px solid var(--slate-200);
+      flex-shrink: 0;
+    }
+    .advisor-photo-wrap img { width: 100%; height: 100%; object-fit: cover; }
+    .advisor-links a { color: var(--primary-accent); text-decoration: none; font-weight: 700; }
+    .advisor-links a:hover { text-decoration: underline; color: var(--gold); }
+
+    /* 2-Column Split Dashboard */
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 1.25fr;
+      gap: 12px;
+      flex: 1;
+      margin-bottom: 6px;
+      min-height: 0;
+    }
+    @media (max-width: 900px) {
+      .main-grid { grid-template-columns: 1fr; }
+      body { overflow-y: auto !important; height: auto; }
+    }
+
+    .panel {
+      background: #ffffff;
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius);
+      padding: 12px 14px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .panel-heading {
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: var(--primary);
+      margin-bottom: 8px;
+      padding-bottom: 5px;
+      border-bottom: 1.5px solid var(--slate-100);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .form-group { margin-bottom: 7px; }
+    label { display: block; font-weight: 700; font-size: 0.75rem; color: var(--slate-800); margin-bottom: 2px; }
+    select {
+      width: 100%;
+      padding: 6px 9px;
+      border: 1.5px solid var(--slate-200);
+      border-radius: 6px;
+      font-size: 0.78rem;
+      background: #fff;
+      color: var(--slate-800);
+      outline: none;
+    }
+    select:focus { border-color: var(--primary-accent); }
+
+    .sub-hint { font-size: 0.68rem; color: var(--slate-600); margin-top: 1px; }
+
+    .highlight-card {
+      background: #fffbeb;
+      border: 1px solid #fef3c7;
+      border-left: 3.5px solid var(--gold);
+      padding: 6px 8px;
+      border-radius: 6px;
+      margin: 6px 0;
+    }
+
+    /* Warning Alert Banner for Related Party */
+    .alert-banner {
+      background: var(--danger-light);
+      border: 1px solid #fecaca;
+      border-left: 4px solid var(--danger);
+      color: var(--danger);
+      padding: 6px 9px;
+      border-radius: 6px;
+      margin-bottom: 8px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      display: none;
+    }
+
+    /* Results Column */
+    .verdict-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 6px;
+      border-bottom: 1.5px solid var(--slate-100);
+      margin-bottom: 8px;
+    }
+    .verdict-title { font-size: 0.72rem; text-transform: uppercase; font-weight: 800; color: var(--slate-600); }
+    .verdict-article { font-size: 0.8rem; font-weight: 800; color: var(--primary-accent); }
+
+    .badge {
+      padding: 3px 9px;
+      border-radius: 20px;
+      font-weight: 800;
+      font-size: 0.8rem;
+      display: inline-block;
+    }
+    .badge-zero { background: var(--success-light); color: var(--success); border: 1px solid #bbf7d0; }
+    .badge-capped { background: var(--primary-light); color: var(--primary-accent); border: 1px solid #bfdbfe; }
+    .badge-taxable { background: var(--danger-light); color: var(--danger); border: 1px solid #fecaca; }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .stat-box {
+      background: var(--slate-50);
+      border: 1px solid var(--slate-200);
+      border-radius: 6px;
+      padding: 7px 9px;
+    }
+    .stat-label { font-size: 0.65rem; text-transform: uppercase; font-weight: 700; color: var(--slate-600); }
+    .stat-val { font-size: 1.1rem; font-weight: 800; color: var(--primary); margin: 1px 0; }
+    .stat-sub { font-size: 0.68rem; color: var(--slate-600); }
+
+    .rationale-block {
+      background: var(--slate-50);
+      border-left: 3px solid var(--primary-accent);
+      padding: 7px 9px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+    }
+    .rationale-heading { font-size: 0.7rem; font-weight: 800; color: var(--primary); text-transform: uppercase; margin-bottom: 2px; }
+    .rationale-body { font-size: 0.74rem; color: var(--slate-800); line-height: 1.35; }
+
+    .docs-block {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 6px;
+      padding: 7px 9px;
+      margin-bottom: 8px;
+    }
+    .docs-heading { font-size: 0.7rem; font-weight: 800; color: var(--success); text-transform: uppercase; margin-bottom: 4px; }
+    .docs-list { list-style: none; font-size: 0.72rem; color: #166534; }
+    .docs-list li { margin-bottom: 2px; display: flex; align-items: flex-start; gap: 4px; line-height: 1.25; }
+    .docs-list li::before { content: "✓"; font-weight: 900; color: var(--success); }
+
+    .button-row { display: flex; gap: 8px; }
+    .btn {
+      flex: 1;
+      padding: 7px 10px;
+      border-radius: 6px;
+      font-size: 0.74rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      border: none;
+    }
+    .btn-copy { background: var(--primary); color: #fff; }
+    .btn-copy:hover { background: var(--primary-accent); }
+    .btn-print { background: var(--slate-200); color: var(--slate-800); }
+    .btn-print:hover { background: var(--slate-300); }
+
+    footer {
+      background: #fff;
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius);
+      padding: 6px 10px;
+      text-align: center;
+      font-size: 0.68rem;
+      color: var(--slate-600);
+    }
+    .disclaimer { font-weight: 600; color: var(--danger); margin-top: 1px; }
+
+    #toast {
+      visibility: hidden;
+      min-width: 220px;
+      background-color: var(--slate-800);
+      color: #fff;
+      text-align: center;
+      border-radius: 6px;
+      padding: 8px;
+      position: fixed;
+      z-index: 100;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.74rem;
+      font-weight: 700;
+    }
+    #toast.show { visibility: visible; animation: popin 0.2s, popout 0.2s 1.8s; }
+    @keyframes popin { from { bottom: 0; opacity: 0; } to { bottom: 20px; opacity: 1; } }
+    @keyframes popout { from { bottom: 20px; opacity: 1; } to { bottom: 0; opacity: 0; } }
+
+    @media print {
+      body { background: #fff; padding: 0; overflow: visible !important; height: auto; }
+      .header-actions, .button-row, #toast { display: none !important; }
+      .main-grid { display: block; }
+      .panel { box-shadow: none; border: 1px solid #ccc; margin-bottom: 10px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="app-wrapper">
+  
+  <header>
+    <div class="brand-group">
+      <img class="brand-logo" alt="Samyag Synergy Logo" src="data:image/png;base64,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">
+      <div class="brand-text">
+        <h1>Samyag Synergy</h1>
+        <div class="tagline">One-Stop F&A Solution</div>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <select class="preset-select" id="presetDropdown" onchange="applyPreset(this.value)">
+        <option value="">⚡ Load Case Preset...</option>
+        <option value="sg_pay_in_it_related">⚠️ Related Party Intercompany Tech Services (30-Day PE Check)</option>
+        <option value="salary_under183">👨‍💼 Employee Work Trip to India (<183 Days)</option>
+        <option value="salary_over183">✈️ Expat Deputation to India (≥183 Days)</option>
+        <option value="director_fee">🏛️ Director Board Remuneration (Art 16)</option>
+        <option value="shipping_air">🚢 Airline / Shipping International Profits (Art 8)</option>
+        <option value="sg_pay_in_it">💻 SG Co pays Indian IT Firm (Independent Remote Dev)</option>
+        <option value="sg_pay_in_tech">🛠️ SG Co pays Indian Tech Training (Make Avail)</option>
+        <option value="cap_gain_pre2017">📊 Sale of Indian Shares Acquired Pre-April 2017</option>
+        <option value="cap_gain_post2017">📈 Sale of Indian Shares Acquired Post-April 2017</option>
+        <option value="in_pay_sg_div">💰 Indian Co pays SG Parent (≥25% Holding)</option>
+        <option value="teacher_research">🎓 Visiting Professor / Academic (Art 21)</option>
+        <option value="student_remit">🎒 Overseas Student Remittances (Art 20)</option>
+        <option value="gov_central_bank">🏛️ Sovereign Entity / RBI / MAS Funds (Art 22)</option>
+      </select>
+
+      <div class="advisor-pill">
+        <div class="advisor-photo-wrap" id="advisorAvatar">
+          <span>CA</span>
+        </div>
+        <div>
+          <div><strong>CA Neelukumari Jain</strong></div>
+          <div class="advisor-links">
+            <a href="tel:+6598809574">📞 +65 9880 9574</a> | 
+            <a href="mailto:samyagsynergy@gmail.com">✉️ Email</a> |
+            <a href="https://website.samyagsynergy.workers.dev" target="_blank" rel="noopener">🌐 Web</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 2-Column Responsive Workspace -->
+  <div class="main-grid">
+    
+    <!-- LEFT PANEL: Inputs -->
+    <div class="panel">
+      <div>
+        <div class="panel-heading">
+          <span>1. Transaction Parameters</span>
+          <span style="font-size:0.68rem; color:var(--slate-400);">Grounded in DTAA & Protocols</span>
+        </div>
+
+        <form id="taxForm" onchange="calculateMasterTax()">
+          
+          <div class="form-group">
+            <label>Payment Direction / Cross-Border Flow</label>
+            <select id="direction">
+              <option value="SG_TO_IN">Singapore Payer → Indian Beneficiary</option>
+              <option value="IN_TO_SG">Indian Payer → Singapore Beneficiary</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Income Stream / Treaty Category</label>
+            <select id="incomeType" onchange="toggleFormFields()">
+              <option value="BUSINESS_SERVICE">Article 7 & 12: Business, IT & Technical Services</option>
+              <option value="SALARY">Article 15: Salary & Employment Remuneration</option>
+              <option value="DIRECTOR_FEE">Article 16: Directors' Board Fees & Remuneration</option>
+              <option value="CAPITAL_GAIN">Article 13: Capital Gains (Shares & Real Estate)</option>
+              <option value="DIVIDEND">Article 10: Dividends (Company Distributions)</option>
+              <option value="INTEREST">Article 11: Interest on Loans / Debt-Claims</option>
+              <option value="ROYALTY">Article 12: Royalties, IP, Patents & Software Licenses</option>
+              <option value="SHIPPING_AIR">Article 8: International Shipping & Air Transport</option>
+              <option value="REAL_ESTATE">Article 6: Immovable Property & Rental Income</option>
+              <option value="ARTISTE_SPORT">Article 17: Artistes, Performers & Sportspersons</option>
+              <option value="GOV_SERVICE">Article 18: Government Service Remuneration & Pension</option>
+              <option value="PRIVATE_PENSION">Article 19: Private Non-Gov Pensions & Annuities</option>
+              <option value="STUDENT_TRAINEE">Article 20: Students, Trainees & Apprentices</option>
+              <option value="TEACHER_RESEARCH">Article 21: Visiting Professors & Researchers (≤2 yrs)</option>
+              <option value="SOVEREIGN_GOV">Article 22: Income of Governments & Central Banks</option>
+              <option value="OTHER_INCOME">Article 23: Other Income / Residual Items</option>
+            </select>
+          </div>
+
+          <!-- BUSINESS & SERVICES SPECIFIC -->
+          <div id="businessServiceSection">
+            
+            <!-- NEW: Related Party Relationship Select -->
+            <div class="form-group">
+              <label>Entity Relationship / Transfer Pricing Link</label>
+              <select id="relatedParty" onchange="calculateMasterTax()">
+                <option value="THIRD_PARTY">Independent Third Party (Standard 90-Day PE Threshold)</option>
+                <option value="RELATED_PARTY">Associated / Related Enterprise (Lower 30-Day PE Threshold - Art 5(6)(a))</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Service Entity Legal Form</label>
+              <select id="serviceEntity">
+                <option value="COMPANY">Incorporated Company (Pte Ltd / Pvt Ltd)</option>
+                <option value="INDIVIDUAL">Sole Proprietorship / Independent Professional (Art 14)</option>
+              </select>
+            </div>
+
+            <div class="highlight-card">
+              <label style="color:var(--primary); font-size:0.73rem;">"Make Available" Condition (Article 12(4))</label>
+              <div class="sub-hint" style="margin-bottom:3px;">Does the service impart technical know-how enabling your team to apply it alone?</div>
+              <select id="makeAvailable">
+                <option value="NO">NO — Routine deliverable only (routine bookkeeping, bug fix, report review)</option>
+                <option value="YES">YES — Transfers technical skill/trains staff to apply technology</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>On-Site Physical Stay Duration in Source Country</label>
+              <select id="hasPE">
+                <option value="REMOTE">NO physical presence (100% remote delivery from abroad)</option>
+                <option value="DAYS_30_89">Physical stay between 30 days and 89 days</option>
+                <option value="DAYS_90_PLUS">Physical stay 90 days or more (or fixed branch/office)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- SALARY SPECIFIC -->
+          <div id="salarySection" style="display:none;">
+            <div class="form-group">
+              <label>Host State Physical Stay</label>
+              <select id="salaryDays">
+                <option value="UNDER_183">Fewer than 183 days in the fiscal year</option>
+                <option value="OVER_183">183 days or more in the fiscal year</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Payroll Borne By</label>
+              <select id="salaryEmployer">
+                <option value="HOME">Home country employer (not resident in host state)</option>
+                <option value="HOST">Host country employer / Local Permanent Establishment</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- CAPITAL GAINS SPECIFIC -->
+          <div id="capitalGainsSection" style="display:none;">
+            <div class="form-group">
+              <label>Asset Class & Date of Acquisition</label>
+              <select id="assetType">
+                <option value="SHARES_PRE_2017">Shares Acquired BEFORE 1 April 2017 (Grandfathered)</option>
+                <option value="SHARES_POST_2017">Shares Acquired ON or AFTER 1 April 2017</option>
+                <option value="REAL_PROPERTY">Direct Real Estate / Immovable Property Shares</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- DIVIDEND SPECIFIC -->
+          <div id="dividendSection" style="display:none;">
+            <div class="form-group">
+              <label>Corporate Shareholding Level</label>
+              <select id="shareholding">
+                <option value="UNDER_25">Portfolio Shareholding (<25% Ownership)</option>
+                <option value="AT_LEAST_25">Substantial Holding (≥25% Corporate Parent)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- INTEREST SPECIFIC -->
+          <div id="interestSection" style="display:none;">
+            <div class="form-group">
+              <label>Lending Institution</label>
+              <select id="lenderType">
+                <option value="BANK">Bank or Financial Institution (incl. Insurance)</option>
+                <option value="GENERAL">General Enterprise / Related Party Loan</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- ARTISTE SPECIFIC -->
+          <div id="artisteSection" style="display:none;">
+            <div class="form-group">
+              <label>Funding Source for Performance</label>
+              <select id="artisteFunding">
+                <option value="PRIVATE">Commercial / Private ticketed event</option>
+                <option value="PUBLIC">Wholly or substantially supported by Public Government Funds</option>
+              </select>
+            </div>
+          </div>
+
+        </form>
+      </div>
+
+      <div style="font-size:0.67rem; color:var(--slate-400); text-align:center;">
+        Covers Articles 1–31, Protocols (2005, 2011, 2016) & MLI Annexes
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL: Live Assessment Output -->
+    <div class="panel" id="resultCard">
+      <div>
+        
+        <!-- AUTOMATIC WARNING ALERT BANNER FOR RELATED PARTIES -->
+        <div class="alert-banner" id="relatedPartyBanner">
+          ⚠️ RELATED PARTY ALERT (Article 5(6)(a)): Intercompany service physical presence threshold is lowered from 90 days to 30 days!
+        </div>
+
+        <div class="verdict-header">
+          <div>
+            <div class="verdict-title">Bilateral Tax Determination</div>
+            <div class="verdict-article" id="resArticle">Article 7 (Business Profits)</div>
+          </div>
+          <div id="resBadge" class="badge badge-zero">0% WHT</div>
+        </div>
+
+        <div class="stats-row">
+          <div class="stat-box">
+            <div class="stat-label">Source Withholding Rate</div>
+            <div class="stat-val" id="resWHT">0%</div>
+            <div class="stat-sub" id="resWHTNote">Exempt at source</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">Primary Tax Jurisdiction</div>
+            <div class="stat-val" id="resCountry" style="font-size:0.92rem;">Home Country Only</div>
+            <div class="stat-sub" id="resCountryNote">Exclusively taxed in residence state</div>
+          </div>
+        </div>
+
+        <div class="rationale-block">
+          <div class="rationale-heading">Plain-English Legal Rationale</div>
+          <div class="rationale-body" id="resReasoning"></div>
+        </div>
+
+        <div class="docs-block">
+          <div class="docs-heading">📋 Mandatory Compliance Audit Trail</div>
+          <ul class="docs-list" id="resChecklist"></ul>
+        </div>
+      </div>
+
+      <div class="button-row">
+        <button class="btn btn-copy" onclick="copyAdvisory()">📋 Copy Advisory Memo</button>
+        <button class="btn btn-print" onclick="window.print()">🖨️ Print / Save PDF</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Mandatory Footer Disclaimer -->
+  <footer>
+    <div>
+      <strong>Samyag Synergy — One-Stop F&A Solution</strong> | <strong>CA Neelukumari Jain</strong> | Phone: +65 9880 9574 | Web: website.samyagsynergy.workers.dev
+    </div>
+    <div class="disclaimer">
+      ⚠️ Notice: This is an AI-generated tool meant for quick use and not for any professional advice. For formal tax structuring, contact CA Neelukumari Jain at Samyag Synergy or consult your own professional advisory firm.
+    </div>
+  </footer>
+
+</div>
+
+<div id="toast">Memo copied to clipboard!</div>
+
+<script>
+// Auto-detect local photo if saved in the same directory as this HTML file
+(function loadLocalPhoto() {
+  const possibleNames = ['profile.jpg', 'profile.png', 'neelu.jpg', 'neelu.png', 'photo.jpg'];
+  let idx = 0;
+  function tryNext() {
+    if (idx >= possibleNames.length) return;
+    const img = new Image();
+    img.src = possibleNames[idx];
+    img.onload = function() {
+      const avatarWrap = document.getElementById('advisorAvatar');
+      avatarWrap.innerHTML = `<img src="${possibleNames[idx]}" alt="CA Neelukumari Jain">`;
+    };
+    img.onerror = function() { idx++; tryNext(); };
+  }
+  tryNext();
+})();
+
+function toggleFormFields() {
+  const type = document.getElementById('incomeType').value;
+  document.getElementById('businessServiceSection').style.display = (type === 'BUSINESS_SERVICE') ? 'block' : 'none';
+  document.getElementById('salarySection').style.display = (type === 'SALARY') ? 'block' : 'none';
+  document.getElementById('capitalGainsSection').style.display = (type === 'CAPITAL_GAIN') ? 'block' : 'none';
+  document.getElementById('dividendSection').style.display = (type === 'DIVIDEND') ? 'block' : 'none';
+  document.getElementById('interestSection').style.display = (type === 'INTEREST') ? 'block' : 'none';
+  document.getElementById('artisteSection').style.display = (type === 'ARTISTE_SPORT') ? 'block' : 'none';
+  calculateMasterTax();
+}
+
+function calculateMasterTax() {
+  const dir = document.getElementById('direction').value;
+  const type = document.getElementById('incomeType').value;
+  
+  let article = "", wht = "0%", whtNote = "", country = "", countryNote = "", badgeClass = "badge-zero", reasoning = "", docs = [];
+  const alertBanner = document.getElementById('relatedPartyBanner');
+  alertBanner.style.display = 'none';
+
+  if (type === 'BUSINESS_SERVICE') {
+    const isIndividual = (document.getElementById('serviceEntity').value === 'INDIVIDUAL');
+    const related = document.getElementById('relatedParty').value;
+    const presence = document.getElementById('hasPE').value;
+    const makeAvail = document.getElementById('makeAvailable').value;
+
+    const isRelated = (related === 'RELATED_PARTY');
+    if (isRelated) {
+      alertBanner.style.display = 'block';
+    }
+
+    if (isIndividual) {
+      article = "Article 14 (Independent Personal Services)";
+      if (presence === 'DAYS_90_PLUS' || (isRelated && presence === 'DAYS_30_89')) {
+        wht = "Domestic Rate";
+        badgeClass = "badge-taxable";
+        whtNote = "Domestic withholding applies";
+        country = "Source State + Home State";
+        countryNote = "Taxable due to fixed base or physical stay threshold";
+        reasoning = "Because the individual professional had a fixed base or exceeded the physical presence threshold in the source country, that country exercises full taxing rights on attributable income.";
+        docs = ["Passport day-count tracker", "Proof of local office expenses", "Tax credit filing forms"];
+      } else {
+        wht = "0%";
+        badgeClass = "badge-zero";
+        whtNote = "Zero withholding tax";
+        country = (dir === 'SG_TO_IN') ? "Singapore (if resident) / India" : "Singapore Only";
+        countryNote = "Exclusively taxable in state of tax residence";
+        reasoning = "Under Article 14(1), professional earnings of an individual/sole proprietor are taxable ONLY in their home residence state when no fixed base or physical stay threshold is triggered.";
+        docs = ["Certificate of Residence (COR) / TRC", "Self-declaration of physical stay in source country"];
+      }
+    } else {
+      if (makeAvail === 'YES') {
+        article = "Article 12(4) (Make Available Clause - FTS)";
+        wht = "10%";
+        badgeClass = "badge-capped";
+        whtNote = "Capped FTS withholding tax";
+        country = "Source State (10%) + Home State";
+        countryNote = "Source state deducts 10%; provider claims credit";
+        reasoning = "Because the technical service imparts technical know-how or enables the client to apply the technology on their own, it satisfies the 'Make Available' test and is taxable as Fees for Technical Services (FTS) at 10%.";
+        docs = ["Service agreement highlighting technical training/knowledge transfer", "TRC of service provider", "Form 10F / No PE Declaration"];
+      } else {
+        // Article 7 Business Profits
+        article = "Article 7 (Business Profits) & Art 5(6)";
+        
+        // PE Trigger Logic: 30 days for Related Parties; 90 days for Third Parties
+        const peTriggered = (presence === 'DAYS_90_PLUS') || (isRelated && presence === 'DAYS_30_89');
+
+        if (peTriggered) {
+          wht = "Domestic Rate";
+          badgeClass = "badge-taxable";
+          whtNote = "Taxed as local Permanent Establishment";
+          country = "Source State (PE) + Home State";
+          countryNote = "Taxable due to local Permanent Establishment";
+          
+          if (isRelated && presence === 'DAYS_30_89') {
+            reasoning = "CRITICAL PE TRIGGER: Under Article 5(6)(a), services provided to an Associated / Related Enterprise trigger a Service Permanent Establishment after just 30 days of physical presence (instead of the standard 90 days). Full source tax applies to attributable profits at domestic corporate rates.";
+          } else {
+            reasoning = "Maintaining a fixed office or exceeding on-the-ground service thresholds triggers a Permanent Establishment under Article 5, giving the source country full taxing rights on attributable profits.";
+          }
+          docs = ["PE profit attribution accounting statements", "Transfer Pricing documentation (Art 9)", "Local corporate tax return"];
+        } else {
+          wht = "0%";
+          badgeClass = "badge-zero";
+          whtNote = "Zero withholding tax under Article 7";
+          country = (dir === 'SG_TO_IN') ? "India Only" : "Singapore Only";
+          countryNote = "Exclusively taxable in provider's home country";
+          
+          if (isRelated) {
+            reasoning = "Even though this is an intercompany transaction, physical presence stayed UNDER the 30-day Article 5(6)(a) Service PE threshold and 'Make Available' was not met. Profits remain taxable ONLY in the service provider's home state under Article 7(1).";
+          } else {
+            reasoning = "Because the service does NOT satisfy 'Make Available' and the foreign company has NO Permanent Establishment in the payer's country (<90 days stay), profits are taxable ONLY in the provider's home country under Article 7(1). Zero withholding applies.";
+          }
+          docs = ["Tax Residency Certificate (TRC) of recipient", "Form 10F (if recipient is in Singapore)", "No-PE Declaration signed by company officer", "Transfer Pricing arm's-length documentation (Art 9)"];
+        }
+      }
+    }
+  } else if (type === 'SALARY') {
+    article = "Article 15 (Dependent Personal Services)";
+    const days = document.getElementById('salaryDays').value;
+    const employer = document.getElementById('salaryEmployer').value;
+
+    if (days === 'UNDER_183' && employer === 'HOME') {
+      wht = "0%";
+      badgeClass = "badge-zero";
+      whtNote = "183-day exemption applies";
+      country = (dir === 'SG_TO_IN') ? "Singapore" : "India";
+      countryNote = "Taxable only in home residence state";
+      reasoning = "Under Article 15(2), short-term cross-border employment is tax-exempt in the host country because the employee stayed under 183 days, was paid by an offshore employer, and the salary cost was not charged to a local PE.";
+      docs = ["Passport day-count immigration records", "Home country payroll slips", "Employer certificate of remote deputation"];
+    } else {
+      wht = "Host Domestic Slab";
+      badgeClass = "badge-taxable";
+      whtNote = "Subject to host country payroll taxes";
+      country = "Host State + Home Credit";
+      countryNote = "Host state taxes salary; home state gives DTR credit";
+      reasoning = "Because the employee stayed ≥183 days or was paid/borne by a local entity, the host state exercises full taxing rights on employment income. The employee claims Foreign Tax Credit under Article 25 in their home return.";
+      docs = ["Form 16 / TDS Certificate (if worked in India)", "Form 26AS / AIS tax statement", "IRAS Form B1 foreign tax credit filing"];
+    }
+  } else if (type === 'DIRECTOR_FEE') {
+    article = "Article 16 (Directors' Fees)";
+    wht = "Domestic Rate";
+    badgeClass = "badge-taxable";
+    whtNote = "Withheld in company state";
+    country = (dir === 'SG_TO_IN') ? "Singapore" : "India";
+    countryNote = "Taxable in state where the company resides";
+    reasoning = "Under Article 16, directors' fees and board remuneration are taxable in the country where the company is legally resident, regardless of where board meetings are physically attended.";
+    docs = ["Board resolution approving director remuneration", "Withholding tax voucher", "Foreign Tax Credit claim in home return"];
+  } else if (type === 'SHIPPING_AIR') {
+    article = "Article 8 (Shipping and Air Transport)";
+    wht = "0%";
+    badgeClass = "badge-zero";
+    whtNote = "100% Exempt at source";
+    country = "Enterprise Residence State";
+    countryNote = "Exclusively taxable in carrier's home state";
+    reasoning = "Under Article 8(1), profits derived from the operation of ships or aircraft in international traffic are taxable ONLY in the state of residence of the operating enterprise. Zero source withholding applies.";
+    docs = ["Air operator certificate / shipping registration", "Certificate of Residence (COR) from IRAS / TRC from India", "Charterparty or passage ticket revenue accounts"];
+  } else if (type === 'CAPITAL_GAIN') {
+    article = "Article 13 (Capital Gains) & 2016 Protocol";
+    const asset = document.getElementById('assetType').value;
+
+    if (asset === 'SHARES_PRE_2017') {
+      wht = "0%";
+      badgeClass = "badge-zero";
+      whtNote = "Grandfathered treaty exemption";
+      country = "Alienator's Residence Only";
+      countryNote = "Exclusively taxed in seller's home state";
+      reasoning = "Under the 2016 amending Protocol (Article 13(4A)), shares acquired before 1 April 2017 remain grandfathered and are taxable ONLY in the seller's state of residence, provided LOB operational substance (S$200k/INR 50L) is maintained.";
+      docs = ["Share purchase agreement / Demat slip showing pre-April 2017 acquisition", "Tax Residency Certificate (TRC)", "Substance proof (S$200k / INR 50L spend)"];
+    } else if (asset === 'SHARES_POST_2017') {
+      wht = "Domestic Rate";
+      badgeClass = "badge-taxable";
+      whtNote = "Taxable in source country";
+      country = "Company State + Home State";
+      countryNote = "Source state taxes capital gains on shares";
+      reasoning = "Shares acquired on or after 1 April 2017 are subject to full capital gains tax in the country where the company is resident under Article 13(4B).";
+      docs = ["Demat share transfer statements", "Capital gains computation statement", "Advance tax payment proof"];
+    } else {
+      wht = "Domestic Rate";
+      badgeClass = "badge-taxable";
+      whtNote = "Taxed where real estate is located";
+      country = "Property Location State";
+      countryNote = "Primary taxing right belongs to land jurisdiction";
+      reasoning = "Capital gains derived from the alienation of real property (or shares deriving >50% value from immovable property) are taxable in the state where the real property is situated (Article 13(1)).";
+      docs = ["Property title registration documents", "Valuation report", "Deed of sale"];
+    }
+  } else if (type === 'DIVIDEND') {
+    if (dir === 'SG_TO_IN') {
+      article = "Article 10(3) (Dividends)";
+      wht = "0%";
+      badgeClass = "badge-zero";
+      whtNote = "Singapore one-tier system exemption";
+      country = "India";
+      countryNote = "Taxable in India under domestic slab/corporate rules";
+      reasoning = "Singapore levies zero withholding tax on outgoing dividends. The Indian shareholder declares the gross dividend as income in India without foreign tax credit (since 0% was paid in Singapore).";
+      docs = ["Dividend payment voucher / counterfoil", "Proof of Singapore tax residency of payer"];
+    } else {
+      article = "Article 10(2) (Dividends)";
+      const isSubstantial = (document.getElementById('shareholding').value === 'AT_LEAST_25');
+      wht = isSubstantial ? "10%" : "15%";
+      badgeClass = "badge-capped";
+      whtNote = isSubstantial ? "Treaty cap for ≥25% shareholding" : "Treaty cap for portfolio holding";
+      country = "India (Capped) + SG (Credit)";
+      countryNote = "India withholds capped tax; SG grants foreign credit";
+      reasoning = "India's domestic withholding tax on foreign dividends is capped by the treaty at 10% (for corporate parents holding ≥25%) or 15%. Singapore grants Double Tax Relief under Article 25(4).";
+      docs = ["Tax Residency Certificate (TRC) issued by IRAS", "Form 10F online verification", "No-PE Self-Declaration"];
+    }
+  } else if (type === 'INTEREST') {
+    article = "Article 11(2) (Interest on Debt)";
+    const isBank = (document.getElementById('lenderType').value === 'BANK');
+    wht = isBank ? "10%" : "15%";
+    badgeClass = "badge-capped";
+    whtNote = isBank ? "Treaty cap for banks / financial institutions" : "Treaty cap for general / intercompany loans";
+    country = "Source State (Capped) + Home State";
+    countryNote = "Source state withholds; recipient claims credit";
+    reasoning = "Interest is subject to capped withholding tax in the source country. The recipient includes gross interest in their home return and claims a foreign tax credit under Article 25.";
+    docs = ["Loan Facility Agreement", "Tax Residency Certificate (TRC)", "Form 10F / No PE Declaration"];
+  } else if (type === 'ROYALTY') {
+    article = "Article 12(2) & 2005 Protocol";
+    wht = "10%";
+    badgeClass = "badge-capped";
+    whtNote = "Uniform treaty cap for all royalties";
+    country = "Source State (10%) + Home State";
+    countryNote = "Source state withholds 10%; recipient claims credit";
+    reasoning = "Cross-border royalties for intellectual property, software licenses, patents, or commercial equipment are capped at a 10% withholding rate.";
+    docs = ["IP License / Software Master Agreement", "Tax Residency Certificate (TRC)", "Form 10F / No PE Declaration"];
+  } else if (type === 'REAL_ESTATE') {
+    article = "Article 6 (Income from Immovable Property)";
+    wht = "Domestic Rate";
+    badgeClass = "badge-taxable";
+    whtNote = "Taxed where real estate is located";
+    country = "Property State";
+    countryNote = "Exclusively taxable in property jurisdiction";
+    reasoning = "Under Article 6, rental income, direct exploitation, and farming revenues from immovable property are taxable in the country where the property is physically located.";
+    docs = ["Tenancy lease agreements", "Municipal property tax receipts", "Annual rental income returns"];
+  } else if (type === 'ARTISTE_SPORT') {
+    article = "Article 17 (Artistes & Sportspersons)";
+    const isPublic = (document.getElementById('artisteFunding').value === 'PUBLIC');
+    if (isPublic) {
+      wht = "0%";
+      badgeClass = "badge-zero";
+      whtNote = "Exempt (Government-funded)";
+      country = "Home State Only";
+      countryNote = "Taxable only in performer's home state";
+      reasoning = "Under Article 17(3), if the cultural or athletic performance is supported wholly or substantially from public government funds, it is exempt from source tax and taxed only in the performer's home state.";
+      docs = ["Government grant sanction letter", "Cultural sponsorship documentation"];
+    } else {
+      wht = "Domestic Rate";
+      badgeClass = "badge-taxable";
+      whtNote = "Source country withholding applies";
+      country = "Performance State";
+      countryNote = "Taxable where the show/game is performed";
+      reasoning = "Under Article 17(1), commercial performance income earned by entertainers and athletes is taxable in the country where personal activities are exercised.";
+      docs = ["Appearance contract / event agreement", "Proof of source tax withheld"];
+    }
+  } else if (type === 'GOV_SERVICE') {
+    article = "Article 18 (Government Service)";
+    wht = "0% (Host State)";
+    badgeClass = "badge-zero";
+    whtNote = "Exempt in host country";
+    country = "Paying Government State";
+    countryNote = "Taxable exclusively by paying government";
+    reasoning = "Remuneration and pensions paid by a Government, political subdivision, or statutory body for official public services are taxable ONLY by that paying Government (Article 18(1)(a)).";
+    docs = ["Official civil service appointment letter", "Government treasury payslip"];
+  } else if (type === 'PRIVATE_PENSION') {
+    article = "Article 19 (Non-Gov Pensions & Annuities)";
+    wht = "0%";
+    badgeClass = "badge-zero";
+    whtNote = "Exempt at source";
+    country = "Retiree Residence State";
+    countryNote = "Exclusively taxable where retiree resides";
+    reasoning = "Under Article 19(1), private retirement pensions and life annuities derived from past employment are taxable ONLY in the state of residence of the recipient.";
+    docs = ["Pension plan certificate", "Proof of current tax residence"];
+  } else if (type === 'STUDENT_TRAINEE') {
+    article = "Article 20 (Students & Apprentices)";
+    wht = "0%";
+    badgeClass = "badge-zero";
+    whtNote = "Exempt from host tax";
+    country = "Exempt in Host State";
+    countryNote = "Remittances/grants exempt for up to 5 years";
+    reasoning = "Under Article 20, overseas maintenance remittances, educational grants, and incidental employment earnings up to USD 500/month are 100% tax-exempt in the host country for up to 5 years.";
+    docs = ["University admission letter", "Proof of foreign maintenance remittances"];
+  } else if (type === 'TEACHER_RESEARCH') {
+    article = "Article 21 (Professors & Researchers)";
+    wht = "0%";
+    badgeClass = "badge-zero";
+    whtNote = "2-Year Tax Exemption";
+    country = "Exempt in Host State";
+    countryNote = "Tax-free for visits not exceeding 2 years";
+    reasoning = "Under Article 21, visiting university professors, lecturers, and academic researchers invited by recognized educational institutions are exempt from host tax for up to 2 years.";
+    docs = ["University invitation letter", "Academic appointment contract (≤2 years)"];
+  } else if (type === 'SOVEREIGN_GOV') {
+    article = "Article 22 (Income of Governments)";
+    wht = "0%";
+    badgeClass = "badge-zero";
+    whtNote = "Complete sovereign tax exemption";
+    country = "Exempt at Source";
+    countryNote = "Applies to RBI, MAS, GIC & statutory bodies";
+    reasoning = "Under Article 22, the Government of a Contracting State (including the Reserve Bank of India, Monetary Authority of Singapore, and non-commercial GIC funds) is completely exempt from tax on dividends, interest, and non-commercial gains.";
+    docs = ["Sovereign immunity / statutory certificate", "Proof of non-commercial fund activity"];
+  } else if (type === 'OTHER_INCOME') {
+    article = "Article 23 (Income Not Expressly Mentioned)";
+    wht = "Domestic Rate";
+    badgeClass = "badge-taxable";
+    whtNote = "Taxed under local laws";
+    country = "Both States (Domestic Laws)";
+    countryNote = "Each country applies domestic tax provisions";
+    reasoning = "Any item of income not specifically mentioned in Articles 6 to 22 may be taxed in accordance with the domestic taxation laws of each Contracting State.";
+    docs = ["Nature of income legal documentation", "Domestic tax return disclosures"];
+  }
+
+  // Update DOM
+  document.getElementById('resArticle').innerText = article;
+  document.getElementById('resWHT').innerText = wht;
+  document.getElementById('resWHTNote').innerText = whtNote;
+  document.getElementById('resCountry').innerText = country;
+  document.getElementById('resCountryNote').innerText = countryNote;
+  document.getElementById('resReasoning').innerText = reasoning;
+
+  const badgeEl = document.getElementById('resBadge');
+  badgeEl.className = 'badge ' + badgeClass;
+  badgeEl.innerText = wht + " WHT";
+
+  const checkListEl = document.getElementById('resChecklist');
+  checkListEl.innerHTML = "";
+  docs.forEach(doc => {
+    const li = document.createElement('li');
+    li.innerText = doc;
+    checkListEl.appendChild(li);
+  });
+}
+
+function applyPreset(val) {
+  if (!val) return;
+  if (val === 'sg_pay_in_it_related') {
+    document.getElementById('direction').value = 'SG_TO_IN';
+    document.getElementById('incomeType').value = 'BUSINESS_SERVICE';
+    toggleFormFields();
+    document.getElementById('relatedParty').value = 'RELATED_PARTY';
+    document.getElementById('serviceEntity').value = 'COMPANY';
+    document.getElementById('makeAvailable').value = 'NO';
+    document.getElementById('hasPE').value = 'DAYS_30_89';
+  } else if (val === 'salary_under183') {
+    document.getElementById('direction').value = 'SG_TO_IN';
+    document.getElementById('incomeType').value = 'SALARY';
+    toggleFormFields();
+    document.getElementById('salaryDays').value = 'UNDER_183';
+    document.getElementById('salaryEmployer').value = 'HOME';
+  } else if (val === 'salary_over183') {
+    document.getElementById('direction').value = 'SG_TO_IN';
+    document.getElementById('incomeType').value = 'SALARY';
+    toggleFormFields();
+    document.getElementById('salaryDays').value = 'OVER_183';
+    document.getElementById('salaryEmployer').value = 'HOST';
+  } else if (val === 'director_fee') {
+    document.getElementById('direction').value = 'SG_TO_IN';
+    document.getElementById('incomeType').value = 'DIRECTOR_FEE';
+    toggleFormFields();
+  } else if (val === 'shipping_air') {
+    document.getElementById('direction').value = 'SG_TO_IN';
+    document.getElementById('incomeType').value = 'SHIPPING_AIR';
+    toggleFormFields();
+  } else if (val === 'sg_pay_in_it') {
+    document.getElementById('direction').value = 'SG_TO_IN';
+    document.getElementById('incomeType').value = 'BUSINESS_SERVICE';
+    toggleFormFields();
+    document.getElementById('relatedParty').value = 'THIRD_PARTY';
+    document.getElementById('serviceEntity').value = 'COMPANY';
+    document.getElementById('makeAvailable').value = 'NO';
+    document.getElementById('hasPE').value = 'REMOTE';
+  } else if (val === 'sg_pay_in_tech') {
+    document.getElementById('direction').value = 'SG_TO_IN';
+    document.getElementById('incomeType').value = 'BUSINESS_SERVICE';
+    toggleFormFields();
+    document.getElementById('relatedParty').value = 'THIRD_PARTY';
+    document.getElementById('serviceEntity').value = 'COMPANY';
+    document.getElementById('makeAvailable').value = 'YES';
+    document.getElementById('hasPE').value = 'REMOTE';
+  } else if (val === 'cap_gain_pre2017') {
+    document.getElementById('direction').value = 'SG_TO_IN';
+    document.getElementById('incomeType').value = 'CAPITAL_GAIN';
+    toggleFormFields();
+    document.getElementById('assetType').value = 'SHARES_PRE_2017';
+  } else if (val === 'cap_gain_post2017') {
+    document.getElementById('direction').value = 'SG_TO_IN';
+    document.getElementById('incomeType').value = 'CAPITAL_GAIN';
+    toggleFormFields();
+    document.getElementById('assetType').value = 'SHARES_POST_2017';
+  } else if (val === 'in_pay_sg_div') {
+    document.getElementById('direction').value = 'IN_TO_SG';
+    document.getElementById('incomeType').value = 'DIVIDEND';
+    toggleFormFields();
+    document.getElementById('shareholding').value = 'AT_LEAST_25';
+  } else if (val === 'teacher_research') {
+    document.getElementById('direction').value = 'SG_TO_IN';
+    document.getElementById('incomeType').value = 'TEACHER_RESEARCH';
+    toggleFormFields();
+  } else if (val === 'student_remit') {
+    document.getElementById('direction').value = 'SG_TO_IN';
+    document.getElementById('incomeType').value = 'STUDENT_TRAINEE';
+    toggleFormFields();
+  } else if (val === 'gov_central_bank') {
+    document.getElementById('direction').value = 'SG_TO_IN';
+    document.getElementById('incomeType').value = 'SOVEREIGN_GOV';
+    toggleFormFields();
+  } else if (val === 'private_pension') {
+    document.getElementById('direction').value = 'SG_TO_IN';
+    document.getElementById('incomeType').value = 'PRIVATE_PENSION';
+    toggleFormFields();
+  }
+  calculateMasterTax();
+}
+
+function copyAdvisory() {
+  const art = document.getElementById('resArticle').innerText;
+  const wht = document.getElementById('resWHT').innerText;
+  const country = document.getElementById('resCountry').innerText;
+  const reasoning = document.getElementById('resReasoning').innerText;
+  
+  const text = `Samyag Synergy — Singapore-India Bilateral Tax Determination
+-----------------------------------------------------------
+Governing Treaty Article : ${art}
+Withholding Tax Rate     : ${wht}
+Primary Tax Jurisdiction : ${country}
+
+Tax Analysis & Rationale:
+${reasoning}
+
+Advisor & Lead:
+CA Neelukumari Jain | Samyag Synergy
+Phone: +65 9880 9574 | Email: samyagsynergy@gmail.com
+Web: https://website.samyagsynergy.workers.dev
+
+*Disclaimer: AI-generated tool for quick use; not formal professional advice.*
+-----------------------------------------------------------`;
+
+  navigator.clipboard.writeText(text).then(() => {
+    const toast = document.getElementById("toast");
+    toast.className = "show";
+    setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 2200);
+  });
+}
+
+window.onload = function() {
+  toggleFormFields();
+};
+</script>
+
+</body>
+</html>
