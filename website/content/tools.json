@@ -108,6 +108,13 @@
       "description": "A single-file, zero-dependency interactive tax navigator and withholding calculator for the Singapore–India Double Taxation Avoidance Agreement (DTAA), covering Articles 5–29A, MLI anti-abuse rules, and 30-day related-party PE alerts.",
       "link_label": "OPEN TOOL",
       "link": "tools/dtaa-sg-india/index.html"
+    },
+    {
+      "link": "tools/audit/index.html",
+      "link_label": "OPEN TOOL",
+      "title": "Instant ACRA Audit Exemption Checker",
+      "category": "Reporting",
+      "description": "Navigating Singapore statutory audit requirements doesn't have to be complex. Samyag Synergy’s interactive assessment tool helps business owners, directors, and finance teams instantly verify audit exemption status under Section 205B & 205C of the Singapore Companies Act."
     }
   ]
 }
