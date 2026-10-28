@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Singapore ACRA Audit Exemption Assessment Tool | Samyag Synergy</title>
+    <link href="[suspicious link removed]" rel="stylesheet">
+    <style>
+        :root {
+            --primary-dark: #0f172a;
+            --primary-blue: #1e3a8a;
+            --accent-blue: #2563eb;
+            --gold: #d97706;
+            --bg-body: #f1f5f9;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #cbd5e1;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 1040px;
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 15px 35px rgba(15, 23, 42, 0.1);
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Top Brand Header */
+        .brand-header {
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+            color: #ffffff;
+            padding: 1.1rem 1.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 3px solid var(--gold);
+        }
+
+        .brand-left {
+            display: flex;
+            align-items: center;
+            gap: 1.1rem;
+        }
+
+        .brand-logo {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #ffffff;
+            border: 2px solid var(--gold);
+        }
+
+        .brand-title h1 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .brand-title p {
+            font-size: 0.8rem;
+            color: #f59e0b;
+            font-weight: 500;
+        }
+
+        .contact-card {
+            text-align: right;
+            font-size: 0.775rem;
+            color: #cbd5e1;
+            line-height: 1.4;
+        }
+
+        .contact-card a {
+            color: #38bdf8;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        /* Main Content Layout */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1.35fr 1fr;
+            gap: 1.25rem;
+            padding: 1.25rem 1.75rem;
+        }
+
+        .section-heading {
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border-bottom: 2px solid #eff6ff;
+            padding-bottom: 0.35rem;
+            text-transform: uppercase;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 0.25rem;
+        }
+
+        .form-select, .form-input {
+            width: 100%;
+            padding: 0.45rem 0.65rem;
+            font-size: 0.825rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background-color: #f8fafc;
+            color: var(--text-main);
+        }
+
+        .form-select:focus, .form-input:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            background-color: #ffffff;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        /* Table Inputs for Discrete FYs */
+        .fy-table-header {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr 1fr;
+            gap: 0.5rem;
+            background: #f1f5f9;
+            padding: 0.35rem 0.5rem;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: #475569;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .fy-table-header div:first-child { text-align: left; }
+
+        .fy-table-row {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr 1fr;
+            gap: 0.5rem;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .fy-table-row label {
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        /* Outcome & Checklist Cards */
+        .result-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 0.85rem;
+        }
+
+        .status-box {
+            padding: 1.1rem;
+            border-radius: 12px;
+            text-align: center;
+            border: 2px solid transparent;
+        }
+
+        .status-box.exempt {
+            background: #f0fdf4;
+            border-color: #86efac;
+            color: #14532d;
+        }
+
+        .status-box.mandatory {
+            background: #fef2f2;
+            border-color: #fca5a5;
+            color: #7f1d1d;
+        }
+
+        .status-tag {
+            display: inline-block;
+            padding: 0.25rem 0.85rem;
+            font-size: 0.8rem;
+            font-weight: 700;
+            border-radius: 20px;
+            margin-bottom: 0.4rem;
+            text-transform: uppercase;
+        }
+
+        .status-box.exempt .status-tag { background: #22c55e; color: white; }
+        .status-box.mandatory .status-tag { background: #ef4444; color: white; }
+
+        .status-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .status-desc {
+            font-size: 0.75rem;
+            opacity: 0.9;
+            line-height: 1.35;
+        }
+
+        .check-card {
+            background: #f8fafc;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 0.75rem 0.85rem;
+        }
+
+        .check-card-title {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            margin-bottom: 0.4rem;
+            text-transform: uppercase;
+        }
+
+        .check-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.3rem 0;
+            border-bottom: 1px dashed var(--border-color);
+            font-size: 0.725rem;
+        }
+
+        .check-item:last-child { border-bottom: none; }
+
+        .pill-badge {
+            padding: 0.15rem 0.45rem;
+            border-radius: 4px;
+            font-size: 0.675rem;
+            font-weight: 700;
+        }
+
+        .pill-pass { background: #dcfce7; color: #15803d; }
+        .pill-fail { background: #fee2e2; color: #b91c1c; }
+        .pill-na   { background: #f1f5f9; color: #64748b; }
+
+        /* Footer Disclaimer */
+        .disclaimer-footer {
+            padding: 0.65rem 1.75rem;
+            background: #f1f5f9;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.685rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <!-- Header -->
+    <header class="brand-header">
+        <div class="brand-left">
+            <img src="Samyag_Synergy_LinkedIn_Logo.png" alt="Samyag Synergy" class="brand-logo" onerror="this.style.display='none'">
+            <div class="brand-title">
+                <h1>Samyag Synergy</h1>
+                <p>One-Stop F&A Solution</p>
+            </div>
+        </div>
+        <div class="contact-card">
+            <div><strong>CA Neelukumari Jain</strong></div>
+            <div>📞 +65 9880 9574 | ✉️ samyagsynergy@gmail.com</div>
+            <div>🌐 <a href="https://website.samyagsynergy.workers.dev" target="_blank">website.samyagsynergy.workers.dev</a></div>
+        </div>
+    </header>
+
+    <main class="main-layout">
+        <!-- Input Section -->
+        <section class="inputs-column">
+            <div class="section-heading">📋 Step 1: Corporate Category & Structure</div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="entityCategory">Company Category / Stage</label>
+                    <select id="entityCategory" class="form-select" onchange="handleCategoryChange()">
+                        <option value="private_existing" selected>Private Co (Existing > 2 Years)</option>
+                        <option value="newly_inc_fy1">Newly Incorporated Co (1st FY)</option>
+                        <option value="newly_inc_fy2">Newly Incorporated Co (2nd FY)</option>
+                        <option value="dormant">Dormant Company (Sec 205B)</option>
+                        <option value="public">Public / Listed Company</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="groupStructure">Corporate Group Structure</label>
+                    <select id="groupStructure" class="form-select" onchange="evaluateAuditExemption()">
+                        <option value="standalone" selected>Standalone Entity</option>
+                        <option value="group">Part of a Corporate Group</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="financialInputsArea">
+                <div class="section-heading" style="margin-top: 0.5rem;">📊 Step 2: Financial Metrics</div>
+
+                <div class="fy-table-header" id="fyTableHeader">
+                    <div>Financial Criteria</div>
+                    <div id="colHdrFY1">Immediate Past FY (FY-1)</div>
+                    <div id="colHdrFY2">Preceding FY (FY-2)</div>
+                </div>
+
+                <div class="fy-table-row">
+                    <label>Annual Revenue (SGD)</label>
+                    <input type="number" id="sgRevFY1" class="form-input" value="2500000" oninput="evaluateAuditExemption()">
+                    <input type="number" id="sgRevFY2" class="form-input" value="2200000" oninput="evaluateAuditExemption()">
+                </div>
+
+                <div class="fy-table-row">
+                    <label>Total Assets (SGD)</label>
+                    <input type="number" id="sgAstFY1" class="form-input" value="3000000" oninput="evaluateAuditExemption()">
+                    <input type="number" id="sgAstFY2" class="form-input" value="2800000" oninput="evaluateAuditExemption()">
+                </div>
+
+                <div class="fy-table-row">
+                    <label>Full-Time Employees</label>
+                    <input type="number" id="sgEmpFY1" class="form-input" value="25" oninput="evaluateAuditExemption()">
+                    <input type="number" id="sgEmpFY2" class="form-input" value="20" oninput="evaluateAuditExemption()">
+                </div>
+
+                <!-- Group Financial Inputs -->
+                <div id="groupFinancialInputs" style="display: none; margin-top: 0.75rem; border-top: 1px dashed var(--border-color); padding-top: 0.5rem;">
+                    <div style="font-size: 0.75rem; font-weight: 700; color: #1e3a8a; margin-bottom: 0.4rem;">
+                        Consolidated Group Figures (Parent + All Subsidiaries)
+                    </div>
+                    <div class="fy-table-row">
+                        <label>Group Revenue (SGD)</label>
+                        <input type="number" id="grpRevFY1" class="form-input" value="5000000" oninput="evaluateAuditExemption()">
+                        <input type="number" id="grpRevFY2" class="form-input" value="4800000" oninput="evaluateAuditExemption()">
+                    </div>
+                    <div class="fy-table-row">
+                        <label>Group Assets (SGD)</label>
+                        <input type="number" id="grpAstFY1" class="form-input" value="6000000" oninput="evaluateAuditExemption()">
+                        <input type="number" id="grpAstFY2" class="form-input" value="5800000" oninput="evaluateAuditExemption()">
+                    </div>
+                    <div class="fy-table-row">
+                        <label>Group Employees</label>
+                        <input type="number" id="grpEmpFY1" class="form-input" value="40" oninput="evaluateAuditExemption()">
+                        <input type="number" id="grpEmpFY2" class="form-input" value="35" oninput="evaluateAuditExemption()">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Outcome Section -->
+        <section class="result-panel">
+            <div class="section-heading">⚖️ Assessment Outcome</div>
+
+            <div id="statusBox" class="status-box exempt">
+                <span id="statusTag" class="status-tag">AUDIT EXEMPT</span>
+                <div id="statusTitle" class="status-title">Qualifies for Exemption</div>
+                <div id="statusDesc" class="status-desc">Meets Singapore ACRA Small Company Concept criteria under Sec 205C.</div>
+            </div>
+
+            <!-- Primary Assessment Card -->
+            <div id="cardFY1" class="check-card">
+                <div id="titleFY1" class="check-card-title">Threshold Status (2 of 3 Needed)</div>
+                <div class="check-item">
+                    <span>Revenue &le; S$10M</span>
+                    <span id="badgeRevFY1" class="pill-badge pill-pass">PASS</span>
+                </div>
+                <div class="check-item">
+                    <span>Total Assets &le; S$10M</span>
+                    <span id="badgeAstFY1" class="pill-badge pill-pass">PASS</span>
+                </div>
+                <div class="check-item">
+                    <span>Employees &le; 50</span>
+                    <span id="badgeEmpFY1" class="pill-badge pill-pass">PASS</span>
+                </div>
+            </div>
+
+            <!-- Secondary Assessment Card (Only for Existing Co > 2 Years) -->
+            <div id="cardFY2" class="check-card">
+                <div id="titleFY2" class="check-card-title">Preceding FY (FY-2) Threshold Status</div>
+                <div class="check-item">
+                    <span>Revenue &le; S$10M</span>
+                    <span id="badgeRevFY2" class="pill-badge pill-pass">PASS</span>
+                </div>
+                <div class="check-item">
+                    <span>Total Assets &le; S$10M</span>
+                    <span id="badgeAstFY2" class="pill-badge pill-pass">PASS</span>
+                </div>
+                <div class="check-item">
+                    <span>Employees &le; 50</span>
+                    <span id="badgeEmpFY2" class="pill-badge pill-pass">PASS</span>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Disclaimer -->
+    <footer class="disclaimer-footer">
+        <strong>Disclaimer:</strong> This is an AI-assisted tool developed for preliminary self-assessment and professional opinion only. Under Section 205B, 205C & 13th Schedule of the Singapore Companies Act, audit exemption rules apply based on statutory criteria across financial years. For formal opinions or statutory filing advice, kindly contact <strong>Samyag Synergy (CA Neelukumari Jain)</strong> or another qualified professional.
+    </footer>
+</div>
+
+<script>
+    function handleCategoryChange() {
+        const cat = document.getElementById('entityCategory').value;
+        const colHdrFY1 = document.getElementById('colHdrFY1');
+        const colHdrFY2 = document.getElementById('colHdrFY2');
+        const finArea = document.getElementById('financialInputsArea');
+        const cardFY2 = document.getElementById('cardFY2');
+
+        const inputsFY2 = ['sgRevFY2', 'sgAstFY2', 'sgEmpFY2', 'grpRevFY2', 'grpAstFY2', 'grpEmpFY2'];
+
+        if (cat === 'newly_inc_fy1' || cat === 'newly_inc_fy2') {
+            finArea.style.display = 'block';
+            colHdrFY2.style.display = 'none';
+            cardFY2.style.display = 'none';
+            inputsFY2.forEach(id => {
+                document.getElementById(id).style.display = 'none';
+            });
+            colHdrFY1.textContent = (cat === 'newly_inc_fy1') ? '1st FY Figures' : '2nd FY Figures';
+            document.getElementById('titleFY1').textContent = (cat === 'newly_inc_fy1') ? '1st FY Threshold Status' : '2nd FY Threshold Status';
+        } else if (cat === 'dormant' || cat === 'public') {
+            finArea.style.display = 'none';
+            cardFY2.style.display = 'none';
+        } else { // Existing Private Company > 2 Years
+            finArea.style.display = 'block';
+            colHdrFY2.style.display = 'block';
+            cardFY2.style.display = 'block';
+            inputsFY2.forEach(id => {
+                document.getElementById(id).style.display = 'block';
+            });
+            colHdrFY1.textContent = 'Immediate Past FY (FY-1)';
+            colHdrFY2.textContent = 'Preceding FY (FY-2)';
+            document.getElementById('titleFY1').textContent = 'Immediate Past FY (FY-1) Status';
+            document.getElementById('titleFY2').textContent = 'Preceding FY (FY-2) Status';
+        }
+
+        evaluateAuditExemption();
+    }
+
+    function evaluateAuditExemption() {
+        const cat = document.getElementById('entityCategory').value;
+        const group = document.getElementById('groupStructure').value;
+
+        const statusBox = document.getElementById('statusBox');
+        const statusTag = document.getElementById('statusTag');
+        const statusTitle = document.getElementById('statusTitle');
+        const statusDesc = document.getElementById('statusDesc');
+
+        const groupInputs = document.getElementById('groupFinancialInputs');
+
+        if (group === 'group' && (cat === 'private_existing' || cat === 'newly_inc_fy1' || cat === 'newly_inc_fy2')) {
+            groupInputs.style.display = 'block';
+        } else {
+            groupInputs.style.display = 'none';
+        }
+
+        // 1. DORMANT COMPANY
+        if (cat === 'dormant') {
+            statusBox.className = 'status-box exempt';
+            statusTag.textContent = 'AUDIT EXEMPT';
+            statusTitle.textContent = 'Dormant Company Exemption (Sec 205B)';
+            statusDesc.textContent = 'Dormant companies are exempt from statutory financial audit under Section 205B of the Singapore Companies Act.';
+            setBadges('pill-pass', 'DORMANT');
+            return;
+        }
+
+        // 2. PUBLIC COMPANY
+        if (cat === 'public') {
+            statusBox.className = 'status-box mandatory';
+            statusTag.textContent = 'AUDIT MANDATORY';
+            statusTitle.textContent = 'Statutory Audit Required';
+            statusDesc.textContent = 'Public or listed companies cannot claim small company audit exemption under Section 205C.';
+            setBadges('pill-na', 'N/A');
+            return;
+        }
+
+        // 3. DISCRETE FINANCIAL METRICS EVALUATION
+        const rev1 = parseFloat(document.getElementById('sgRevFY1').value) || 0;
+        const ast1 = parseFloat(document.getElementById('sgAstFY1').value) || 0;
+        const emp1 = parseInt(document.getElementById('sgEmpFY1').value) || 0;
+
+        const rev2 = parseFloat(document.getElementById('sgRevFY2').value) || 0;
+        const ast2 = parseFloat(document.getElementById('sgAstFY2').value) || 0;
+        const emp2 = parseInt(document.getElementById('sgEmpFY2').value) || 0;
+
+        const pRev1 = rev1 <= 10000000;
+        const pAst1 = ast1 <= 10000000;
+        const pEmp1 = emp1 <= 50;
+        const pass1 = (pRev1 ? 1 : 0) + (pAst1 ? 1 : 0) + (pEmp1 ? 1 : 0) >= 2;
+
+        const pRev2 = rev2 <= 10000000;
+        const pAst2 = ast2 <= 10000000;
+        const pEmp2 = emp2 <= 50;
+        const pass2 = (pRev2 ? 1 : 0) + (pAst2 ? 1 : 0) + (pEmp2 ? 1 : 0) >= 2;
+
+        updatePill('badgeRevFY1', pRev1);
+        updatePill('badgeAstFY1', pAst1);
+        updatePill('badgeEmpFY1', pEmp1);
+
+        updatePill('badgeRevFY2', pRev2);
+        updatePill('badgeAstFY2', pAst2);
+        updatePill('badgeEmpFY2', pEmp2);
+
+        let sgPass = false;
+        if (cat === 'newly_inc_fy1' || cat === 'newly_inc_fy2') {
+            sgPass = pass1; // Single FY evaluation
+        } else {
+            sgPass = pass1 && pass2; // Must pass both past 2 FYs for existing co
+        }
+
+        // Group Evaluation
+        let grpPass = true;
+        if (group === 'group') {
+            const gRev1 = parseFloat(document.getElementById('grpRevFY1').value) || 0;
+            const gAst1 = parseFloat(document.getElementById('grpAstFY1').value) || 0;
+            const gEmp1 = parseInt(document.getElementById('grpEmpFY1').value) || 0;
+
+            const gRev2 = parseFloat(document.getElementById('grpRevFY2').value) || 0;
+            const gAst2 = parseFloat(document.getElementById('grpAstFY2').value) || 0;
+            const gEmp2 = parseInt(document.getElementById('grpEmpFY2').value) || 0;
+
+            const gPass1 = (gRev1 <= 10000000 ? 1 : 0) + (gAst1 <= 10000000 ? 1 : 0) + (gEmp1 <= 50 ? 1 : 0) >= 2;
+            const gPass2 = (gRev2 <= 10000000 ? 1 : 0) + (gAst2 <= 10000000 ? 1 : 0) + (gEmp2 <= 50 ? 1 : 0) >= 2;
+
+            if (cat === 'newly_inc_fy1' || cat === 'newly_inc_fy2') {
+                grpPass = gPass1;
+            } else {
+                grpPass = gPass1 && gPass2;
+            }
+        }
+
+        // FINAL STATUS DETERMINATION
+        if (sgPass && grpPass) {
+            statusBox.className = 'status-box exempt';
+            statusTag.textContent = 'AUDIT EXEMPT';
+            statusTitle.textContent = 'Qualifies for Audit Exemption';
+            statusDesc.textContent = (cat === 'newly_inc_fy2')
+                ? 'Qualifies in 2nd FY under ACRA Small Company Concept criteria.'
+                : (cat === 'newly_inc_fy1' ? 'Qualifies as a Newly Incorporated Small Entity (1st FY).' : 'Meets Small Company / Group criteria across both past financial years (Sec 205C).');
+        } else {
+            statusBox.className = 'status-box mandatory';
+            statusTag.textContent = 'AUDIT MANDATORY';
+            statusTitle.textContent = 'Statutory Audit Required';
+            statusDesc.textContent = !sgPass 
+                ? 'Exceeds small company quantitative thresholds in the evaluated financial year(s).' 
+                : 'Consolidated group exceeds small group thresholds in the evaluated financial year(s).';
+        }
+    }
+
+    function updatePill(elemId, isPass) {
+        const el = document.getElementById(elemId);
+        if (el) {
+            el.className = isPass ? 'pill-badge pill-pass' : 'pill-badge pill-fail';
+            el.textContent = isPass ? 'PASS' : 'EXCEEDED';
+        }
+    }
+
+    function setBadges(className, text) {
+        ['badgeRevFY1', 'badgeAstFY1', 'badgeEmpFY1', 'badgeRevFY2', 'badgeAstFY2', 'badgeEmpFY2'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) { el.className = 'pill-badge ' + className; el.textContent = text; }
+        });
+    }
+
+    handleCategoryChange();
+</script>
+
+</body>
+</html>
