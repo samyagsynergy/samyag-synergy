@@ -1,19 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-T3T184TSNN"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-T3T184TSNN');
-</script>
 <meta charset="UTF-8">
-<title>Samyag Synergy — Finance &amp; Information Technology, Singapore</title>
+<title>Samyag Synergy — Chartered Accountant building AI for finance, Singapore</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Samyag Synergy helps Singapore businesses streamline processes, strengthen controls, and make better decisions — accounting, tax, IFRS, sustainability reporting and tech enablement.">
+<meta name="description" content="Singapore payroll software (beta), 40+ SME tools built, and 500+ students and professionals taught. Samyag Synergy — finance expertise, built into AI.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Samyag Synergy — Finance expertise, built into AI">
+<meta property="og:description" content="Singapore payroll software (beta) · 40+ SME tools built · 500+ students and professionals taught.">
+<meta property="og:image" content="https://website.samyagsynergy.workers.dev/uploads/logo.png">
+<meta property="og:url" content="https://website.samyagsynergy.workers.dev/">
+<meta name="twitter:card" content="summary">
 <link rel="icon" href="/uploads/logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -232,6 +229,30 @@
     .resources-grid{ grid-template-columns: repeat(2,1fr); }
     .hero-photo{ order:-1; max-width:280px; margin:0 auto; }
   }
+
+  /* ---------- STATS + FLAGSHIP ---------- */
+  .stats{ background:var(--cream-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+  .stats-grid{ display:grid; grid-template-columns:repeat(3,1fr); }
+  .stat{ padding:30px 24px; text-align:center; border-right:1px solid var(--line); }
+  .stat:last-child{ border-right:none; }
+  .stat .n{ font-family:'Fraunces', serif; font-size:clamp(32px,4.4vw,46px); font-weight:600; line-height:1.1; color:var(--ink); }
+  .stat .n em{ font-style:normal; color:var(--gold); }
+  .stat .t{ font-family:'IBM Plex Mono', monospace; font-size:11.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-soft); margin-top:6px; }
+  #payroll{ padding:64px 0; }
+  .flagship{ background:var(--card); border:1.5px solid var(--gold-soft); border-radius:16px; padding:44px; display:grid; grid-template-columns:1.3fr .7fr; gap:40px; align-items:center; box-shadow:8px 8px 0 var(--cream-2); }
+  .flagship h2{ margin-top:10px; }
+  .badge-beta{ display:inline-block; font-family:'IBM Plex Mono', monospace; font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; background:rgba(184,137,46,0.12); color:var(--gold); border:1px solid rgba(184,137,46,0.45); border-radius:20px; padding:3px 12px; margin-left:12px; vertical-align:middle; }
+  .flagship .big{ text-align:center; border-left:1px solid var(--line); padding-left:30px; }
+  .flagship .big .n{ font-family:'Fraunces', serif; font-size:clamp(64px,9vw,104px); font-weight:600; line-height:1; color:var(--gold); }
+  .flagship .big .t{ font-family:'IBM Plex Mono', monospace; font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-soft); margin-top:8px; }
+  .cta-row.tight{ margin-top:22px; }
+  @media (max-width:880px){
+    .stats-grid{ grid-template-columns:1fr; }
+    .stat{ border-right:none; border-bottom:1px solid var(--line); padding:20px 24px; }
+    .stat:last-child{ border-bottom:none; }
+    .flagship{ grid-template-columns:1fr; padding:28px; }
+    .flagship .big{ border-left:none; border-top:1px solid var(--line); padding:24px 0 0; }
+  }
 </style>
 </head>
 <body>
@@ -243,13 +264,11 @@
       <span class="name" id="brand-name">Samyag Synergy<span id="brand-tagline">Finance · Information Technology</span></span>
     </a>
     <nav class="links" id="site-nav">
-      <a href="#about">About</a>
-      <a href="#services">Services</a>
+      <a href="#payroll">Payroll</a>
       <a href="#tools">Tools</a>
-      <a href="#courses">Courses</a> 
-      <a href="#resources">Resources</a>
-      <a href="#events">Events</a>
-      <a href="#blog">Blog</a>
+      <a href="#services">Services</a>
+      <a href="#courses">Learn</a>
+      <a href="#about">About</a>
       <a href="#contact">Contact</a>
     </nav>
     <button class="menu-btn" id="menu-btn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="site-nav">
@@ -265,13 +284,14 @@
 <section class="hero">
   <div class="wrap hero-grid">
     <div>
-      <div class="eyebrow">Singapore · Sole Proprietorship</div>
-      <h1 id="hero-heading">Loading…</h1>
+      <div class="eyebrow">Chartered Accountant · Singapore</div>
+      <h1>Finance expertise, built into AI.</h1>
       <div class="chevrons"><span></span><span></span><span></span></div>
-      <p class="lede" id="hero-lede"></p>
+      <p class="lede">I build payroll software and practical tools for Singapore SMEs — and teach students and professionals how to use AI in finance.</p>
       <div class="cta-row">
-        <a href="#contact" class="btn solid">Get in touch</a>
-        <a href="#services" class="btn outline">See services</a>
+        <a href="#contact" class="btn solid">Work with me</a>
+        <a href="#courses" class="btn outline">Train your team</a>
+        <a href="#tools" class="btn outline">Try the tools</a>
       </div>
     </div>
     <div class="hero-photo">
@@ -281,21 +301,50 @@
   </div>
 </section>
 
+
+
+
+<!-- STATS -->
+<div class="stats">
+  <div class="wrap stats-grid">
+    <div class="stat"><div class="n">60<em>s</em></div><div class="t">to run payroll</div></div>
+    <div class="stat"><div class="n">40<em>+</em></div><div class="t">SME tools built</div></div>
+    <div class="stat"><div class="n">500<em>+</em></div><div class="t">students &amp; professionals taught</div></div>
+  </div>
+</div>
+
+<!-- FLAGSHIP: PAYROLL -->
+<section id="payroll">
+  <div class="wrap">
+    <div class="flagship">
+      <div>
+        <div class="eyebrow">Flagship project</div>
+        <h2>Singapore payroll software<span class="badge-beta">Beta</span></h2>
+        <p class="lede">Payroll for Singapore businesses, done in 60 seconds. The software is in its beta phase — try it early and help shape it.</p>
+        <div class="cta-row tight">
+          <a class="btn solid" href="mailto:samyagsynergy@gmail.com?subject=Payroll%20beta%20access">Join the beta</a>
+          <a class="btn outline" href="#tools">See our other tools</a>
+        </div>
+      </div>
+      <div class="big">
+        <div class="n">60</div>
+        <div class="t">seconds to run payroll</div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <div class="divider"></div>
 
-<!-- ABOUT -->
-<section id="about">
-  <div class="wrap about-grid">
-    <div>
-      <div class="eyebrow">About the founder</div>
-      <h2 id="about-name">Loading…</h2>
-      <p class="credential-line" id="credential-line"></p>
-      <p class="lede" id="about-intro"></p>
-      <ul class="credentials" id="credentials-list"></ul>
-    </div>
-    <div>
-      <p class="lede" id="about-body"></p>
-      <div class="industries" id="industries-list"></div>
+<!-- TOOLS -->
+<section id="tools">
+  <div class="wrap">
+    <div class="tools-panel">
+      <div class="eyebrow">40+ built · free to try</div>
+      <h2>Tools for Singapore SMEs</h2>
+      <p class="lede">Practical tools built to solve everyday finance and business problems — free to try, feedback always welcome.</p>
+      <div class="filter-row" id="tools-filters"></div>
+      <div class="tools-grid" id="tools-grid"><div class="skeleton" style="color:#9C9788;">Loading tools…</div></div>
     </div>
   </div>
 </section>
@@ -314,15 +363,19 @@
 
 <div class="divider"></div>
 
-<!-- TOOLS -->
-<section id="tools">
-  <div class="wrap">
-    <div class="tools-panel">
-      <div class="eyebrow">Free &amp; open</div>
-      <h2>Productivity tools</h2>
-      <p class="lede">Small, practical tools we've built to solve everyday problems — free to try, feedback always welcome.</p>
-      <div class="filter-row" id="tools-filters"></div>
-      <div class="tools-grid" id="tools-grid"><div class="skeleton" style="color:#9C9788;">Loading tools…</div></div>
+<!-- ABOUT -->
+<section id="about">
+  <div class="wrap about-grid">
+    <div>
+      <div class="eyebrow">About the founder</div>
+      <h2 id="about-name">Loading…</h2>
+      <p class="credential-line" id="credential-line"></p>
+      <p class="lede" id="about-intro"></p>
+      <ul class="credentials" id="credentials-list"></ul>
+    </div>
+    <div>
+      <p class="lede" id="about-body"></p>
+      <div class="industries" id="industries-list"></div>
     </div>
   </div>
 </section>
@@ -381,7 +434,7 @@
   <div class="wrap contact-grid">
     <div>
       <div class="eyebrow">Get in touch</div>
-      <h2>Let's talk about your finance function</h2>
+      <h2>Let's work together</h2>
       <ul class="contact-list" id="contact-list"></ul>
       <div class="social-row" id="social-row"></div>
     </div>
@@ -499,10 +552,7 @@ function renderSettings(s){
   document.getElementById('brand-logo').src = s.logo || '/uploads/logo.png';
   document.getElementById('brand-name').firstChild.textContent = s.brand_name || 'Samyag Synergy';
   document.getElementById('brand-tagline').textContent = s.brand_tagline || '';
-  document.title = (s.brand_name || 'Samyag Synergy') + ' — ' + (s.brand_tagline || '');
 
-  document.getElementById('hero-heading').textContent = s.hero_heading || '';
-  document.getElementById('hero-lede').textContent = s.hero_lede || '';
   document.getElementById('hero-photo').src = s.hero_photo || '/uploads/neelu.jpg';
   document.getElementById('hero-photo-tag').textContent = s.hero_photo_tag || '';
 
