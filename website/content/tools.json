@@ -115,6 +115,13 @@
       "title": "Instant ACRA Audit Exemption Checker",
       "category": "Reporting",
       "description": "Navigating Singapore statutory audit requirements doesn't have to be complex. Samyag Synergy’s interactive assessment tool helps business owners, directors, and finance teams instantly verify audit exemption status under Section 205B & 205C of the Singapore Companies Act."
+    },
+    {
+      "title": "DIWALI AI QUIZ",
+      "category": "Other",
+      "description": "FUN Diwali Quiz",
+      "link_label": "OPEN QUIZ",
+      "link": "tools/diwali_quiz/diwaliquiz.html"
     }
   ]
 }
