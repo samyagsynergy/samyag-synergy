@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Diwali AI Quiz – Clementi Park Condo, Singapore</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Yatra+One&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --night:#1a0f2e;
+  --plum:#2b1849;
+  --plum-hi:#3a2262;
+  --marigold:#f6a821;
+  --flame:#ff7a1a;
+  --rose:#e0447a;
+  --ivory:#fff4de;
+  --ivory-dim:#d9cbb0;
+  --ok:#7fd99a;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{
+  background:radial-gradient(ellipse at 50% -10%, #4a2a7a 0%, var(--night) 55%) fixed, var(--night);
+  color:var(--ivory);
+  font-family:"Nunito",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  font-size:17px;line-height:1.5;
+  display:flex;justify-content:center;
+}
+.wrap{width:100%;max-width:560px;padding:28px 20px 40px;display:flex;flex-direction:column;min-height:100vh}
+header{text-align:center;margin-bottom:8px}
+.logo{display:none;max-height:44px;margin:0 auto 10px}
+.logo.on{display:block}
+h1{
+  font-family:"Yatra One",Georgia,serif;font-weight:400;
+  font-size:clamp(2.1rem,9vw,3rem);line-height:1.08;margin:6px 0 4px;
+  color:var(--marigold);
+  text-shadow:0 0 28px rgba(246,168,33,.35);
+}
+.place{margin:0;font-weight:600;font-size:1.05rem}
+.by{margin:2px 0 0;color:var(--ivory-dim);font-size:.95rem}
+
+/* the one memorable element: the diya */
+.diya{display:block;margin:14px auto 4px;width:120px;height:auto;overflow:visible}
+.flame{transform-origin:60px 50px;animation:flick 2.4s ease-in-out infinite}
+.glow{animation:pulse 2.4s ease-in-out infinite}
+@keyframes flick{0%,100%{transform:scale(1) rotate(0)}30%{transform:scale(1.06,.95) rotate(-2deg)}60%{transform:scale(.96,1.05) rotate(2deg)}}
+@keyframes pulse{0%,100%{opacity:.55}50%{opacity:.85}}
+
+main{flex:1}
+.screen{display:none}
+.screen.on{display:block}
+.card{
+  background:var(--plum);
+  border:1px solid var(--plum-hi);
+  border-radius:18px;padding:22px 20px;margin-top:14px;
+}
+label,.lead{display:block;font-weight:600;margin-bottom:8px}
+.hint{color:var(--ivory-dim);font-size:.93rem;margin:0 0 14px}
+input[type=text],input[type=password]{
+  width:100%;padding:14px 14px;font:inherit;font-size:1.1rem;
+  background:var(--night);color:var(--ivory);
+  border:2px solid var(--plum-hi);border-radius:12px;
+}
+input::placeholder{color:#8f80ad}
+input:focus-visible,button:focus-visible{outline:3px solid var(--marigold);outline-offset:2px}
+.err{color:#ff9db9;font-weight:600;min-height:1.4em;margin:10px 0 0}
+.btn{
+  display:block;width:100%;margin-top:16px;padding:15px 18px;
+  font:inherit;font-weight:800;font-size:1.08rem;cursor:pointer;
+  background:var(--marigold);color:#2a1300;border:0;border-radius:12px;
+  transition:transform .12s ease, background .12s ease;
+}
+.btn:hover{background:#ffbb3d}
+.btn:active{transform:scale(.98)}
+.btn[disabled]{background:#5b4a7d;color:#b9aad3;cursor:not-allowed}
+.btn.wa{background:#25d366;color:#05260f}
+.btn.wa:hover{background:#3be67c}
+
+.progress{display:flex;gap:6px;margin-bottom:16px}
+.progress span{flex:1;height:6px;border-radius:3px;background:var(--plum-hi)}
+.progress span.done{background:var(--flame)}
+.progress span.now{background:var(--marigold)}
+.qcount{margin:0 0 6px;color:var(--ivory-dim);font-size:.95rem}
+.q{font-size:1.3rem;font-weight:800;line-height:1.3;margin:0 0 16px}
+.opts{display:grid;gap:10px}
+.opt{
+  text-align:left;width:100%;padding:14px 16px;font:inherit;font-size:1.02rem;
+  background:var(--night);color:var(--ivory);
+  border:2px solid var(--plum-hi);border-radius:12px;cursor:pointer;
+  transition:border-color .12s ease, background .12s ease;
+}
+.opt:hover{border-color:var(--marigold)}
+.opt[aria-checked=true]{border-color:var(--marigold);background:#3a2410}
+
+.score{font-family:"Yatra One",Georgia,serif;font-size:4.2rem;line-height:1;margin:6px 0 2px;text-align:center;color:var(--marigold)}
+.score small{font-size:1.6rem;color:var(--ivory-dim)}
+.verdict{font-family:"Yatra One",Georgia,serif;font-size:1.6rem;text-align:center;margin:8px 0 4px}
+.verdict-sub{text-align:center;margin:0 0 6px;color:var(--ivory-dim)}
+.status{text-align:center;font-size:.92rem;color:var(--ivory-dim);margin:14px 0 0}
+.status.ok{color:var(--ok)}
+.review{margin-top:22px;border-top:1px solid var(--plum-hi);padding-top:6px}
+.review h3{font-family:"Yatra One",Georgia,serif;font-weight:400;font-size:1.25rem;margin:14px 0 6px;color:var(--marigold)}
+.ritem{padding:12px 0;border-bottom:1px solid var(--plum-hi)}
+.ritem:last-child{border-bottom:0}
+.ritem p{margin:0}
+.rq{font-weight:800;margin-bottom:4px!important}
+.rtag{font-weight:800}
+.rtag.good{color:var(--ok)}
+.rtag.bad{color:#ff9db9}
+.rline{color:var(--ivory-dim);font-size:.97rem}
+.rline b{color:var(--ivory);font-weight:600}
+footer{text-align:center;color:var(--ivory-dim);font-size:.88rem;margin-top:26px}
+footer b{color:var(--ivory);font-weight:600}
+@media (prefers-reduced-motion:reduce){.flame,.glow{animation:none}.btn{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <img id="logo" class="logo" alt="Samyag Synergy logo">
+    <svg class="diya" viewBox="0 0 120 90" aria-hidden="true">
+      <ellipse class="glow" cx="60" cy="48" rx="46" ry="34" fill="#ff9a2e" opacity=".55" style="filter:blur(14px)"/>
+      <g class="flame">
+        <path d="M60 8 C48 24 46 36 54 46 C57 50 63 50 66 46 C74 36 72 24 60 8 Z" fill="#ffb02e"/>
+        <path d="M60 24 C54 33 54 40 58 45 C59.5 47 60.5 47 62 45 C66 40 66 33 60 24 Z" fill="#fff1b8"/>
+      </g>
+      <path d="M12 54 C14 74 34 84 60 84 C86 84 106 74 108 54 C92 60 28 60 12 54 Z" fill="#c8571e"/>
+      <path d="M12 54 C28 60 92 60 108 54 C106 50 92 48 60 48 C28 48 14 50 12 54 Z" fill="#e8742a"/>
+      <path d="M28 66 C44 72 76 72 92 66" stroke="#f6a821" stroke-width="3" fill="none" stroke-linecap="round"/>
+    </svg>
+    <h1>Diwali AI Quiz</h1>
+    <p class="place">Clementi Park Condo, Singapore</p>
+    <p class="by">Presented by CA Neelukumari Jain</p>
+  </header>
+
+  <main>
+    <!-- 1. PIN -->
+    <section id="s-pin" class="screen">
+      <div class="card">
+        <label for="pin">Enter the PIN</label>
+        <p class="hint">The host will share the PIN when the quiz opens.</p>
+        <input id="pin" type="password" autocomplete="off" placeholder="PIN" aria-describedby="pin-err">
+        <p id="pin-err" class="err" role="alert"></p>
+        <button id="pin-go" class="btn" type="button">Open quiz</button>
+      </div>
+    </section>
+
+    <!-- 2. Name -->
+    <section id="s-name" class="screen">
+      <div class="card">
+        <label for="name">Your name</label>
+        <p class="hint">6 questions about Diwali. Takes about 3 minutes.</p>
+        <input id="name" type="text" maxlength="40" autocomplete="name" placeholder="Type your name" aria-describedby="name-err">
+        <p id="name-err" class="err" role="alert"></p>
+        <button id="name-go" class="btn" type="button">Start quiz</button>
+      </div>
+    </section>
+
+    <!-- 3. Questions -->
+    <section id="s-quiz" class="screen">
+      <div class="card">
+        <div id="progress" class="progress" aria-hidden="true"></div>
+        <p id="qcount" class="qcount"></p>
+        <h2 id="q" class="q"></h2>
+        <div id="opts" class="opts" role="radiogroup" aria-labelledby="q"></div>
+        <button id="next" class="btn" type="button" disabled>Next</button>
+      </div>
+    </section>
+
+    <!-- 4. Result -->
+    <section id="s-result" class="screen">
+      <div class="card">
+        <p class="score"><span id="r-score"></span><small> / 6</small></p>
+        <p id="r-title" class="verdict"></p>
+        <p id="r-sub" class="verdict-sub"></p>
+        <button id="wa" class="btn wa" type="button">Send my result on WhatsApp</button>
+        <p id="status" class="status" role="status"></p>
+        <div id="review" class="review"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div>Presented by <b>CA Neelukumari Jain</b></div>
+    <div>Samyag Synergy, One-Stop F&amp;A Solution</div>
+  </footer>
+</div>
+
+<script>
+/* ===== SETTINGS: edit only this block ===== */
+const CONFIG = {
+  PIN: "2026",                      // Change the PIN here. Use "" (empty) to remove the PIN screen.
+  APPS_SCRIPT_URL: "",              // Paste your existing Apps Script /exec link here.
+  WHATSAPP_NUMBER: "918956293305",  // Results go here (country code, no + or spaces).
+  QUIZ_NAME: "Diwali Quiz",         // Shown in the Sheet so you can tell this quiz apart.
+  PLACE: "Clementi Park Condo",
+  LOGO_URL: ""                      // Optional: link to your logo image. Empty = no logo.
+};
+/* ========================================= */
+
+const QUESTIONS = [
+  { q: "What are the small clay lamps lit during Diwali called?",
+    o: ["Torans","Diyas","Dholaks","Thalis"], a: 1 },
+  { q: "Which goddess of wealth is worshipped on Diwali night?",
+    o: ["Saraswati","Lakshmi","Durga","Parvati"], a: 1 },
+  { q: "Which story is most widely linked to Diwali in North India?",
+    o: ["Lord Rama returning to Ayodhya after 14 years","Krishna lifting Govardhan hill","Hanuman burning Lanka","Arjuna’s victory at Kurukshetra"], a: 0 },
+  { q: "In Jainism, Diwali marks the nirvana (liberation) of which Tirthankara?",
+    o: ["Parshvanath","Rishabhadeva","Mahavir Swami","Neminatha"], a: 2 },
+  { q: "What is a rangoli?",
+    o: ["A special Diwali sweet","Colourful patterns made at the entrance using powders or petals","A type of firecracker","A traditional oil lamp"], a: 1 },
+  { q: "Which Singapore neighbourhood is famous for its Deepavali light-up every year?",
+    o: ["Chinatown","Orchard Road","Little India","Marina Bay"], a: 2 }
+];
+
+const MESSAGES = {
+  6:["Diwali AI Champion!","Brilliant, you shine brightest tonight!"],
+  5:["So close to the crown!","Superstar of the season!"],
+  4:["Great job!","Your Diwali spirit is glowing."],
+  3:["Good effort!","Halfway to the lights, keep going!"],
+  2:["Nice try!","Every diya starts with a small spark."],
+  1:["Well played!","Wishing you a bright year of learning ahead."],
+  0:["Thanks for joining in!","Happy Diwali, the fun is in playing."]
+};
+
+const $ = id => document.getElementById(id);
+let playerName = "", idx = 0, picked = null, score = 0, submitted = false, finalMsg = "", answers = [];
+
+function show(id){
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("on"));
+  $(id).classList.add("on");
+  window.scrollTo({top:0});
+}
+
+/* logo (optional) */
+if (CONFIG.LOGO_URL){ const l=$("logo"); l.src=CONFIG.LOGO_URL; l.classList.add("on"); }
+
+/* PIN */
+function checkPin(){
+  if ($("pin").value.trim() === String(CONFIG.PIN)){ show("s-name"); $("name").focus(); }
+  else { $("pin-err").textContent = "That PIN is not correct. Please ask the host for the right PIN."; $("pin").select(); }
+}
+$("pin-go").addEventListener("click", checkPin);
+$("pin").addEventListener("keydown", e => { if(e.key==="Enter") checkPin(); });
+$("pin").addEventListener("input", () => $("pin-err").textContent = "");
+
+/* Name */
+function startQuiz(){
+  const n = $("name").value.trim().replace(/\s+/g," ");
+  if (!n){ $("name-err").textContent = "Please type your name to start."; $("name").focus(); return; }
+  playerName = n; idx = 0; score = 0; picked = null; answers = [];
+  renderQuestion(); show("s-quiz");
+}
+$("name-go").addEventListener("click", startQuiz);
+$("name").addEventListener("keydown", e => { if(e.key==="Enter") startQuiz(); });
+$("name").addEventListener("input", () => $("name-err").textContent = "");
+
+/* Questions */
+function renderQuestion(){
+  const item = QUESTIONS[idx];
+  $("progress").innerHTML = QUESTIONS.map((_,i)=>`<span class="${i<idx?"done":i===idx?"now":""}"></span>`).join("");
+  $("qcount").textContent = `Question ${idx+1} of ${QUESTIONS.length}`;
+  $("q").textContent = item.q;
+  const box = $("opts"); box.innerHTML = ""; picked = null;
+  item.o.forEach((text,i)=>{
+    const b = document.createElement("button");
+    b.type="button"; b.className="opt"; b.setAttribute("role","radio"); b.setAttribute("aria-checked","false");
+    b.textContent = text;
+    b.addEventListener("click", ()=>{
+      picked = i;
+      box.querySelectorAll(".opt").forEach((x,j)=>x.setAttribute("aria-checked", j===i ? "true":"false"));
+      $("next").disabled = false;
+    });
+    box.appendChild(b);
+  });
+  $("next").disabled = true;
+  $("next").textContent = idx === QUESTIONS.length-1 ? "Finish" : "Next";
+}
+$("next").addEventListener("click", ()=>{
+  if (picked === null) return;
+  answers.push(picked);
+  if (picked === QUESTIONS[idx].a) score++;
+  idx++;
+  if (idx < QUESTIONS.length) renderQuestion(); else finish();
+});
+
+/* Result */
+function finish(){
+  const [title, sub] = MESSAGES[score];
+  finalMsg = `${title} ${sub}`;
+  $("r-score").textContent = score;
+  $("r-title").textContent = title;
+  $("r-sub").textContent = sub;
+  renderReview();
+  show("s-result");
+  saveToSheet();
+}
+
+function renderReview(){
+  const box = $("review");
+  box.innerHTML = "<h3>Your answers</h3>";
+  QUESTIONS.forEach((item,i)=>{
+    const right = answers[i] === item.a;
+    const d = document.createElement("div"); d.className = "ritem";
+    const q = document.createElement("p"); q.className = "rq"; q.textContent = `${i+1}. ${item.q}`;
+    const tag = document.createElement("p");
+    const t = document.createElement("span"); t.className = "rtag " + (right ? "good" : "bad");
+    t.textContent = right ? "✓ Correct" : "✗ Not quite";
+    tag.appendChild(t);
+    d.appendChild(q); d.appendChild(tag);
+    const l1 = document.createElement("p"); l1.className = "rline";
+    if (right){
+      l1.innerHTML = "Answer: <b></b>"; l1.querySelector("b").textContent = item.o[item.a];
+      d.appendChild(l1);
+    } else {
+      l1.innerHTML = "You chose: <b></b>"; l1.querySelector("b").textContent = item.o[answers[i]];
+      const l2 = document.createElement("p"); l2.className = "rline";
+      l2.innerHTML = "Correct answer: <b></b>"; l2.querySelector("b").textContent = item.o[item.a];
+      d.appendChild(l1); d.appendChild(l2);
+    }
+    box.appendChild(d);
+  });
+}
+
+function saveToSheet(){
+  if (submitted) return; submitted = true;
+  const st = $("status");
+  if (!CONFIG.APPS_SCRIPT_URL){ st.textContent = "Tap the green button to send your result to the host."; return; }
+  const body = new URLSearchParams({
+    action: "submit",
+    quiz: CONFIG.QUIZ_NAME,
+    name: playerName,
+    institute: CONFIG.PLACE,
+    contact: "",
+    score: String(score),
+    total: String(QUESTIONS.length),
+    message: finalMsg,
+    time: new Date().toLocaleString("en-SG",{timeZone:"Asia/Singapore"})
+  });
+  fetch(CONFIG.APPS_SCRIPT_URL,{method:"POST",mode:"no-cors",body,keepalive:true})
+    .then(()=>{ st.textContent="Your result was sent to the host."; st.classList.add("ok"); })
+    .catch(()=>{ st.textContent="Could not send automatically. Please tap the green button to send your result."; });
+}
+
+$("wa").addEventListener("click", ()=>{
+  const text = `Diwali AI Quiz – ${CONFIG.PLACE}\nName: ${playerName}\nScore: ${score}/${QUESTIONS.length}\n${finalMsg}`;
+  window.open(`https://wa.me/${CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`,"_blank","noopener");
+});
+
+/* Start */
+if (String(CONFIG.PIN).trim() === ""){ show("s-name"); } else { show("s-pin"); }
+</script>
+</body>
+</html>
