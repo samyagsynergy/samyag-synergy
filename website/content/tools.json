@@ -122,6 +122,13 @@
       "description": "FUN Diwali Quiz",
       "link_label": "OPEN QUIZ",
       "link": "tools/diwali_quiz/diwaliquiz.html"
+    },
+    {
+      "title": "DIWALI HOUSIE",
+      "category": "Other",
+      "description": "Diwali Housie",
+      "link": "tools/diwali_tambola /diwali_tambola.html",
+      "link_label": "OPEN HOUSIE"
     }
   ]
 }
