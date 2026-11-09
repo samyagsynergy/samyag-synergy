@@ -26,46 +26,56 @@ button:disabled{opacity:.5}
 .row b{width:26px;text-align:center}
 .row small{width:86px;text-align:right;font-size:12px}
 .wa{background:#25d366;color:#fff;padding:10px 12px}
+#err{background:#a33;color:#fff;border-radius:10px;padding:10px;margin:10px 0;font-size:14px}
 </style></head>
-<body><div id="app"></div>
+<body><div id="err" hidden></div><div id="app"></div>
 <script>
-// >>> Paste your Cloudflare Worker URL here (no slash at the end)
-const API = "https://YOUR-WORKER.workers.dev";
+// Same website serves the game server, so nothing to paste here
+const API = "";
 
 const $ = id => document.getElementById(id);
 const q = new URLSearchParams(location.search), app = $("app");
-let called = [];
+let called = [], G = null, N = 15;
 
-// Same ticket number always gives the same valid tambola ticket
 function rng(s){return()=>{s|=0;s=s+0x6D2B79F5|0;let t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
-function ticket(n){
-  const r = rng(n*7919+2026), sh = a => a.map(x=>[r(),x]).sort((a,b)=>a[0]-b[0]).map(x=>x[1]);
+// Same game + ticket number always gives the same valid tambola ticket
+function ticket(n,g){
+  const r = rng(g*100003+n*7919), sh = a => a.map(x=>[r(),x]).sort((a,b)=>a[0]-b[0]).map(x=>x[1]);
   let rows;
   for(;;){
     rows = [0,1,2].map(()=>sh([0,1,2,3,4,5,6,7,8]).slice(0,5));
     const cnt = Array(9).fill(0); rows.forEach(rw=>rw.forEach(c=>cnt[c]++));
     if(cnt.every(c=>c>=1&&c<=3)) break;
   }
-  const g = [0,1,2].map(()=>Array(9).fill(0));
+  const t = [0,1,2].map(()=>Array(9).fill(0));
   for(let c=0;c<9;c++){
     const lo = c==0?1:c*10, hi = c==8?90:c*10+9, pool = [];
     for(let v=lo;v<=hi;v++) pool.push(v);
     const ri = [0,1,2].filter(i=>rows[i].includes(c));
-    sh(pool).slice(0,ri.length).sort((a,b)=>a-b).forEach((v,k)=>g[ri[k]][c]=v);
+    sh(pool).slice(0,ri.length).sort((a,b)=>a-b).forEach((v,k)=>t[ri[k]][c]=v);
   }
-  return g;
+  return t;
 }
 
-async function get(){ try{ const r = await fetch(API+"/state"); called = (await r.json()).called||[]; }catch(e){} }
-function poll(f){ const go = async()=>{ await get(); f(); }; go(); setInterval(go,2500); }
+function err(m){ const e = $("err"); e.hidden = !m; e.textContent = m||""; }
+async function get(){
+  try{
+    const r = await fetch(API+"/state"); const d = await r.json();
+    G = d.g; N = d.n; called = d.called||[]; err("");
+  }catch(e){ err("Cannot reach the game server. Check your internet, and that the Cloudflare deploy has finished."); }
+}
+function poll(f){ const go = async()=>{ await get(); if(G!==null) f(); }; go(); setInterval(go,2500); }
 function recent(){ return called.slice(-6,-1).reverse().map(x=>`<span>${x}</span>`).join(""); }
 
-function family(n){
-  const t = ticket(n);
+function family(n,g){
   app.innerHTML = `<h1>🪔 Diwali Tambola 🪔</h1>
-  <div class="card"><div class="dim">Latest number</div><div class="big" id="cur">–</div><div class="recent" id="rec"></div></div>
-  <div class="card"><div class="dim">Your ticket #${n} · <span id="cnt">0</span>/15 called</div><div class="tk" id="tk"></div></div>`;
+  <div class="card dim" id="end" hidden>This game has ended or this ticket is not valid. Please ask the host for your new link.</div>
+  <div id="play"><div class="card"><div class="dim">Latest number</div><div class="big" id="cur">–</div><div class="recent" id="rec"></div></div>
+  <div class="card"><div class="dim">Your ticket #${n} · <span id="cnt">0</span>/15 called</div><div class="tk" id="tk"></div></div></div>`;
+  const t = ticket(n,g);
   poll(()=>{
+    const bad = G!=g || n>N;
+    $("end").hidden = !bad; $("play").hidden = bad; if(bad) return;
     $("cur").textContent = called.length ? called[called.length-1] : "–";
     $("rec").innerHTML = recent();
     let c = 0;
@@ -81,60 +91,72 @@ function family(n){
 function host(){
   let pin = sessionStorage.getItem("pin") || prompt("Host PIN");
   sessionStorage.setItem("pin", pin||"");
-  let names = {}; try{ names = JSON.parse(localStorage.getItem("names")||"{}"); }catch(e){}
-  const base = location.origin + location.pathname, T = {};
-  let rows = "";
-  for(let i=1;i<=15;i++){
-    T[i] = ticket(i);
-    rows += `<div class="row"><b>${i}</b><input id="n${i}" placeholder="Family / flat" value="${(names[i]||"").replace(/"/g,"&quot;")}"><button class="wa" data-i="${i}">WhatsApp</button><small id="s${i}"></small></div>`;
-  }
+  const base = location.origin + location.pathname;
+  let T = {}, built = "", names = {};
+  const loadNames = ()=>{ try{ names = JSON.parse(localStorage.getItem("names"+G)||"{}"); }catch(e){ names = {}; } };
   app.innerHTML = `<h1>🪔 Host Panel 🪔</h1>
   <div class="card"><div class="big" id="cur">–</div><div class="dim" id="info"></div><div class="recent" id="rec"></div>
   <button class="roll" id="roll">🎲 ROLL</button></div>
   <div class="card"><div class="dim">Numbers called</div><div class="bd" id="bd"></div></div>
-  <div class="card"><div class="dim">Tickets issued · tap WhatsApp to send each family its link</div>${rows}</div>
-  <div class="card"><button id="rs" style="background:#a33;color:#fff;width:100%">Reset game</button></div>`;
+  <div class="card"><div class="dim" id="tt">Tickets</div><div id="tl"></div></div>
+  <div class="card"><div class="dim">New game (new people, fresh tickets, numbers cleared)</div>
+  <div class="row"><input id="nt" type="number" min="1" max="60" value="15"><button id="ng" style="background:#a33;color:#fff">Start new game</button></div></div>`;
 
+  function rows(){
+    loadNames(); T = {}; let h = "";
+    for(let i=1;i<=N;i++){
+      T[i] = ticket(i,G);
+      h += `<div class="row"><b>${i}</b><input id="n${i}" placeholder="Family / flat" value="${(names[i]||"").replace(/"/g,"&quot;")}"><button class="wa" data-i="${i}">WhatsApp</button><small id="s${i}"></small></div>`;
+    }
+    $("tl").innerHTML = h; built = G+"-"+N;
+    $("tt").textContent = "Game "+G+" · "+N+" tickets · tap WhatsApp to send each family its link";
+    $("nt").value = N;
+  }
   function draw(){
+    if(built != G+"-"+N) rows();
     $("cur").textContent = called.length ? called[called.length-1] : "–";
     $("info").textContent = called.length + " of 90 called";
     $("rec").innerHTML = recent();
     let b = ""; for(let v=1;v<=90;v++) b += `<div class="${called.includes(v)?"hit":""}">${v}</div>`;
     $("bd").innerHTML = b;
-    for(let i=1;i<=15;i++){
-      const t = T[i]; let c = 0, lines = 0;
-      t.forEach(rw=>{ const v = rw.filter(x=>x); const h = v.filter(x=>called.includes(x)).length; c += h; if(h==5) lines++; });
+    for(let i=1;i<=N;i++){
+      let c = 0, lines = 0;
+      T[i].forEach(rw=>{ const h = rw.filter(x=>x&&called.includes(x)).length; c += h; if(h==5) lines++; });
       $("s"+i).textContent = c==15 ? "🏆 FULL HOUSE" : c + "/15" + (lines ? " · " + lines + " line" + (lines>1?"s":"") : "");
       $("s"+i).style.color = c==15 ? "#ffc23c" : "";
     }
   }
-  draw(); poll(draw);
+  poll(draw);
 
   app.addEventListener("input", e=>{
-    if(e.target.id && e.target.id[0]=="n"){ names[e.target.id.slice(1)] = e.target.value; try{ localStorage.setItem("names", JSON.stringify(names)); }catch(_){} }
+    if(e.target.id && e.target.id[0]=="n" && e.target.id!="nt"){ names[e.target.id.slice(1)] = e.target.value; try{ localStorage.setItem("names"+G, JSON.stringify(names)); }catch(_){} }
   });
   app.addEventListener("click", e=>{
     const i = e.target.dataset && e.target.dataset.i; if(!i) return;
     const nm = $("n"+i).value.trim();
-    const msg = `Hi${nm?" "+nm:""}! 🪔 Your Diwali Tambola ticket is #${i}. Open it here: ${base}?ticket=${i}`;
+    const msg = `Hi${nm?" "+nm:""}! 🪔 Your Diwali Tambola ticket is #${i}. Open it here: ${base}?ticket=${i}&g=${G}`;
     window.open("https://wa.me/?text="+encodeURIComponent(msg), "_blank");
   });
 
-  async function call(path){
-    const r = await fetch(API+path, {method:"POST", body:JSON.stringify({pin})});
-    if(r.status==401){ sessionStorage.removeItem("pin"); alert("Wrong PIN"); location.reload(); return false; }
-    const d = await r.json(); if(d.called) called = d.called; return true;
+  async function call(path, body){
+    const r = await fetch(API+path, {method:"POST", body:JSON.stringify({pin, ...body})});
+    if(r.status==401){ sessionStorage.removeItem("pin"); alert("Wrong PIN, or PIN not set in Cloudflare"); location.reload(); return false; }
+    const d = await r.json(); G = d.g; N = d.n; called = d.called; return true;
   }
   $("roll").onclick = async()=>{
+    if(G===null) return;
     $("roll").disabled = true;
     const iv = setInterval(()=>$("cur").textContent = 1+Math.floor(Math.random()*90), 70);
     let ok = true; try{ ok = await call("/roll"); }catch(e){ alert("Could not reach the server"); }
-    setTimeout(()=>{ clearInterval(iv); if(ok) draw(); $("roll").disabled = false; }, 900);
+    setTimeout(()=>{ clearInterval(iv); if(ok) draw(); else $("cur").textContent = called.length ? called[called.length-1] : "–"; $("roll").disabled = false; }, 900);
   };
-  $("rs").onclick = async()=>{ if(confirm("Reset all called numbers?")){ try{ await call("/reset"); draw(); }catch(e){ alert("Could not reach the server"); } } };
+  $("ng").onclick = async()=>{
+    if(G===null || !confirm("Start a new game? Old tickets and numbers will be cleared and old links stop working.")) return;
+    try{ if(await call("/new",{n:+$("nt").value||15})) draw(); }catch(e){ alert("Could not reach the server"); }
+  };
 }
 
 if(q.has("host")) host();
-else if(q.get("ticket")>=1 && q.get("ticket")<=15) family(+q.get("ticket"));
+else if(q.get("ticket")>=1 && q.get("g")) family(+q.get("ticket"), +q.get("g"));
 else app.innerHTML = '<h1>🪔 Diwali Tambola 🪔</h1><div class="card dim">Please open the link your host sent you.</div>';
 </script></body></html>
