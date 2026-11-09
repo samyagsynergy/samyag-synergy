@@ -8,30 +8,36 @@
 body{margin:0 auto;background:var(--bg);color:var(--txt);font-family:system-ui,sans-serif;padding:12px;max-width:640px}
 h1{font-size:20px;text-align:center;color:var(--gold);margin:6px 0}
 .card{background:var(--card);border-radius:14px;padding:12px;margin:10px 0}
-.big{font-size:96px;font-weight:800;color:var(--gold);text-align:center;line-height:1.1}
+.big{font-size:90px;text-align:center;line-height:1.15}
+.nm{font-size:28px;font-weight:800;color:var(--gold);text-align:center}
 .dim{color:var(--dim);font-size:13px;text-align:center}
 button{font:inherit;border:0;border-radius:12px;padding:12px 16px;background:var(--gold);color:#3b0a14;font-weight:700}
 button:disabled{opacity:.5}
 .roll{width:100%;font-size:22px;padding:16px;margin-top:8px}
 .recent{display:flex;gap:8px;justify-content:center;margin-top:8px;min-height:40px}
-.recent span{background:var(--cell);border-radius:50%;width:40px;height:40px;display:grid;place-items:center;font-weight:700}
-.tk{display:grid;grid-template-columns:repeat(9,1fr);gap:3px;margin-top:8px}
-.tk div{aspect-ratio:1;display:grid;place-items:center;border-radius:6px;background:var(--cell);font-weight:700;font-size:clamp(13px,4.2vw,20px)}
-.tk .e{background:transparent}
-.bd{display:grid;grid-template-columns:repeat(10,1fr);gap:3px;margin-top:8px}
-.bd div{text-align:center;padding:5px 0;border-radius:5px;background:var(--cell);font-size:13px}
-.hit{background:var(--gold)!important;color:#3b0a14}
-.row{display:flex;gap:6px;align-items:center;margin:8px 0}
+.recent span{background:var(--cell);border-radius:50%;width:40px;height:40px;display:grid;place-items:center;font-size:22px}
+.tk{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px}
+.tk div{aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:12px;background:var(--cell);font-size:12px;font-weight:700}
+.tk div b{font-size:clamp(34px,13vw,56px);line-height:1.1;font-weight:400}
+.bd{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;margin-top:8px}
+.bd div{text-align:center;padding:6px 0;border-radius:8px;background:var(--cell);font-size:22px;opacity:.55}
+.hit{background:var(--gold)!important;color:#3b0a14;opacity:1!important}
+.row{display:flex;gap:6px;align-items:center;margin:8px 0 0}
 .row input{flex:1;min-width:0;padding:10px;border-radius:10px;border:0;font:inherit}
 .row b{width:26px;text-align:center}
-.row small{width:86px;text-align:right;font-size:12px}
 .wa{background:#25d366;color:#fff;padding:10px 12px}
+.cp{background:#8a3248;color:#fff;padding:10px 12px}
+.st{font-size:12px;color:var(--dim);margin:2px 0 0 32px}
 </style></head>
 <body><div id="app"></div>
 <script>
 // All phones share one private channel on the free ntfy.sh service (no account needed).
 const TOPIC = "ca-diwali-tambola-x7k2m9";
 const CH = "https://ntfy.sh/" + TOPIC;
+const SYM = [["🪔","Diya"],["🎆","Fireworks"],["🎇","Sparkler"],["🍬","Laddoo"],["🌸","Rangoli"],["🕯️","Candle"],
+["💡","Lights"],["🌟","Star"],["🎁","Gift"],["👗","New Clothes"],["🍛","Feast"],["🙏","Puja"],
+["💰","Lakshmi's Gold"],["🏠","Home"],["🤗","Hugs"],["🎶","Music"],["💃","Dance"],["🌙","New Moon"],
+["🔔","Bell"],["🧨","Cracker"],["🚀","Rocket"],["🌼","Marigold"],["🥥","Coconut"],["🍮","Kheer"]];
 
 const $ = id => document.getElementById(id);
 const q = new URLSearchParams(location.search), app = $("app");
@@ -39,30 +45,18 @@ let G = null, N = 15, called = [], live = false;
 
 function rng(s){return()=>{s|=0;s=s+0x6D2B79F5|0;let t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
 function seed(g){ let h = 7; for(const ch of String(g)) h = (h*31 + ch.charCodeAt(0)) | 0; return h; }
-// Same game + ticket number always gives the same valid tambola ticket
+// Ticket = 3 rows x 3 symbols. Same game + ticket number always gives the same ticket.
 function ticket(n,g){
-  const r = rng(seed(g)+n*7919), sh = a => a.map(x=>[r(),x]).sort((a,b)=>a[0]-b[0]).map(x=>x[1]);
-  let rows;
-  for(;;){
-    rows = [0,1,2].map(()=>sh([0,1,2,3,4,5,6,7,8]).slice(0,5));
-    const cnt = Array(9).fill(0); rows.forEach(rw=>rw.forEach(c=>cnt[c]++));
-    if(cnt.every(c=>c>=1&&c<=3)) break;
-  }
-  const t = [0,1,2].map(()=>Array(9).fill(0));
-  for(let c=0;c<9;c++){
-    const lo = c==0?1:c*10, hi = c==8?90:c*10+9, pool = [];
-    for(let v=lo;v<=hi;v++) pool.push(v);
-    const ri = [0,1,2].filter(i=>rows[i].includes(c));
-    sh(pool).slice(0,ri.length).sort((a,b)=>a-b).forEach((v,k)=>t[ri[k]][c]=v);
-  }
-  return t;
+  const r = rng(seed(g)+n*7919);
+  const s = SYM.map((_,i)=>[r(),i]).sort((a,b)=>a[0]-b[0]).map(x=>x[1]).slice(0,9);
+  return [s.slice(0,3), s.slice(3,6), s.slice(6,9)];
 }
 
-// Messages:  N|game|tickets  = new game,   R|game|number = a rolled number
+// Messages:  N|game|tickets  = new game,   R|game|symbol = a rolled symbol
 function apply(m){
   const p = String(m).split("|");
   if(p[0]=="N"){ G = p[1]; N = +p[2] || 15; called = []; }
-  else if(p[0]=="R" && p[1]===G){ const v = +p[2]; if(v>=1 && v<=90 && !called.includes(v)) called.push(v); }
+  else if(p[0]=="R" && p[1]===G){ const v = +p[2]; if(v>=0 && v<SYM.length && !called.includes(v)) called.push(v); }
 }
 function connect(onchange){
   const es = new EventSource(CH + "/sse?since=all");
@@ -71,32 +65,36 @@ function connect(onchange){
   es.onerror = ()=>{ live = false; onchange(); };
 }
 function send(text){ return fetch(CH, {method:"POST", body:text}).then(r=>{ if(!r.ok) throw 0; }); }
-function recent(){ return called.slice(-6,-1).reverse().map(x=>`<span>${x}</span>`).join(""); }
+function recent(){ return called.slice(-6,-1).reverse().map(x=>`<span>${SYM[x][0]}</span>`).join(""); }
+function latest(){ const v = called[called.length-1]; return v===undefined ? ["–",""] : SYM[v]; }
+function copy(t){
+  if(navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(t);
+  const a = document.createElement("textarea"); a.value = t; document.body.appendChild(a); a.select(); document.execCommand("copy"); a.remove(); return Promise.resolve();
+}
 
 function family(n,g){
   const key = "m"+g+"-"+n; let mine = [];
   try{ mine = JSON.parse(localStorage.getItem(key)||"[]"); }catch(e){}
   app.innerHTML = `<h1>🪔 Diwali Tambola 🪔</h1>
   <div class="card dim" id="end" hidden>This game has ended or this ticket is not valid. Please ask the host for your new link.</div>
-  <div id="play"><div class="card"><div class="dim">Latest number</div><div class="big" id="cur">–</div><div class="recent" id="rec"></div><div class="dim" id="st"></div></div>
-  <div class="card"><div class="dim">Your ticket #${n} · <span id="cnt">0</span>/15 · tap a number to mark it yourself</div><div class="tk" id="tk"></div></div></div>`;
+  <div id="play"><div class="card"><div class="dim">Latest</div><div class="big" id="cur">–</div><div class="nm" id="nm"></div><div class="recent" id="rec"></div><div class="dim" id="st"></div></div>
+  <div class="card"><div class="dim">Your ticket #${n} · <span id="cnt">0</span>/9 · Line = any row of 3 · Full House = all 9</div><div class="tk" id="tk"></div><div class="dim" style="margin-top:8px">Tap a picture to mark it yourself</div></div></div>`;
   const t = ticket(n,g);
   function draw(){
     const bad = G!==null && (G!==g || n>N);
     $("end").hidden = !bad; $("play").hidden = bad; if(bad) return;
-    $("cur").textContent = called.length ? called[called.length-1] : "–";
+    const l = latest(); $("cur").textContent = l[0]; $("nm").textContent = l[1];
     $("rec").innerHTML = recent();
-    $("st").textContent = live ? "● Live" : "Connecting… you can still tap numbers yourself";
+    $("st").textContent = live ? "● Live" : "Connecting… you can still tap pictures yourself";
     let c = 0;
     $("tk").innerHTML = t.flat().map(v=>{
-      if(!v) return '<div class="e"></div>';
       const h = called.includes(v) || mine.includes(v); c += h;
-      return `<div data-v="${v}" class="${h?"hit":""}">${v}</div>`;
+      return `<div data-v="${v}" class="${h?"hit":""}"><b>${SYM[v][0]}</b>${SYM[v][1]}</div>`;
     }).join("");
     $("cnt").textContent = c;
   }
   $("tk").addEventListener("click", e=>{
-    const v = +e.target.dataset.v; if(!v) return;
+    const el = e.target.closest("[data-v]"); if(!el) return; const v = +el.dataset.v;
     mine = mine.includes(v) ? mine.filter(x=>x!=v) : mine.concat(v);
     try{ localStorage.setItem(key, JSON.stringify(mine)); }catch(_){}
     draw();
@@ -108,37 +106,40 @@ function host(){
   const base = location.origin + location.pathname;
   let T = {}, built = "", names = {};
   const loadNames = ()=>{ try{ names = JSON.parse(localStorage.getItem("names"+G)||"{}"); }catch(e){ names = {}; } };
+  const link = i => `${base}?ticket=${i}&g=${G}`;
+  const msg = i => `Hi${(names[i]||"").trim()?" "+names[i].trim():""}! 🪔 Your Diwali Tambola ticket is #${i}. Open it here: ${link(i)}`;
   app.innerHTML = `<h1>🪔 Host Panel 🪔</h1>
-  <div class="card"><div class="big" id="cur">–</div><div class="dim" id="info"></div><div class="recent" id="rec"></div>
-  <button class="roll" id="roll">🎲 ROLL</button></div>
-  <div class="card"><div class="dim">Numbers called</div><div class="bd" id="bd"></div></div>
-  <div class="card"><div class="dim" id="tt">Tickets</div><div id="tl"></div></div>
-  <div class="card"><div class="dim">New game (new people, fresh tickets, numbers cleared)</div>
+  <div class="card"><div class="big" id="cur">–</div><div class="nm" id="nm"></div><div class="dim" id="info"></div><div class="recent" id="rec"></div>
+  <button class="roll" id="roll">🎲 ROLL</button>
+  <div class="dim" style="margin-top:8px">Prize 1: Line (any row of 3) · Prize 2: Full House (all 9)</div></div>
+  <div class="card"><div class="dim">Pictures called</div><div class="bd" id="bd"></div></div>
+  <div class="card"><div class="dim" id="tt">Tickets</div>
+  <button id="all" style="width:100%;margin-top:8px">📋 Copy all links</button><div id="tl"></div></div>
+  <div class="card"><div class="dim">New game (new people, fresh tickets, pictures cleared)</div>
   <div class="row"><input id="nt" type="number" min="1" max="60" value="15"><button id="ng" style="background:#a33;color:#fff">Start new game</button></div></div>`;
 
   function rows(){
     loadNames(); T = {}; let h = "";
     for(let i=1;i<=N;i++){
       T[i] = ticket(i,G);
-      h += `<div class="row"><b>${i}</b><input id="n${i}" placeholder="Family / flat" value="${(names[i]||"").replace(/"/g,"&quot;")}"><button class="wa" data-i="${i}">WhatsApp</button><small id="s${i}"></small></div>`;
+      h += `<div class="row"><b>${i}</b><input id="n${i}" placeholder="Family / flat" value="${(names[i]||"").replace(/"/g,"&quot;")}"><button class="wa" data-w="${i}">WhatsApp</button><button class="cp" data-c="${i}">Copy</button></div><div class="st" id="s${i}"></div>`;
     }
     $("tl").innerHTML = h; built = G+"-"+N;
-    $("tt").textContent = "Tickets · tap WhatsApp to send each family its link";
+    $("tt").textContent = "Tickets · Copy all links, or use the buttons per family";
     $("nt").value = N;
   }
   function draw(){
     if(G===null){ $("info").textContent = live ? "No game yet. Tap Start new game below." : "Connecting…"; return; }
     if(built != G+"-"+N) rows();
-    $("cur").textContent = called.length ? called[called.length-1] : "–";
-    $("info").textContent = called.length + " of 90 called" + (live ? " · ● Live" : " · connecting…");
+    const l = latest(); $("cur").textContent = l[0]; $("nm").textContent = l[1];
+    $("info").textContent = called.length + " of " + SYM.length + " called" + (live ? " · ● Live" : " · connecting…");
     $("rec").innerHTML = recent();
-    let b = ""; for(let v=1;v<=90;v++) b += `<div class="${called.includes(v)?"hit":""}">${v}</div>`;
-    $("bd").innerHTML = b;
+    $("bd").innerHTML = SYM.map((s,i)=>`<div class="${called.includes(i)?"hit":""}">${s[0]}</div>`).join("");
     for(let i=1;i<=N;i++){
       let c = 0, lines = 0;
-      T[i].forEach(rw=>{ const h = rw.filter(x=>x&&called.includes(x)).length; c += h; if(h==5) lines++; });
-      $("s"+i).textContent = c==15 ? "🏆 FULL HOUSE" : c + "/15" + (lines ? " · " + lines + " line" + (lines>1?"s":"") : "");
-      $("s"+i).style.color = c==15 ? "#ffc23c" : "";
+      T[i].forEach(rw=>{ const h = rw.filter(x=>called.includes(x)).length; c += h; if(h==3) lines++; });
+      $("s"+i).textContent = c==9 ? "🏆 FULL HOUSE" : c + "/9" + (lines ? " · " + lines + " line" + (lines>1?"s":"") + " ✓" : "");
+      $("s"+i).style.color = c==9 ? "#ffc23c" : "";
     }
   }
   draw(); connect(draw);
@@ -146,25 +147,28 @@ function host(){
   app.addEventListener("input", e=>{
     if(e.target.id && e.target.id[0]=="n" && e.target.id!="nt"){ names[e.target.id.slice(1)] = e.target.value; try{ localStorage.setItem("names"+G, JSON.stringify(names)); }catch(_){} }
   });
-  app.addEventListener("click", e=>{
-    const i = e.target.dataset && e.target.dataset.i; if(!i) return;
-    const nm = $("n"+i).value.trim();
-    const msg = `Hi${nm?" "+nm:""}! 🪔 Your Diwali Tambola ticket is #${i}. Open it here: ${base}?ticket=${i}&g=${G}`;
-    window.open("https://wa.me/?text="+encodeURIComponent(msg), "_blank");
+  app.addEventListener("click", async e=>{
+    const d = e.target.dataset || {};
+    if(d.w) window.open("https://wa.me/?text="+encodeURIComponent(msg(d.w)), "_blank");
+    if(d.c){ await copy(msg(d.c)); e.target.textContent = "Copied ✓"; setTimeout(()=>e.target.textContent="Copy",1500); }
+    if(e.target.id=="all" && G!==null){
+      let t = ""; for(let i=1;i<=N;i++) t += `Ticket ${i}${(names[i]||"").trim()?" ("+names[i].trim()+")":""}: ${link(i)}\n`;
+      await copy(t.trim()); e.target.textContent = "Copied ✓ now paste it anywhere"; setTimeout(()=>e.target.textContent="📋 Copy all links",2500);
+    }
   });
 
   $("roll").onclick = async()=>{
     if(G===null){ alert("Tap Start new game first"); return; }
-    const left = []; for(let v=1;v<=90;v++) if(!called.includes(v)) left.push(v);
-    if(!left.length){ alert("All 90 numbers are called"); return; }
+    const left = []; for(let v=0;v<SYM.length;v++) if(!called.includes(v)) left.push(v);
+    if(!left.length){ alert("All pictures are called"); return; }
     const v = left[Math.floor(Math.random()*left.length)];
     $("roll").disabled = true;
-    const iv = setInterval(()=>$("cur").textContent = 1+Math.floor(Math.random()*90), 70);
+    const iv = setInterval(()=>$("cur").textContent = SYM[Math.floor(Math.random()*SYM.length)][0], 70);
     let ok = true; try{ await send("R|"+G+"|"+v); }catch(e){ ok = false; alert("Could not send. Check your internet and try again."); }
-    setTimeout(()=>{ clearInterval(iv); if(ok && !called.includes(v)) called.push(v); draw(); $("cur").textContent = called.length ? called[called.length-1] : "–"; $("roll").disabled = false; }, 900);
+    setTimeout(()=>{ clearInterval(iv); if(ok && !called.includes(v)) called.push(v); draw(); $("roll").disabled = false; }, 900);
   };
   $("ng").onclick = async()=>{
-    if(!confirm("Start a new game? Old tickets and numbers will be cleared and old links stop working.")) return;
+    if(!confirm("Start a new game? Old tickets and pictures will be cleared and old links stop working.")) return;
     const g = Date.now().toString(36), n = Math.min(Math.max(+$("nt").value||15,1),60);
     try{ await send("N|"+g+"|"+n); G = g; N = n; called = []; draw(); }catch(e){ alert("Could not send. Check your internet and try again."); }
   };
