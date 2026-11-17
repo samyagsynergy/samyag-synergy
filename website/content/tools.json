@@ -129,6 +129,14 @@
       "description": "Diwali Housie",
       "link": "tools/diwali-tambola/index.html",
       "link_label": "OPEN HOUSIE"
+    },
+    {
+      "title": "Free Singapore Pte Ltd Compliance Navigator",
+      "badge": "",
+      "description": "Free Singapore Pte Ltd compliance calendar. Enter your FYE to see ACRA, IRAS, GST, CPF and IR8A deadlines in one place. By CA Neelukumari Jain.",
+      "category": "Reporting",
+      "link_label": "OPEN TOOL",
+      "link": "tools/sg-compliance-navigator-fye/index.html"
     }
   ]
 }
