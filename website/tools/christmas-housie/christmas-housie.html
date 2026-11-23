@@ -29,6 +29,8 @@ table.t{border-collapse:collapse;width:100%;table-layout:fixed}
 .row{display:flex;gap:8px;flex-wrap:wrap}.row>*{flex:1}
 .win{padding:6px 0;border-bottom:1px solid #eee}
 .hidden{display:none}
+.stat{text-align:center;padding:12px;border-radius:10px;font-weight:700;margin:8px 0;font-size:1.05rem}
+.stat.wait{background:#fff3cd;color:#7a5b00}.stat.on{background:#d6f5df;color:#0b5d3b}.stat.over{background:#ffe1e1;color:#c0272d}
 .banner{background:var(--gold);border:3px solid var(--r);border-radius:10px;padding:12px;margin:8px 0;font-weight:700;font-size:1.1rem}
 .banner button{padding:6px 12px;font-size:.85rem;margin-top:8px}
 .grid{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin:10px 0}
@@ -38,16 +40,18 @@ table.t{border-collapse:collapse;width:100%;table-layout:fixed}
 </head>
 <body>
 <header><h1 id="ttl"></h1><p id="sub"></p></header>
-<main id="app"></main>
+<main><div id="top"></div><div id="app"></div></main>
 <footer id="cred"></footer>
 <script>
 /* ===== CONFIG: the only part to edit for a new event / new look (PRIZES must match Housie.gs) ===== */
 const CONFIG = {
-  API: 'https://script.google.com/macros/s/AKfycbwxvcoAHlMrE3IYVMqItCggCR75jjfhdSPq_sw9mP2BAJNU7tk3C5pcmf4F0XYbbkja/exec',
+  API: 'PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE',
   WA: '918956293305',
   TITLE: '🎄 Clementi Park Christmas 2026 Party 🎄',
   SUBTITLE: 'Housie Game',
   CREDIT: 'Game Presented By CA Neelukumari Jain',
+  WELCOME: '🎄 Welcome To Christmas Housie 2026 🎄',
+  PRESENTER: 'Presented By CA Neelukumari Jain',
   PRIZES: ['Early Five','Top Line','Middle Line','Bottom Line','Full House']
 };
 /* ===== end CONFIG ===== */
@@ -56,17 +60,28 @@ const $ = id => document.getElementById(id);
 const app = document.getElementById('app');
 $('ttl').textContent = CONFIG.TITLE; $('sub').textContent = CONFIG.SUBTITLE; $('cred').textContent = CONFIG.CREDIT; document.title = CONFIG.TITLE;
 async function api(params){
-  const r = await fetch(API + '?' + new URLSearchParams(params));
-  return r.json();
+  const ctl = new AbortController(), t = setTimeout(() => ctl.abort(), 20000);   // never wait forever
+  try{ const r = await fetch(API + '?' + new URLSearchParams(params), {signal: ctl.signal}); return await r.json(); }
+  finally{ clearTimeout(t); }
 }
 const isHost = location.search.includes('host') || location.hash.includes('host');
 
 /* ---------------- PLAYER ---------------- */
-let me = null, st = {called:[],winners:{},taken:[]}, prof = null, gt = null;
+let me = null, st = {called:[],winners:{},taken:[]}, prof = null, gt = null, cool = {};
 const UNIT_RE = /^\d+[A-Z]?-\d+\/\d+$/;
+function drawStatus(){
+  const e = $('st'); if(!e) return;
+  const c = (st.called || []).length, w = st.winners || {};
+  let cls = 'wait', t = '⏳ The game is yet to start. Please hang on, we will begin soon!';
+  if(st.ready === false) t = '⏳ Tickets are not open yet. Please hang on!';
+  else if(w['Full House']){ cls = 'over'; t = '🏆 Game over. Thank you for playing!'; }
+  else if(c > 0){ cls = 'on'; t = '🟢 Game is ON! Good luck!'; }
+  e.className = 'stat ' + cls; e.textContent = t;
+}
+function loadStatus(){ api({a:'hz_state'}).then(r => { st = r; drawStatus(); }).catch(() => {}); }
 function tok(){ let t = localStorage.getItem('hz_token'); if(!t){ t = Math.random().toString(36).slice(2) + Date.now().toString(36); localStorage.setItem('hz_token', t); } return t; }
 function playerInit(){
-  tok();
+  tok(); loadStatus();
   const saved = localStorage.getItem('hz_me');
   if(saved && JSON.parse(saved).no){ me = JSON.parse(saved); playerGame(); return; }
   playerForm();
@@ -107,7 +122,7 @@ async function showPicker(msg){
 }
 async function refreshGrid(){
   try{
-    st = await api({a:'hz_state'});
+    st = await api({a:'hz_state'}); drawStatus();
     const total = st.ready ? st.total : 0, set = new Set(st.taken || []);
     if(!$('gd')) return;
     $('gd').innerHTML = total ? Array.from({length:total},(_,i)=>`<button data-n="${i+1}" ${set.has(i+1)?'disabled':''}>${i+1}</button>`).join('') : '<div class="sub">Tickets are not open yet. Please try again in a moment.</div>';
@@ -132,7 +147,8 @@ function playerGame(){
   $('pz').onclick = async e => {
     const p = e.target.dataset.p; if(!p) return;
     e.target.disabled = true;
-    const r = await api({a:'hz_claim', token: localStorage.getItem('hz_token'), prize: p});
+    let r; try{ r = await api({a:'hz_claim', token: localStorage.getItem('hz_token'), prize: p}); }catch(err){ r = {ok:false, msg:'Network problem, please tap Claim again.'}; }
+    if(!r.ok){ cool[p] = Date.now() + 6000; setTimeout(drawPlayer, 6100); }
     let h = `<div class="msg">${esc(r.msg)}</div>`;
     if(r.ok){
       const nums = me.ticket.flat().filter(Boolean).join(', ');
@@ -146,7 +162,7 @@ function playerGame(){
 async function poll(){
   try{ st = await api({a:'hz_state'});
     if(st.ready && st.gen !== undefined && me.gen !== st.gen){ localStorage.removeItem('hz_me'); location.reload(); return; }
-    drawPlayer(); }catch(e){}
+    drawStatus(); drawPlayer(); }catch(e){}
 }
 function drawPlayer(){
   const c = st.called, set = new Set(c);
@@ -155,7 +171,7 @@ function drawPlayer(){
   $('tk').innerHTML = me.ticket.map(r => '<tr>' + r.map(n => n ? `<td class="${set.has(n)?'on':''}">${n}</td>` : '<td class="blank"></td>').join('') + '</tr>').join('');
   const w = st.winners || {};
   $('wn').innerHTML = Object.keys(w).length ? PRIZES.filter(p=>w[p]).map(p=>`<div class="win">🏆 ${p}: <b>${esc(w[p].name)}</b> (${esc(w[p].unit||'')})</div>`).join('') : 'No winners yet';
-  [...$('pz').children].forEach(b => b.disabled = !!w[b.dataset.p]);
+  [...$('pz').children].forEach(b => { const p = b.dataset.p, won = w[p]; b.disabled = !!won || !!(cool[p] && Date.now() < cool[p]); b.innerHTML = won ? `<s>${p}</s><br><small>won by ${esc(won.name)}</small>` : p; });
 }
 
 /* ---------------- HOST ---------------- */
@@ -172,7 +188,7 @@ function hostInit(){
     };
     return;
   }
-  app.innerHTML = `<div id="wb"></div><div class="card"><div class="sub">Current number</div><div class="big" id="hl">–</div><div class="sub" id="hc"></div>
+  app.innerHTML = `<div id="wb"></div><div id="conn" class="sub" style="text-align:center;margin:4px 0"></div><div class="card"><div class="sub">Current number</div><div class="big" id="hl">–</div><div class="sub" id="hc"></div>
     <div class="row" style="margin-top:10px"><button id="nx" class="green">Next number</button><button id="un">Undo last</button></div></div>
     <div class="card"><b>Winners</b><div id="hw"></div></div>
     <div class="card"><b>Board</b><div class="board" id="bd" style="margin-top:8px"></div></div>
@@ -185,9 +201,14 @@ function hostInit(){
   $('un').onclick = () => { if(!busy) hop('undo'); };
   $('rg').onclick = () => confirm('Clear called numbers and winners?') && hop('resetgame');
   $('rt').onclick = () => confirm('Delete ALL tickets, players, numbers and winners?') && hop('resettickets');
-  hop('view'); setInterval(() => hop('view'), 4000);
+  hop('view'); setInterval(() => { if(!viewBusy) hop('view'); }, 4000);
 }
-let seenWins = null, busy = false;
+let seenWins = null, busy = false, viewBusy = false, connFail = 0;
+function setConn(ok, msg){
+  const e = $('conn'); if(!e) return;
+  if(ok){ connFail = 0; e.style.color = '#0b5d3b'; e.textContent = '✅ Live · updated ' + new Date().toLocaleTimeString(); }
+  else { connFail++; e.style.color = '#c0272d'; e.textContent = '⚠️ Problem reaching the game (' + connFail + ' tries): ' + (msg || 'no reply') + ' · retrying...'; }
+}
 async function callNext(){ if(busy) return; busy = true; try{ await hop('next'); } finally { setTimeout(() => busy = false, 700); } }
 function beep(){ try{ const c = new (window.AudioContext || window.webkitAudioContext)(), o = c.createOscillator(); o.frequency.value = 880; o.connect(c.destination); o.start(); setTimeout(() => { o.stop(); c.close(); }, 350); }catch(e){} try{ navigator.vibrate && navigator.vibrate([200,100,200]); }catch(e){} }
 function showWin(p, w){
@@ -197,6 +218,7 @@ function showWin(p, w){
   $('wb').prepend(d); beep();
 }
 async function hop(op, n){
+  if(op === 'view'){ if(viewBusy) return; viewBusy = true; }
   try{
     const r = await api({a:'hz_host', pin, op, n: n || ''});
     if(!r.ok){ if(r.msg==='Wrong PIN'){sessionStorage.removeItem('hz_pin');location.reload();} else alert(r.msg); return; }
@@ -208,15 +230,18 @@ async function hop(op, n){
     const wk = Object.keys(w);
     if(seenWins === null) seenWins = new Set(wk);
     else { seenWins = new Set([...seenWins].filter(p => w[p])); wk.filter(p => !seenWins.has(p)).forEach(p => { seenWins.add(p); showWin(p, w[p]); }); }
-    $('hw').innerHTML = r.prizes.map(p => `<div class="win">${p}: ${w[p] ? `<b>${esc(w[p].name)}</b> · ${esc(w[p].unit||'')} (Ticket #${w[p].no})` : '<span class="sub">not won yet</span>'}</div>`).join('');
+    $('hw').innerHTML = r.prizes.map(p => w[p] ? `<div class="win" style="background:#eaf6ee"><s>${p}</s> ✅ <b>${esc(w[p].name)}</b> · ${esc(w[p].unit||'')} (Ticket #${w[p].no})</div>` : `<div class="win">${p}: <span class="sub">open, not won yet</span></div>`).join('');
     $('pc').textContent = r.players.length; $('tt').textContent = r.total;
     if(document.activeElement !== $('tp')) $('tp').value = r.tpu;
-    $('pl').innerHTML = r.players.map(p => `<div class="win">#${p.no} ${esc(p.name)} · ${esc(p.unit)} <button data-r="${p.no}" class="sec" style="padding:3px 8px;font-size:.75rem;float:right">Release</button></div>`).join('');
-  }catch(e){}
+    $('pl').innerHTML = r.players.map(p => `<div class="win">#${p.no} ${esc(p.name)} · ${esc(p.unit)} <b style="color:var(--r)">${PRIZES.filter(z => w[z] && w[z].no === p.no).map(z => '🏆 ' + z).join(' ')}</b> <button data-r="${p.no}" class="sec" style="padding:3px 8px;font-size:.75rem;float:right">Release</button></div>`).join('');
+  setConn(true);
+  }catch(e){ setConn(false, e && e.message); }
+  finally { if(op === 'view') viewBusy = false; }
 }
 function esc(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
 /* start the page (must stay at the very end) */
+if(!isHost) $('top').innerHTML = `<div class="card" style="text-align:center;background:linear-gradient(135deg,#fff8ec,#ffe9c7)"><div style="font-size:1.2rem;font-weight:800;color:var(--g)">${CONFIG.WELCOME}</div><div style="color:var(--r);font-weight:600">${CONFIG.PRESENTER}</div></div><div id="st" class="stat wait"></div>`;
 isHost ? hostInit() : playerInit();
 </script>
 </body>
