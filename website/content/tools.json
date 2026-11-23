@@ -144,6 +144,13 @@
       "link": "tools/christmas-housie/christmas-housie.html",
       "link_label": "OPEN HOUSIE",
       "description": "Play Housie live on your phone at the Clementi Park Christmas 2026 Party. Pick your ticket, watch the numbers get called, and claim your prize!"
+    },
+    {
+      "title": "Christmas-Housie 2026",
+      "category": "Games",
+      "description": "Play Housie live on your phone at the Clementi Park Christmas 2026 Party. Pick your ticket, watch the numbers get called, and claim your prize!",
+      "link": "tools/christmas-housie/housie-pictures.html",
+      "link_label": "OPEN HOUSIE"
     }
   ]
 }
