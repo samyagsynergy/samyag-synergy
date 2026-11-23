@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Housie QR Poster - Clementi Park Christmas 2026</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<style>
+:root{--g:#0b5d3b;--r:#c0272d;--gold:#f2c14e}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,Arial,sans-serif;background:#eee;color:#222}
+.ctl{max-width:210mm;margin:10px auto;padding:10px;background:#fff;border-radius:8px;display:flex;gap:8px;flex-wrap:wrap}
+.ctl input{flex:1;min-width:220px;padding:10px;font-size:1rem;border:2px solid var(--g);border-radius:6px}
+.ctl button{padding:10px 16px;font-size:1rem;font-weight:600;border:0;border-radius:6px;background:var(--r);color:#fff;cursor:pointer}
+.page{width:210mm;min-height:297mm;margin:0 auto 20px;background:#fff;text-align:center;border:12px solid var(--g);outline:4px solid var(--r);outline-offset:-24px;padding:18mm 14mm;display:flex;flex-direction:column;align-items:center;justify-content:space-between}
+.top{background:linear-gradient(135deg,var(--g),var(--r));color:#fff;border-radius:14px;padding:14px 18px;width:100%}
+.top h1{margin:0;font-size:30px}.top p{margin:6px 0 0;color:var(--gold);font-size:22px;font-weight:700}
+.scan{font-size:36px;font-weight:800;color:var(--r);margin:10px 0 0}
+#qr{width:95mm;height:95mm;border:6px solid var(--g);border-radius:12px;padding:8px;background:#fff;display:flex;align-items:center;justify-content:center}
+#qr svg{width:100%;height:100%}
+.steps{text-align:left;font-size:22px;line-height:1.5;margin:0;padding-left:28px}
+.small{font-size:16px;color:#555;margin:0}
+.foot{font-size:20px;font-weight:700;color:var(--g)}
+@media print{body{background:#fff}.ctl{display:none}.page{margin:0;border-width:10px}@page{size:A4;margin:0}}
+</style>
+</head>
+<body>
+<div class="ctl">
+  <input id="u" type="url" placeholder="Paste your game link here, e.g. https://yoursite.com/index.html">
+  <button id="mk">Make QR</button>
+  <button id="pr">Print / Save as PDF</button>
+</div>
+<div class="page">
+  <div class="top"><h1 id="ttl"></h1><p id="sub"></p></div>
+  <div class="scan">Scan to get your ticket!</div>
+  <div id="qr"></div>
+  <ol class="steps">
+    <li>Scan the QR code with your phone camera</li>
+    <li>Enter your name and Blk &amp; unit no. (e.g. 135-05/04)</li>
+    <li>Tap a free ticket number to choose it</li>
+    <li>Keep your ticket screen open during the game</li>
+  </ol>
+  <p class="small">One ticket per unit unless the host says otherwise.</p>
+  <div class="foot" id="cred"></div>
+</div>
+<script>
+/* CONFIG: edit for a new event */
+const CONFIG = { TITLE: '🎄 Clementi Park Christmas 2026 Party 🎄', SUBTITLE: 'Housie Game', CREDIT: 'Game Presented By CA Neelukumari Jain' };
+const $ = id => document.getElementById(id);
+$('ttl').textContent = CONFIG.TITLE; $('sub').textContent = CONFIG.SUBTITLE; $('cred').textContent = CONFIG.CREDIT;
+function make(){
+  const url = $('u').value.trim();
+  if(!url){ $('qr').innerHTML = '<span style="color:#999;font-size:18px">Paste the game link above, then tap Make QR</span>'; return; }
+  try{
+    const qr = qrcode(0, 'M'); qr.addData(url); qr.make();
+    $('qr').innerHTML = qr.createSvgTag({cellSize: 8, margin: 0, scalable: true});
+  }catch(e){ $('qr').textContent = 'Could not make the QR. Is the link correct?'; }
+}
+$('mk').onclick = make;
+$('pr').onclick = () => { make(); window.print(); };
+const q = new URLSearchParams(location.search).get('u');
+if(q) $('u').value = q;
+make();
+</script>
+</body>
+</html>
