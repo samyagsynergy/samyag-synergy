@@ -30,6 +30,8 @@ table.t{border-collapse:collapse;width:100%;table-layout:fixed}
 .row{display:flex;gap:8px;flex-wrap:wrap}.row>*{flex:1}
 .win{padding:6px 0;border-bottom:1px solid #eee}
 .hidden{display:none}
+.banner{background:var(--gold);border:3px solid var(--r);border-radius:10px;padding:12px;margin:8px 0;font-weight:700;font-size:1.1rem}
+.banner button{padding:6px 12px;font-size:.85rem;margin-top:8px}
 .grid{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin:10px 0}
 .grid button{padding:10px 0;background:var(--g)}.grid button:disabled{background:#ccc;color:#888;text-decoration:line-through}
 .sec{background:#666}
@@ -66,7 +68,7 @@ async function api(params){
   const r = await fetch(API + '?' + new URLSearchParams(params));
   return r.json();
 }
-const isHost = location.search.includes('host');
+const isHost = location.search.includes('host') || location.hash.includes('host');
 
 /* ---------------- PLAYER ---------------- */
 let me = null, st = {called:[],winners:{},taken:[]}, prof = null, gt = null;
@@ -151,7 +153,9 @@ function playerGame(){
   poll(); (function loop(){ setTimeout(()=>{ poll().finally(loop); }, 4000 + Math.random()*2000); })();
 }
 async function poll(){
-  try{ st = await api({a:'ph_state'}); drawPlayer(); }catch(e){}
+  try{ st = await api({a:'ph_state'});
+    if(st.ready && st.gen !== undefined && me.gen !== st.gen){ localStorage.removeItem('ph_me'); location.reload(); return; }
+    drawPlayer(); }catch(e){}
 }
 function drawPlayer(){
   const c = st.called, set = new Set(c);
@@ -178,7 +182,7 @@ function hostInit(){
     };
     return;
   }
-  app.innerHTML = `<div class="card"><div class="sub">Current picture</div><div class="big" id="hl">–</div><div class="sub" id="hc"></div>
+  app.innerHTML = `<div id="wb"></div><div class="card"><div class="sub">Current picture</div><div class="big" id="hl">–</div><div class="sub" id="hc"></div>
     <div class="row" style="margin-top:10px"><button id="nx" class="green">Next picture</button><button id="un">Undo last</button></div></div>
     <div class="card"><b>Auto-call</b> <span class="sub" id="as2"></span>
       <div class="row" style="margin-top:8px"><button id="ab" class="green">▶ Start auto-call</button>
@@ -190,12 +194,12 @@ function hostInit(){
     <div class="card"><b>Tickets allowed per unit</b> <select id="tp" style="font-size:1rem;padding:6px;margin-left:8px">${[1,2,3,4,5,6].map(n=>`<option>${n}</option>`).join('')}</select></div>
     <div class="card"><b>Players (<span id="pc">0</span> of <span id="tt">0</span>)</b><div id="pl" style="max-height:300px;overflow:auto;margin-top:6px"></div></div>
     <div class="card row"><button id="rg">Reset game (keep tickets)</button><button id="rt">Reset everything</button></div>`;
-  $('nx').onclick = () => { hop('next'); if(auto) autoTick(); };
+  $('nx').onclick = () => { callNext(); if(auto) autoTick(); };
   $('ab').onclick = () => { auto ? pauseAuto('Auto-call paused.') : startAuto(); };
   $('as').onchange = () => { if(auto) autoTick(); };
   $('tp').onchange = () => hop('settpu', $('tp').value);
   $('pl').onclick = e => { const n = e.target.dataset.r; if(n && confirm('Release ticket #' + n + ' so someone else can take it?')) hop('release', n); };
-  $('un').onclick = () => hop('undo');
+  $('un').onclick = () => { if(!busy) hop('undo'); };
   $('rg').onclick = () => confirm('Clear called pictures and winners?') && (pauseAuto(''), hop('resetgame'));
   $('rt').onclick = () => confirm('Delete ALL tickets, players, pictures and winners?') && hop('resettickets');
   hop('view'); setInterval(() => hop('view'), 4000);
@@ -204,7 +208,16 @@ let auto = false, autoT = null, lastWin = null, everOn = false;
 function setAutoUI(m){ $('ab').textContent = auto ? '⏸ Pause auto-call' : '▶ ' + (everOn?'Resume':'Start') + ' auto-call'; $('as2').textContent = m || ''; }
 function startAuto(){ auto = true; everOn = true; setAutoUI('Auto-call is ON'); autoTick(); }
 function pauseAuto(m){ auto = false; clearTimeout(autoT); setAutoUI(m); }
-function autoTick(){ clearTimeout(autoT); if(!auto) return; autoT = setTimeout(async () => { if(!auto) return; await hop('next'); autoTick(); }, Number($('as').value) * 1000); }
+function autoTick(){ clearTimeout(autoT); if(!auto) return; autoT = setTimeout(async () => { if(!auto) return; await callNext(); autoTick(); }, Number($('as').value) * 1000); }
+let seenWins = null, busy = false;
+async function callNext(){ if(busy) return; busy = true; try{ await hop('next'); } finally { setTimeout(() => busy = false, 700); } }
+function beep(){ try{ const c = new (window.AudioContext || window.webkitAudioContext)(), o = c.createOscillator(); o.frequency.value = 880; o.connect(c.destination); o.start(); setTimeout(() => { o.stop(); c.close(); }, 350); }catch(e){} try{ navigator.vibrate && navigator.vibrate([200,100,200]); }catch(e){} }
+function showWin(p, w){
+  const d = document.createElement('div'); d.className = 'banner';
+  d.innerHTML = `🏆 ${esc(p)} won by ${esc(w.name)} (${esc(w.unit || '')}) · Ticket #${w.no}<br><button class="sec">Dismiss</button>`;
+  d.querySelector('button').onclick = () => d.remove();
+  $('wb').prepend(d); beep();
+}
 async function hop(op, n){
   try{
     const r = await api({a:'ph_host', pin, op, n: n || ''});
@@ -215,12 +228,15 @@ async function hop(op, n){
     $('hc').textContent = c.length + ' of ' + PICS.length + ' called' + (c.length>1 ? ' · Before: ' + c.slice(-6,-1).reverse().map(em).join(' ') : '');
     $('bd').innerHTML = PICS.map((p,i)=>`<div class="${set.has(i+1)?'c':''}" title="${p[1]}">${p[0]}</div>`).join('');
     const w = r.winners;
+    const wk = Object.keys(w);
+    if(seenWins === null) seenWins = new Set(wk);
+    else { seenWins = new Set([...seenWins].filter(p => w[p])); wk.filter(p => !seenWins.has(p)).forEach(p => { seenWins.add(p); showWin(p, w[p]); }); }
     $('hw').innerHTML = r.prizes.map(p => `<div class="win">${p}: ${w[p] ? `<b>${esc(w[p].name)}</b> · ${esc(w[p].unit||'')} (Ticket #${w[p].no})` : '<span class="sub">not won yet</span>'}</div>`).join('');
     const wc = Object.keys(w).length;
     if(lastWin !== null && wc > lastWin && auto) pauseAuto('🏆 New winner! Auto-call paused. Check the winners, then Resume.');
     else if(auto && c.length >= PICS.length) pauseAuto('All pictures called.');
     if(lastWin === null){ lastWin = wc; setAutoUI(''); } else lastWin = wc;
-    $('ins').innerHTML = (r.insights || []).map(x => `<div class="win"><b>${x.prize}</b>: ${x.ready ? `<b style="color:var(--r)">${x.ready} ready to claim!</b> · ` : ''}${x.oneCount} need just 1 · ${x.twoCount} need 2${x.one.length ? '<br>' + x.one.map(o => `${esc(o.name)} (${esc(o.unit)})` + (o.pics.length ? ' needs ' + o.pics.map(em).join('') : ' needs any 1 more')).join('<br>') : ''}</div>`).join('') || '<span class="sub">All prizes won 🎉</span>';
+    $('ins').innerHTML = (r.insights || []).map(x => `<div class="win"><b>${x.prize}</b>: ${x.ready ? `<b style="color:var(--r)">${x.ready} ready to claim: ${(x.readyList||[]).map(o => esc(o.name) + ' (' + esc(o.unit) + ')').join(', ')}</b><br>` : ''}${x.oneCount} need just 1 · ${x.twoCount} need 2${x.one.length ? '<br>' + x.one.map(o => `${esc(o.name)} (${esc(o.unit)})` + (o.pics.length ? ' needs ' + o.pics.map(em).join('') : ' needs any 1 more')).join('<br>') : ''}</div>`).join('') || '<span class="sub">All prizes won 🎉</span>';
     $('pc').textContent = r.players.length; $('tt').textContent = r.total;
     if(document.activeElement !== $('tp')) $('tp').value = r.tpu;
     $('pl').innerHTML = r.players.map(p => `<div class="win">#${p.no} ${esc(p.name)} · ${esc(p.unit)} <button data-r="${p.no}" class="sec" style="padding:3px 8px;font-size:.75rem;float:right">Release</button></div>`).join('');
