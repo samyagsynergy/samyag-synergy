@@ -137,6 +137,13 @@
       "category": "Reporting",
       "link_label": "OPEN TOOL",
       "link": "tools/sg-compliance-navigator-fye/index.html"
+    },
+    {
+      "title": "Christmas Housie 2026",
+      "category": "Other",
+      "link": "tools/christmas-housie/christmas-housie.html",
+      "link_label": "OPEN TOOL",
+      "description": "Play Housie live on your phone at the Clementi Park Christmas 2026 Party. Pick your ticket, watch the numbers get called, and claim your prize!"
     }
   ]
 }
