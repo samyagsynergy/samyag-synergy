@@ -41,7 +41,7 @@ table.t{border-collapse:collapse;width:100%;table-layout:fixed}
 <script>
 /* ===== CONFIG: the only part to edit for a new event / new look (PRIZES must match Housie.gs) ===== */
 const CONFIG = {
-  API:  'https://script.google.com/macros/s/AKfycbwxvcoAHlMrE3IYVMqItCggCR75jjfhdSPq_sw9mP2BAJNU7tk3C5pcmf4F0XYbbkja/exec',
+  API: 'https://script.google.com/macros/s/AKfycbwxvcoAHlMrE3IYVMqItCggCR75jjfhdSPq_sw9mP2BAJNU7tk3C5pcmf4F0XYbbkja/exec',
   WA: '918956293305',
   TITLE: '🎄 Clementi Park Christmas 2026 Party 🎄',
   SUBTITLE: 'Housie Game',
@@ -58,7 +58,6 @@ async function api(params){
   return r.json();
 }
 const isHost = location.search.includes('host');
-isHost ? hostInit() : playerInit();
 
 /* ---------------- PLAYER ---------------- */
 let me = null, st = {called:[],winners:{},taken:[]}, prof = null, gt = null;
@@ -161,7 +160,9 @@ function hostInit(){
   if(!pin){
     app.innerHTML = `<div class="card"><h2>Host login</h2><input id="pn" type="password" placeholder="Host PIN"><button id="lg" class="green">Enter</button><div id="err" class="msg hidden"></div></div>`;
     $('lg').onclick = async () => {
-      const r = await api({a:'hz_host', pin: $('pn').value, op:'view'});
+      let r;
+      try{ r = await api({a:'hz_host', pin: $('pn').value, op:'view'}); }
+      catch(e){ $('err').textContent = 'Cannot reach the game server. Check the Web app URL in the page and that the deployment is set to Anyone.'; $('err').classList.remove('hidden'); return; }
       if(!r.ok){ $('err').textContent = r.msg; $('err').classList.remove('hidden'); return; }
       pin = $('pn').value; sessionStorage.setItem('hz_pin', pin); hostInit();
     };
@@ -198,6 +199,9 @@ async function hop(op, n){
   }catch(e){}
 }
 function esc(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+/* start the page (must stay at the very end) */
+isHost ? hostInit() : playerInit();
 </script>
 </body>
 </html>
