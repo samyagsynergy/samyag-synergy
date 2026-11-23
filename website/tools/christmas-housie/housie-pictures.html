@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Clementi Park Christmas 2026 Housie</title>
+<style>
+:root{--g:#0b5d3b;--r:#c0272d;--gold:#f2c14e;--bg:#fff8ec;--ink:#222}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+header{background:linear-gradient(135deg,var(--g),var(--r));color:#fff;text-align:center;padding:14px 10px}
+header h1{margin:0;font-size:1.25rem}header p{margin:4px 0 0;font-size:.85rem;color:var(--gold)}
+main{max-width:720px;margin:0 auto;padding:12px}
+footer{text-align:center;padding:16px;font-size:.85rem;color:var(--g);font-weight:600}
+.card{background:#fff;border-radius:12px;padding:14px;margin:10px 0;box-shadow:0 1px 4px #0002}
+input{width:100%;padding:12px;font-size:1rem;border:2px solid var(--g);border-radius:8px;margin:8px 0}
+button,.btn{background:var(--r);color:#fff;border:0;border-radius:8px;padding:12px 16px;font-size:1rem;font-weight:600;cursor:pointer;text-decoration:none;display:inline-block}
+button:disabled{background:#aaa}.green{background:var(--g)}
+.big{font-size:4.5rem;font-weight:800;color:var(--r);text-align:center;line-height:1}
+.sub{text-align:center;color:#555;font-size:.9rem}
+table.t{border-collapse:collapse;width:100%;table-layout:fixed}
+.t td{border:2px solid var(--g);height:66px;text-align:center;padding:2px}
+.t .em{font-size:1.7rem;line-height:1.1}.t .nm{font-size:.55rem;color:#555;line-height:1}
+.t td.on{background:var(--gold)}.t td.blank{background:#e8f1ec}
+.prizes{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.board{display:grid;grid-template-columns:repeat(8,1fr);gap:3px}
+.board div{text-align:center;padding:4px 0;font-size:1.3rem;background:#eee;border-radius:4px}
+.board div.c{background:var(--gold);outline:2px solid var(--g)}.board div:not(.c){opacity:.45}
+.msg{padding:10px;border-radius:8px;margin:8px 0;background:#eef;font-weight:600}
+.row{display:flex;gap:8px;flex-wrap:wrap}.row>*{flex:1}
+.win{padding:6px 0;border-bottom:1px solid #eee}
+.hidden{display:none}
+.grid{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin:10px 0}
+.grid button{padding:10px 0;background:var(--g)}.grid button:disabled{background:#ccc;color:#888;text-decoration:line-through}
+.sec{background:#666}
+</style>
+</head>
+<body>
+<header><h1 id="ttl"></h1><p id="sub"></p></header>
+<main id="app"></main>
+<footer id="cred"></footer>
+<script>
+/* ===== CONFIG: the only part to edit for a new event / new look (PRIZES must match Housie.gs) ===== */
+const CONFIG = {
+  API: 'https://script.google.com/macros/s/AKfycbxBDVdGCrK4wxH92Av3G9Wo_JLkOosKDzmUJ11DLVkLVVAILpFSLdtQoy9gDogRRsP1JQ/exec',
+  WA: '918956293305',
+  TITLE: '🎄 Clementi Park Christmas 2026 Party 🎄',
+  SUBTITLE: 'Picture Housie',
+  CREDIT: 'Game Presented By CA Neelukumari Jain',
+  PRIZES: ['Early Five','Top Line','Middle Line','Bottom Line','Full House']
+};
+/* ===== end CONFIG ===== */
+const API = CONFIG.API, WA = CONFIG.WA, PRIZES = CONFIG.PRIZES;
+/* The 55 pictures: [emoji, name]. Position = picture id (1..55). Count must equal PH_PICS in PicHousie.gs */
+const PICS = [['🎅','Santa'],['🎄','Christmas Tree'],['⛄','Snowman'],['🎆','Fireworks'],['🧨','Firecracker'],['❤️','Love Heart'],['🔔','Bell'],['🎁','Gift'],['⭐','Star'],['❄️','Snowflake'],
+['🦌','Reindeer'],['🍪','Cookie'],['🧦','Stocking'],['🥛','Milk'],['🕯️','Candle'],['🍾','Champagne'],['🥂','Cheers'],['🎉','Party Popper'],['🎊','Confetti'],['🛷','Sleigh'],
+['🧣','Scarf'],['🧤','Gloves'],['🍬','Candy'],['🍭','Lollipop'],['🎶','Music'],['🕊️','Dove'],['🌟','Glowing Star'],['✨','Sparkles'],['🏠','Cosy Home'],['🔥','Fireplace'],
+['🎀','Ribbon'],['🎇','Sparkler'],['🤶','Mrs Claus'],['🍷','Wine'],['🍰','Cake'],['🍫','Chocolate'],['🍗','Turkey'],['🌲','Pine Tree'],['🥳','Party Face'],['🕰️','Midnight Clock'],
+['🧸','Teddy Bear'],['🎈','Balloon'],['🎤','Microphone'],['💃','Dancer'],['🕺','Dancing Man'],['🌙','Moon'],['🏔️','Snowy Mountain'],['🧊','Ice'],['☕','Hot Chocolate'],['🍇','Grapes'],
+['👼','Angel'],['📅','New Year Calendar'],['🏆','Trophy'],['💌','Love Letter'],['🪩','Disco Ball']];
+const em = n => PICS[n-1][0], nm = n => PICS[n-1][1];
+const $ = id => document.getElementById(id);
+const app = document.getElementById('app');
+$('ttl').textContent = CONFIG.TITLE; $('sub').textContent = CONFIG.SUBTITLE; $('cred').textContent = CONFIG.CREDIT; document.title = CONFIG.TITLE;
+async function api(params){
+  const r = await fetch(API + '?' + new URLSearchParams(params));
+  return r.json();
+}
+const isHost = location.search.includes('host');
+
+/* ---------------- PLAYER ---------------- */
+let me = null, st = {called:[],winners:{},taken:[]}, prof = null, gt = null;
+const UNIT_RE = /^\d+[A-Z]?-\d+\/\d+$/;
+function tok(){ let t = localStorage.getItem('ph_token'); if(!t){ t = Math.random().toString(36).slice(2) + Date.now().toString(36); localStorage.setItem('ph_token', t); } return t; }
+function playerInit(){
+  tok();
+  const saved = localStorage.getItem('ph_me');
+  if(saved && JSON.parse(saved).no){ me = JSON.parse(saved); playerGame(); return; }
+  playerForm();
+}
+function playerForm(msg){
+  app.innerHTML = `<div class="card"><h2>Welcome! 🎅</h2>
+    <p>Enter your name and Blk &amp; unit number, then choose your ticket.</p>
+    <input id="nm" placeholder="Your name" maxlength="30" value="${esc(prof?prof.name:'')}">
+    <input id="un" placeholder="Blk &amp; unit no. e.g. 135-05/04" maxlength="14" value="${esc(prof?prof.unit:'')}">
+    <button id="go" class="green" style="width:100%">Choose my ticket</button>
+    <button id="rc" class="sec" style="width:100%;margin-top:8px">I already have a ticket</button>
+    <div id="err" class="msg ${msg?'':'hidden'}">${esc(msg||'')}</div></div>`;
+  const read = () => {
+    const name = $('nm').value.trim(), unit = $('un').value.trim().toUpperCase();
+    if(!name || !unit){ showErr('Name and Blk & unit number are both required.'); return null; }
+    if(!UNIT_RE.test(unit)){ showErr('Please use the format 135-05/04'); return null; }
+    prof = {name, unit}; return prof;
+  };
+  $('go').onclick = () => { if(read()) showPicker(); };
+  $('rc').onclick = async () => {
+    const p = read(); if(!p) return;
+    try{
+      const r = await api({a:'ph_recover', name:p.name, unit:p.unit, token:tok()});
+      if(!r.ok){ showErr(r.msg); return; }
+      me = r; localStorage.setItem('ph_me', JSON.stringify(r)); playerGame();
+    }catch(e){ showErr('Network problem, please try again.'); }
+  };
+}
+function showErr(m){ $('err').textContent = m; $('err').classList.remove('hidden'); }
+async function showPicker(msg){
+  app.innerHTML = `<div class="card"><b>${esc(prof.name)} · ${esc(prof.unit)}</b>
+    <p>Tap a free ticket number to choose it. Greyed numbers are already taken.</p>
+    <div id="pm" class="msg ${msg?'':'hidden'}">${esc(msg||'')}</div>
+    <div class="grid" id="gd"></div><button id="bk" class="sec">← Change my details</button></div>`;
+  $('bk').onclick = () => { clearInterval(gt); playerForm(); };
+  $('gd').onclick = e => { const n = e.target.dataset.n; if(n) pick(+n); };
+  await refreshGrid(); clearInterval(gt); gt = setInterval(refreshGrid, 4000);
+}
+async function refreshGrid(){
+  try{
+    st = await api({a:'ph_state'});
+    const total = st.ready ? st.total : 0, set = new Set(st.taken || []);
+    if(!$('gd')) return;
+    $('gd').innerHTML = total ? Array.from({length:total},(_,i)=>`<button data-n="${i+1}" ${set.has(i+1)?'disabled':''}>${i+1}</button>`).join('') : '<div class="sub">Tickets are not open yet. Please try again in a moment.</div>';
+  }catch(e){}
+}
+async function pick(n){
+  if(!confirm('Take ticket #' + n + '?')) return;
+  try{
+    const r = await api({a:'ph_pick', no:n, name:prof.name, unit:prof.unit, token:tok()});
+    if(r.ok){ clearInterval(gt); me = r; localStorage.setItem('ph_me', JSON.stringify(r)); playerGame(); }
+    else if(r.taken){ $('pm').textContent = r.msg; $('pm').classList.remove('hidden'); refreshGrid(); }
+    else { clearInterval(gt); playerForm(r.msg); }
+  }catch(e){ $('pm').textContent = 'Network problem, please tap again.'; $('pm').classList.remove('hidden'); }
+}
+function playerGame(){
+  app.innerHTML = `<div class="card"><div class="sub">Player</div><h2 style="margin:0">${esc(me.name)} · ${esc(me.unit)}</h2><div class="sub" style="text-align:left">Ticket #${me.no}</div></div>
+    <div class="card"><div class="sub">Latest picture</div><div class="big" id="last">–</div><div class="sub" id="prev"></div></div>
+    <div class="card"><table class="t" id="tk"></table></div>
+    <div class="card"><b>Claim a prize</b><div class="prizes" id="pz" style="margin-top:8px"></div><div id="cm"></div></div>
+    <div class="card"><b>Winners</b><div id="wn" class="sub">No winners yet</div></div>`;
+  $('pz').innerHTML = PRIZES.map(p => `<button data-p="${p}">${p}</button>`).join('');
+  $('pz').onclick = async e => {
+    const p = e.target.dataset.p; if(!p) return;
+    e.target.disabled = true;
+    const r = await api({a:'ph_claim', token: localStorage.getItem('ph_token'), prize: p});
+    let h = `<div class="msg">${esc(r.msg)}</div>`;
+    if(r.ok){
+      const nums = me.ticket.flat().map(nm).join(', ');
+      const txt = `Housie claim: ${p}\nName: ${me.name}\nBlk/Unit: ${me.unit}\nTicket #${me.no}\nPictures: ${nums}`;
+      h += `<a class="btn green" target="_blank" href="https://wa.me/${WA}?text=${encodeURIComponent(txt)}">Send to host on WhatsApp</a>`;
+    }
+    $('cm').innerHTML = h; poll();
+  };
+  poll(); (function loop(){ setTimeout(()=>{ poll().finally(loop); }, 4000 + Math.random()*2000); })();
+}
+async function poll(){
+  try{ st = await api({a:'ph_state'}); drawPlayer(); }catch(e){}
+}
+function drawPlayer(){
+  const c = st.called, set = new Set(c);
+  const L = c.length ? c[c.length-1] : 0;
+  $('last').innerHTML = L ? em(L) + `<div style="font-size:1.2rem;color:#222;font-weight:600">${nm(L)}</div>` : '–';
+  $('prev').textContent = c.length > 1 ? 'Before: ' + c.slice(-6,-1).reverse().map(em).join(' ') : '';
+  $('tk').innerHTML = me.ticket.map(r => '<tr>' + r.map(n => `<td class="${set.has(n)?'on':''}"><div class="em">${em(n)}</div><div class="nm">${nm(n)}</div></td>`).join('') + '</tr>').join('');
+  const w = st.winners || {};
+  $('wn').innerHTML = Object.keys(w).length ? PRIZES.filter(p=>w[p]).map(p=>`<div class="win">🏆 ${p}: <b>${esc(w[p].name)}</b> (${esc(w[p].unit||'')})</div>`).join('') : 'No winners yet';
+  [...$('pz').children].forEach(b => b.disabled = !!w[b.dataset.p]);
+}
+
+/* ---------------- HOST ---------------- */
+let pin = sessionStorage.getItem('ph_pin') || '';
+function hostInit(){
+  if(!pin){
+    app.innerHTML = `<div class="card"><h2>Host login</h2><input id="pn" type="password" placeholder="Host PIN"><button id="lg" class="green">Enter</button><div id="err" class="msg hidden"></div></div>`;
+    $('lg').onclick = async () => {
+      let r;
+      try{ r = await api({a:'ph_host', pin: $('pn').value, op:'view'}); }
+      catch(e){ $('err').textContent = 'Cannot reach the game server. Check the Web app URL in the page and that the deployment is set to Anyone.'; $('err').classList.remove('hidden'); return; }
+      if(!r.ok){ $('err').textContent = r.msg; $('err').classList.remove('hidden'); return; }
+      pin = $('pn').value; sessionStorage.setItem('ph_pin', pin); hostInit();
+    };
+    return;
+  }
+  app.innerHTML = `<div class="card"><div class="sub">Current picture</div><div class="big" id="hl">–</div><div class="sub" id="hc"></div>
+    <div class="row" style="margin-top:10px"><button id="nx" class="green">Next picture</button><button id="un">Undo last</button></div></div>
+    <div class="card"><b>Auto-call</b> <span class="sub" id="as2"></span>
+      <div class="row" style="margin-top:8px"><button id="ab" class="green">▶ Start auto-call</button>
+      <select id="as" style="font-size:1rem;padding:8px"><option value="6">every 6 sec</option><option value="8">every 8 sec</option><option value="10" selected>every 10 sec</option><option value="12">every 12 sec</option><option value="15">every 15 sec</option></select></div>
+      <div class="sub" style="margin-top:6px">Next picture still works any time. Auto-call pauses by itself when someone wins.</div></div>
+    <div class="card"><b>🔍 Who is close?</b><div id="ins" style="margin-top:6px"></div></div>
+    <div class="card"><b>Winners</b><div id="hw"></div></div>
+    <div class="card"><b>Board</b><div class="board" id="bd" style="margin-top:8px"></div></div>
+    <div class="card"><b>Tickets allowed per unit</b> <select id="tp" style="font-size:1rem;padding:6px;margin-left:8px">${[1,2,3,4,5,6].map(n=>`<option>${n}</option>`).join('')}</select></div>
+    <div class="card"><b>Players (<span id="pc">0</span> of <span id="tt">0</span>)</b><div id="pl" style="max-height:300px;overflow:auto;margin-top:6px"></div></div>
+    <div class="card row"><button id="rg">Reset game (keep tickets)</button><button id="rt">Reset everything</button></div>`;
+  $('nx').onclick = () => { hop('next'); if(auto) autoTick(); };
+  $('ab').onclick = () => { auto ? pauseAuto('Auto-call paused.') : startAuto(); };
+  $('as').onchange = () => { if(auto) autoTick(); };
+  $('tp').onchange = () => hop('settpu', $('tp').value);
+  $('pl').onclick = e => { const n = e.target.dataset.r; if(n && confirm('Release ticket #' + n + ' so someone else can take it?')) hop('release', n); };
+  $('un').onclick = () => hop('undo');
+  $('rg').onclick = () => confirm('Clear called pictures and winners?') && (pauseAuto(''), hop('resetgame'));
+  $('rt').onclick = () => confirm('Delete ALL tickets, players, pictures and winners?') && hop('resettickets');
+  hop('view'); setInterval(() => hop('view'), 4000);
+}
+let auto = false, autoT = null, lastWin = null, everOn = false;
+function setAutoUI(m){ $('ab').textContent = auto ? '⏸ Pause auto-call' : '▶ ' + (everOn?'Resume':'Start') + ' auto-call'; $('as2').textContent = m || ''; }
+function startAuto(){ auto = true; everOn = true; setAutoUI('Auto-call is ON'); autoTick(); }
+function pauseAuto(m){ auto = false; clearTimeout(autoT); setAutoUI(m); }
+function autoTick(){ clearTimeout(autoT); if(!auto) return; autoT = setTimeout(async () => { if(!auto) return; await hop('next'); autoTick(); }, Number($('as').value) * 1000); }
+async function hop(op, n){
+  try{
+    const r = await api({a:'ph_host', pin, op, n: n || ''});
+    if(!r.ok){ if(r.msg==='Wrong PIN'){sessionStorage.removeItem('ph_pin');location.reload();} else alert(r.msg); return; }
+    const c = r.called, set = new Set(c);
+    const L = c.length ? c[c.length-1] : 0;
+    $('hl').innerHTML = L ? em(L) + `<div style="font-size:1.6rem;color:#222;font-weight:700">${nm(L)}</div>` : '–';
+    $('hc').textContent = c.length + ' of ' + PICS.length + ' called' + (c.length>1 ? ' · Before: ' + c.slice(-6,-1).reverse().map(em).join(' ') : '');
+    $('bd').innerHTML = PICS.map((p,i)=>`<div class="${set.has(i+1)?'c':''}" title="${p[1]}">${p[0]}</div>`).join('');
+    const w = r.winners;
+    $('hw').innerHTML = r.prizes.map(p => `<div class="win">${p}: ${w[p] ? `<b>${esc(w[p].name)}</b> · ${esc(w[p].unit||'')} (Ticket #${w[p].no})` : '<span class="sub">not won yet</span>'}</div>`).join('');
+    const wc = Object.keys(w).length;
+    if(lastWin !== null && wc > lastWin && auto) pauseAuto('🏆 New winner! Auto-call paused. Check the winners, then Resume.');
+    else if(auto && c.length >= PICS.length) pauseAuto('All pictures called.');
+    if(lastWin === null){ lastWin = wc; setAutoUI(''); } else lastWin = wc;
+    $('ins').innerHTML = (r.insights || []).map(x => `<div class="win"><b>${x.prize}</b>: ${x.ready ? `<b style="color:var(--r)">${x.ready} ready to claim!</b> · ` : ''}${x.oneCount} need just 1 · ${x.twoCount} need 2${x.one.length ? '<br>' + x.one.map(o => `${esc(o.name)} (${esc(o.unit)})` + (o.pics.length ? ' needs ' + o.pics.map(em).join('') : ' needs any 1 more')).join('<br>') : ''}</div>`).join('') || '<span class="sub">All prizes won 🎉</span>';
+    $('pc').textContent = r.players.length; $('tt').textContent = r.total;
+    if(document.activeElement !== $('tp')) $('tp').value = r.tpu;
+    $('pl').innerHTML = r.players.map(p => `<div class="win">#${p.no} ${esc(p.name)} · ${esc(p.unit)} <button data-r="${p.no}" class="sec" style="padding:3px 8px;font-size:.75rem;float:right">Release</button></div>`).join('');
+  }catch(e){}
+}
+function esc(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+/* start the page (must stay at the very end) */
+isHost ? hostInit() : playerInit();
+</script>
+</body>
+</html>
